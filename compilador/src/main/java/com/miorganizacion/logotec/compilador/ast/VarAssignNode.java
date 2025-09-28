@@ -1,0 +1,19 @@
+package com.miorganizacion.logotec.compilador.ast;
+import java.util.Map;
+
+public class VarAssignNode implements StmtNode {
+    private final String name;
+    private final ASTNode expr;
+
+    public VarAssignNode(String name, ASTNode expr) {
+        this.name = name;
+        this.expr = expr;
+    }
+
+    @Override
+    public Object execute(Map<String, Object> symbolTable) {
+        Object val = expr.execute(symbolTable);
+        symbolTable.put(name, val);
+        return val;
+    }
+}
