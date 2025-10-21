@@ -261,18 +261,6 @@ public class LogoTecBaseListener implements LogoTecListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProcParams(@NotNull LogoTecParser.ProcParamsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitProcParams(@NotNull LogoTecParser.ProcParamsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterCmtFirstLine(@NotNull LogoTecParser.CmtFirstLineContext ctx) { }
 	/**
 	 * {@inheritDoc}

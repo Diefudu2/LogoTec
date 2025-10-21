@@ -53,7 +53,9 @@ grammar LogoTec;
 /* ------------------- Programa ------------------- */
 
 program returns [ProgramNode node]
-    : p=proceduresBlock EOF
+    : cmtFirstLine?                // el comentario inicial es OPCIONAL para parsear,
+                                   // pero se valida luego en ensureProgramConstraints()
+      p=proceduresBlock EOF
       {
         ensureProgramConstraints();
         $node = $p.node;
@@ -61,10 +63,13 @@ program returns [ProgramNode node]
     ;
 
 proceduresBlock returns [ProgramNode node]
-    @init { List<ProcDeclNode> decls = new ArrayList<>(); List<StmtNode> mainBody = new ArrayList<>(); }
-    : (cmtFirstLine {firstLineHasComment = true;} )?
-      ( procedureDecl {decls.add($procedureDecl.node);} )*
-      ( sentence {mainBody.add($sentence.node);} )*
+    @init {
+        List<ProcDeclNode> decls = new ArrayList<>();
+        List<StmtNode> mainBody = new ArrayList<>();
+    }
+    : (  procedureDecl { decls.add($procedureDecl.node); }
+       | sentence      { mainBody.add($sentence.node); }
+      )*
       {
         $node = new ProgramNode(decls, mainBody);
       }
@@ -73,19 +78,16 @@ proceduresBlock returns [ProgramNode node]
 /* ------------------- Procedimientos ------------------- */
 
 procedureDecl returns [ProcDeclNode node]
-    @init { List<String> params = new ArrayList<>(); List<StmtNode> body = new ArrayList<>(); }
-    : PARA procName=ID (procParams { for (Token p : $procParams.list) params.add(p.getText()); })?
-      BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE FIN
-      {
-        $node = new ProcDeclNode($procName.text, params, body);
-      }
-    ;
-
-
-procParams returns [List<Token> list]
-    @init { $list = new ArrayList<>(); }
-    : BRACKET_OPEN (param=ID { $list.add($param); })* BRACKET_CLOSE
-    ;
+@init { List<String> params = new ArrayList<>(); List<StmtNode> body = new ArrayList<>(); }
+: PARA procName=ID
+  BRACKET_OPEN (param=ID { params.add($param.getText()); })* BRACKET_CLOSE
+  BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
+  FIN
+  {
+    if (!params.isEmpty()) atLeastOneVariable = true; // contar parámetros como variables válidas
+    $node = new ProcDeclNode($procName.text, params, body);
+  }
+;
 
 
 /* ------------------- Sentencias ------------------- */
@@ -103,17 +105,16 @@ sentence returns [StmtNode node]
 varDecl returns [StmtNode node]
     : HAZ name=ID value=literalOrString (SEMICOLON)?
       {
+        declareOrAssign($name.text, ValueType.infer($value.node), null);
         $node = new VarDeclNode($name.text, $value.node);
       }
     ;
 
-
-
 varInit returns [StmtNode node]
     : INIC name=ID ASSIGN expression SEMICOLON
       {
-        Value v = $expression.val;
-        declareOrAssign($name.text, v.type, v.raw);
+        ValueType t = ValueType.infer($expression.node);
+        declareOrAssign($name.text, t, null);
         $node = new VarAssignNode($name.text, $expression.node);
       }
     ;
@@ -121,7 +122,11 @@ varInit returns [StmtNode node]
 /* Llamada a procedimiento */
 callProc returns [StmtNode node]
     @init { List<ExprNode> args = new ArrayList<>(); }
-    : proc=ID (BRACKET_OPEN (expression {args.add($expression.node);} )* BRACKET_CLOSE)?
+    : proc=ID
+      (
+        BRACKET_OPEN (expression {args.add($expression.node);} )* BRACKET_CLOSE
+      | (expression {args.add($expression.node);} )+ 
+      )?
       {
         $node = new ProcCallNode($proc.text, args);
       }
@@ -225,7 +230,7 @@ turtleCmd returns [StmtNode node]
     | BL                         { $node = new PenDownNode(); }
     | SUBELAPIZ                  { $node = new PenUpNode(); }
     | SB                         { $node = new PenUpNode(); }
-	| CENTRO                     { $node = new CenterNode(); }
+    | CENTRO                     { $node = new CenterNode(); }
     | ESPERA e=expression        { $node = new WaitNode($e.node); }
     | INC BRACKET_OPEN id=ID BRACKET_CLOSE
       { $node = new IncNode(new VarRefNode($id.text), new ConstNode(1)); }
@@ -339,8 +344,9 @@ primary returns [ExprNode node, Value val]
 
 literalOrString returns [ExprNode node]
     : NUMBER     { $node = new ConstNode(Integer.parseInt($NUMBER.text)); }
-    | BOOLEAN { $node = new ConstNode(Boolean.parseBoolean($BOOLEAN.text)); }
-    | STRING  { $node = new ConstNode($STRING.text); }
+    | BOOLEAN    { $node = new ConstNode(Boolean.parseBoolean($BOOLEAN.text)); }
+    // quitar comillas como en 'primary'
+    | STRING     { $node = new ConstNode($STRING.text.substring(1,$STRING.text.length()-1)); }
     ;
 
 /* ------------------- Tokens ------------------- */
@@ -423,12 +429,22 @@ NUMBER: [0-9]+;
 STRING: '"' (~["\r\n])* '"' ;
 
 /* Identificadores */
-ID: [a-z] [a-zA-Z0-9_]*;
+ID: [a-z] [a-zA-Z0-9_&@]*;
 
-/* Comentarios */
-COMMENT_LINE: '//' ~[\r\n]* -> channel(HIDDEN);
-fragment CMT_START: '//' ;
-cmtFirstLine: COMMENT_LINE;
+// ------------------ Comentarios ------------------
+
+// Comentario en primera línea (no se salta) para poder validarlo en 'program'
+cmtFirstLine
+    : FIRSTLINE_COMMENT { firstLineHasComment = true; }
+    ;
+
+FIRSTLINE_COMMENT
+    : {getLine()==1}? '//' ~[\n\r]*
+    ;
+
+COMMENT_LINE
+    : '//' ~[\n\r]* -> skip
+    ;
 
 /* Espacios */
 WS: [ \t\r\n]+ -> skip;

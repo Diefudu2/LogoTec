@@ -17,4 +17,8 @@ public class ConstNode implements ExprNode {
     public String toString() {
         return String.valueOf(value);
     }
+    public Object getValue() {
+        return value; // el campo interno donde guardas el literal
+    }
+
 }

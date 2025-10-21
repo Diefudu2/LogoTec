@@ -1,16 +1,11 @@
 // Dibuja una roseta de hexágonos
 
-Para poligono [n l] [Repite n [avanza l
-        giraderecha 360 / n]
-]fin
-
-Para roseta [cont l] [Repite cont [poligono [6 l]
-      giraderecha 360 / cont]
-]fin
+haz pasos 12
+haz lado 50
+Para poligono [n l] [Repite n [avanza l giraderecha 360 / n]] fin
+Para roseta [cont l] [Repite cont [poligono 6 l giraderecha 360 / cont]] fin
 
 centro
 bajalapiz
-Haz lado 50
-Haz pasos 36
-roseta [ pasos lado ]
+roseta pasos lado
 subelapiz

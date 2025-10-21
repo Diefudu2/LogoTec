@@ -213,16 +213,6 @@ public interface LogoTecListener extends ParseTreeListener {
 	 */
 	void exitLiteralOrString(@NotNull LogoTecParser.LiteralOrStringContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogoTecParser#procParams}.
-	 * @param ctx the parse tree
-	 */
-	void enterProcParams(@NotNull LogoTecParser.ProcParamsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LogoTecParser#procParams}.
-	 * @param ctx the parse tree
-	 */
-	void exitProcParams(@NotNull LogoTecParser.ProcParamsContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LogoTecParser#cmtFirstLine}.
 	 * @param ctx the parse tree
 	 */

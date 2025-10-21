@@ -33,12 +33,6 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProcedureDecl(LogoTecParser.ProcedureDeclContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogoTecParser#procParams}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitProcParams(LogoTecParser.ProcParamsContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#sentence}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
