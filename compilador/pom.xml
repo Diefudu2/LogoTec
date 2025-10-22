@@ -19,6 +19,14 @@
 	<build>
 		<plugins>
 			<plugin>
+	      		<groupId>org.openjfx</groupId>
+	      		<artifactId>javafx-maven-plugin</artifactId>
+	      		<version>0.0.8</version>
+	      		<configuration>
+	        		<mainClass>com.miorganizacion.logotec.interfaz.Main</mainClass>
+	      		</configuration>
+	    	</plugin>
+			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr4-maven-plugin</artifactId>
 				<version>${antlr4.plugin.version}</version>
@@ -49,6 +57,11 @@
 	</build>
 
 	<dependencies>
+		<dependency>
+		    <groupId>org.openjfx</groupId>
+		    <artifactId>javafx-controls</artifactId>
+		    <version>21</version>
+	  	</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4-runtime</artifactId>
