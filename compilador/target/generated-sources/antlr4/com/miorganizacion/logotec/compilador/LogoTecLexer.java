@@ -1,5 +1,7 @@
 // Generated from LogoTec.g4 by ANTLR 4.4
-package com.miorganizacion.logotec.compilador;
+
+    package com.miorganizacion.logotec.compilador;
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
