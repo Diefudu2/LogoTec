@@ -16,7 +16,8 @@ import javafx.animation.Timeline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.Arrays;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 public class MainController {
@@ -58,12 +59,43 @@ public class MainController {
 
         String codigo = zonaEditor.getCodigoFuente();
 
+        // Capturar la salida de System.out y System.err
+        ByteArrayOutputStream baosOut = new ByteArrayOutputStream();
+        ByteArrayOutputStream baosErr = new ByteArrayOutputStream();
+        PrintStream psOut = new PrintStream(baosOut);
+        PrintStream psErr = new PrintStream(baosErr);
+        PrintStream oldOut = System.out;
+        PrintStream oldErr = System.err;
+        
+        System.setOut(psOut);
+        System.setErr(psErr);
+
         try {
             CompiladorRealAdapter.compile(codigo);
-            System.out.println("[MainController] Compilación exitosa.");
+            System.out.println("[MainController] ✅ Compilación exitosa.");
         } catch (RuntimeException ex) {
-        	String mensaje = ex.getMessage() != null ? ex.getMessage() : "Error inesperado durante la ejecución.";
-        	zonaErrores.mostrarErrores(Arrays.asList(mensaje));
+            // Los errores ya fueron impresos por CompiladorRealAdapter
+            String mensajeError = ex.getMessage();
+            if (mensajeError != null && !mensajeError.isEmpty()) {
+                System.err.println("❌ " + mensajeError);
+            }
+        } finally {
+            // Restaurar System.out y System.err
+            System.out.flush();
+            System.err.flush();
+            System.setOut(oldOut);
+            System.setErr(oldErr);
+            
+            // Mostrar la salida capturada en la consola
+            String salidaOut = baosOut.toString();
+            String salidaErr = baosErr.toString();
+            
+            if (!salidaOut.isEmpty()) {
+                zonaErrores.agregarMensaje(salidaOut);
+            }
+            if (!salidaErr.isEmpty()) {
+                zonaErrores.agregarMensaje(salidaErr);
+            }
         }
     }
 
@@ -73,6 +105,17 @@ public class MainController {
 
         String codigo = zonaEditor.getCodigoFuente();
 
+        // Capturar la salida de System.out y System.err
+        ByteArrayOutputStream baosOut = new ByteArrayOutputStream();
+        ByteArrayOutputStream baosErr = new ByteArrayOutputStream();
+        PrintStream psOut = new PrintStream(baosOut);
+        PrintStream psErr = new PrintStream(baosErr);
+        PrintStream oldOut = System.out;
+        PrintStream oldErr = System.err;
+        
+        System.setOut(psOut);
+        System.setErr(psErr);
+
         try {
             // Compilar el código
             ProgramNode programa = CompiladorRealAdapter.compile(codigo);
@@ -81,9 +124,22 @@ public class MainController {
             List<AccionTortuga> acciones = EjecutorAST.ejecutar(programa);
 
             if (acciones.isEmpty()) {
-                System.out.println("[MainController] No se generaron acciones.");
+                System.out.println("[MainController] ⚠️ No se generaron acciones.");
+                // Restaurar y mostrar salida antes de retornar
+                System.out.flush();
+                System.err.flush();
+                System.setOut(oldOut);
+                System.setErr(oldErr);
+                
+                String salidaOut = baosOut.toString();
+                String salidaErr = baosErr.toString();
+                if (!salidaOut.isEmpty()) zonaErrores.agregarMensaje(salidaOut);
+                if (!salidaErr.isEmpty()) zonaErrores.agregarMensaje(salidaErr);
                 return;
             }
+
+            System.out.println("[MainController] ✅ Se generaron " + acciones.size() + " acciones.");
+            System.out.println("[MainController] 🎨 Iniciando animación...");
 
             // Crear la tortuga visual (posición inicial centrada en el canvas)
             Tortuga tortuga = new Tortuga(150, 150);
@@ -119,19 +175,49 @@ public class MainController {
                     }
 
                     zonaDibujo.actualizarTortuga(tortuga.getX(), tortuga.getY(), tortuga.getAngulo());
-                    System.out.println("[MainController] Ejecutando: " + accion);
                 });
 
                 timeline.getKeyFrames().add(frame);
             }
 
             timeline.setCycleCount(1);
-            timeline.setOnFinished(e -> System.out.println("[MainController] Animación finalizada."));
+            timeline.setOnFinished(e -> {
+                System.out.println("[MainController] ✅ Animación finalizada.");
+                // Mostrar la salida final
+                System.out.flush();
+                System.err.flush();
+                System.setOut(oldOut);
+                System.setErr(oldErr);
+                
+                String salidaOut = baosOut.toString();
+                String salidaErr = baosErr.toString();
+                if (!salidaOut.isEmpty()) {
+                    zonaErrores.agregarMensaje(salidaOut);
+                }
+                if (!salidaErr.isEmpty()) {
+                    zonaErrores.agregarMensaje(salidaErr);
+                }
+            });
             timeline.play();
 
         } catch (RuntimeException ex) {
             String mensaje = ex.getMessage() != null ? ex.getMessage() : "Error inesperado durante la ejecución.";
-            zonaErrores.mostrarErrores(Arrays.asList(mensaje));
+            System.err.println("[MainController] ❌ Error: " + mensaje);
+            
+            // Restaurar System.out/err y mostrar error
+            System.out.flush();
+            System.err.flush();
+            System.setOut(oldOut);
+            System.setErr(oldErr);
+            
+            String salidaOut = baosOut.toString();
+            String salidaErr = baosErr.toString();
+            if (!salidaOut.isEmpty()) {
+                zonaErrores.agregarMensaje(salidaOut);
+            }
+            if (!salidaErr.isEmpty()) {
+                zonaErrores.agregarMensaje(salidaErr);
+            }
         }
     }
 }
