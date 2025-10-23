@@ -1,8 +1,7 @@
 // Generated from LogoTec.g4 by ANTLR 4.4
+package com.miorganizacion.logotec.compilador;
 
-    package com.miorganizacion.logotec.compilador;
     import java.util.*;
-    import com.miorganizacion.logotec.compilador.*;
     import com.miorganizacion.logotec.compilador.ast.*;
 
 import org.antlr.v4.runtime.misc.NotNull;

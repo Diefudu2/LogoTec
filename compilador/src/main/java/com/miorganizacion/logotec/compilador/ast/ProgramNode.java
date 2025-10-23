@@ -11,16 +11,25 @@ public class ProgramNode implements ASTNode {
         this.decls = decls;
         this.body = body;
     }
+    
+    public List<StmtNode> getBody() {
+        return body;
+    }
+
 
     @Override
     public Object execute(Map<String, Object> symbolTable) {
         // Ejecutar declaraciones de procedimientos (se registran en la tabla)
         for (ProcDeclNode d : decls) {
-            d.execute(symbolTable);
+            if (d != null) {
+                d.execute(symbolTable);
+            }
         }
         // Ejecutar cuerpo principal
         for (StmtNode stmt : body) {
-            stmt.execute(symbolTable);
+            if (stmt != null) {
+                stmt.execute(symbolTable);
+            }
         }
         return null;
     }

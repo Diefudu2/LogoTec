@@ -1,4 +1,5 @@
 package com.miorganizacion.logotec.compilador.ast;
+import com.miorganizacion.logotec.simulador.TurtleContext;
 import java.util.Map;
 
 public class ForwardNode implements StmtNode {
@@ -6,6 +7,10 @@ public class ForwardNode implements StmtNode {
 
     public ForwardNode(ExprNode distance) {
         this.distance = distance;
+    }
+    
+    public ExprNode getExpr() {
+        return distance;
     }
 
     @Override
@@ -15,8 +20,14 @@ public class ForwardNode implements StmtNode {
             throw new RuntimeException("Avanza requiere un número");
         }
         double d = ((Number) val).doubleValue();
-        // lógica de mover la tortuga
-        System.out.println("Avanza " + d);
+        
+        // Si hay un TurtleContext en la tabla de símbolos, úsalo
+        if (st.containsKey("__turtle__")) {
+            TurtleContext turtle = (TurtleContext) st.get("__turtle__");
+            turtle.avanzar(d);
+        } else {
+            System.out.println("Avanza " + d);
+        }
         return null;
     }
 }
