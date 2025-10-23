@@ -21,11 +21,17 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
 
         // Procedimientos
         for (LogoTecParser.ProcedureDeclContext p : ctx.proceduresBlock().procedureDecl()) {
-            decls.add((ProcDeclNode) visit(p));
+            ASTNode node = visit(p);
+            if (node instanceof ProcDeclNode) {
+                decls.add((ProcDeclNode) node);
+            }
         }
         // Sentencias principales
         for (LogoTecParser.SentenceContext s : ctx.proceduresBlock().sentence()) {
-            sentences.add((StmtNode) visit(s));
+            ASTNode node = visit(s);
+            if (node instanceof StmtNode) {
+                sentences.add((StmtNode) node);
+            }
         }
         return new ProgramNode(decls, sentences);
     }
@@ -192,6 +198,61 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         }
         if (ctx.expression() != null) {
             return visit(ctx.expression());
+        }
+        return null;
+    }
+
+    /*visitSentence
+    Delega a las subreglas (varDecl, varInit, turtleCmd, etc.)
+    para construir el nodo de sentencia apropiado.
+    */
+    @Override
+    public ASTNode visitSentence(LogoTecParser.SentenceContext ctx) {
+        // Delegar a la subregla correspondiente
+        if (ctx.varDecl() != null) {
+            return visit(ctx.varDecl());
+        }
+        if (ctx.varInit() != null) {
+            return visit(ctx.varInit());
+        }
+        if (ctx.turtleCmd() != null) {
+            return visit(ctx.turtleCmd());
+        }
+        if (ctx.flowStmt() != null) {
+            return visit(ctx.flowStmt());
+        }
+        if (ctx.execBlock() != null) {
+            return visit(ctx.execBlock());
+        }
+        if (ctx.callProc() != null) {
+            return visit(ctx.callProc());
+        }
+        return null;
+    }
+
+    /*visitFlowStmt
+    Delega a las subreglas de control de flujo (repiteBlock, ifStmt, etc.)
+    */
+    @Override
+    public ASTNode visitFlowStmt(LogoTecParser.FlowStmtContext ctx) {
+        // Delegar a la subregla correspondiente
+        if (ctx.repiteBlock() != null) {
+            return visit(ctx.repiteBlock());
+        }
+        if (ctx.siStmt() != null) {
+            return visit(ctx.siStmt());
+        }
+        if (ctx.hastaStmt() != null) {
+            return visit(ctx.hastaStmt());
+        }
+        if (ctx.hazHastaStmt() != null) {
+            return visit(ctx.hazHastaStmt());
+        }
+        if (ctx.mientrasStmt() != null) {
+            return visit(ctx.mientrasStmt());
+        }
+        if (ctx.hazMientrasStmt() != null) {
+            return visit(ctx.hazMientrasStmt());
         }
         return null;
     }

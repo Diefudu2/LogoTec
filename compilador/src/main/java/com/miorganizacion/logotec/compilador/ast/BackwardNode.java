@@ -1,4 +1,5 @@
 package com.miorganizacion.logotec.compilador.ast;
+import com.miorganizacion.logotec.simulador.TurtleContext;
 import java.util.Map;
 
 /* Retrocede */
@@ -9,7 +10,14 @@ public class BackwardNode implements StmtNode {
         Object val = distance.execute(st);
         if (!(val instanceof Number)) throw new RuntimeException("Retrocede requiere número");
         double d = ((Number) val).doubleValue();
-        System.out.println("Retrocede " + d);
+        
+        // Si hay un TurtleContext en la tabla de símbolos, úsalo
+        if (st.containsKey("__turtle__")) {
+            TurtleContext turtle = (TurtleContext) st.get("__turtle__");
+            turtle.retroceder(d);
+        } else {
+            System.out.println("Retrocede " + d);
+        }
         return null;
     }
 }

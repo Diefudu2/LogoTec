@@ -1,10 +1,17 @@
 package com.miorganizacion.logotec.compilador.ast;
+import com.miorganizacion.logotec.simulador.TurtleContext;
 import java.util.Map;
 
 /* Oculta tortuga */
 public class HideTurtleNode implements StmtNode {
     @Override public Object execute(Map<String,Object> st) {
-        System.out.println("Oculta tortuga");
+        // Si hay un TurtleContext en la tabla de símbolos, úsalo
+        if (st.containsKey("__turtle__")) {
+            TurtleContext turtle = (TurtleContext) st.get("__turtle__");
+            turtle.ocultarTortuga();
+        } else {
+            System.out.println("Oculta tortuga");
+        }
         return null;
     }
 }
