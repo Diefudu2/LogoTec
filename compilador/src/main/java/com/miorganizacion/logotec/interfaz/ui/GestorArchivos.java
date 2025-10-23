@@ -21,7 +21,8 @@ public class GestorArchivos {
         File archivo = fileChooser.showOpenDialog(stage);
 
         if (archivo != null) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(archivo, StandardCharsets.UTF_8))) {
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(archivo), StandardCharsets.UTF_8))) {
                 StringBuilder contenido = new StringBuilder();
                 String linea;
                 while ((linea = reader.readLine()) != null) {
@@ -42,7 +43,8 @@ public class GestorArchivos {
         File archivo = fileChooser.showSaveDialog(stage);
 
         if (archivo != null) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, StandardCharsets.UTF_8))) {
+            try (BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(new FileOutputStream(archivo), StandardCharsets.UTF_8))) {
                 writer.write(contenido);
             } catch (IOException e) {
                 System.out.println("Error al guardar el archivo: " + e.getMessage());
