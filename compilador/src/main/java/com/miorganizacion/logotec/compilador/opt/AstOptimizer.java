@@ -11,7 +11,7 @@ import com.miorganizacion.logotec.compilador.ast.*;
  */
 public final class AstOptimizer {
 
-    private AstOptimizer() {}
+    public AstOptimizer() {}
 
     public static ProgramNode optimize(ProgramNode root) {
         if (root == null) return null;

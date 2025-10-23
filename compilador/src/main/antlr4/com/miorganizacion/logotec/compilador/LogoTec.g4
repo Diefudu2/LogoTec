@@ -152,21 +152,27 @@ sentence returns [StmtNode node]
 
 /* Declaración de variables */
 varDecl returns [StmtNode node]
-    : HAZ name=ID value=literalOrString (SEMICOLON)?
-      {
-        declareOrAssign($name.text, ValueType.infer($value.node), null);
-        $node = new VarDeclNode($name.text, $value.node);
-      }
+    : HAZ name=ID ( value=literalOrString { 
+                        declareOrAssign($name.text, ValueType.infer($value.node), null);
+                        $node = new VarDeclNode($name.text, $value.node);
+                      }
+                    | expr=expression { 
+                        declareOrAssign($name.text, ValueType.infer($expr.node), null);
+                        $node = new VarDeclNode($name.text, $expr.node);
+                      }
+                    ) (SEMICOLON)?
     ;
 
+
 varInit returns [StmtNode node]
-    : INIC name=ID ASSIGN expression SEMICOLON
+    : INIC name=ID ASSIGN expression (SEMICOLON)?
       {
         ValueType t = ValueType.infer($expression.node);
         declareOrAssign($name.text, t, null);
         $node = new VarAssignNode($name.text, $expression.node);
       }
     ;
+
 
 /* Llamada a procedimiento */
 callProc returns [StmtNode node]

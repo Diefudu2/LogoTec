@@ -9,7 +9,6 @@ import com.miorganizacion.logotec.compilador.ast.*;
 import com.miorganizacion.logotec.compilador.opt.*;
 import com.miorganizacion.logotec.compilador.ir.*;
 import com.miorganizacion.logotec.compilador.backend.*;
-import com.miorganizacion.logotec.compilador.antlr.*; // Ajustar al paquete real generado por ANTLR
 
 public class Compiler {
 
