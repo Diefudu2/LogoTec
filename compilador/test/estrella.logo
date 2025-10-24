@@ -1,0 +1,15 @@
+// Estrella superpuesta con múltiples rotaciones
+haz dummy 0
+centro
+
+// Dibujar 3 estrellas rotadas (tamaño ajustado para canvas)
+Repite 3 [
+    // Dibujar una estrella de 5 puntas
+    Repite 5 [
+        avanza 80
+        giraderecha 144
+    ]
+    
+    // Rotar 72 grados para la siguiente estrella
+    giraderecha 72
+]

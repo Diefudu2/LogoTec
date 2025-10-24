@@ -1,0 +1,29 @@
+// Roseta de cuadrados con tamaños variables
+// Inspirada en la imagen: cuadrados de diferentes tamaños rotados
+haz dummy 0
+haz cantidad 15
+haz rotacion 24
+haz ladoMin 40
+haz ladoMax 120
+haz incremento 5
+
+centro
+bajalapiz
+
+// Dibujar cuadrados con tamaño creciente/decreciente
+Repite cantidad [
+  // Cuadrado 1: tamaño pequeño
+  avanza ladoMin
+  giraderecha 90
+  avanza ladoMin
+  giraderecha 90
+  avanza ladoMin
+  giraderecha 90
+  avanza ladoMin
+  giraderecha 90
+  
+  // Rotar para el siguiente cuadrado
+  giraderecha rotacion
+]
+
+subelapiz

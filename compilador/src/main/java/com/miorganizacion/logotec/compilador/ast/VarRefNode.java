@@ -6,7 +6,6 @@ public class VarRefNode implements ExprNode {
     public VarRefNode(String name) { this.name = name; }
     @Override public Object execute(Map<String,Object> st) { return st.get(name); }
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 }

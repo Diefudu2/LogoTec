@@ -2,32 +2,258 @@ package com.miorganizacion.logotec.compilador.ir;
 
 import java.util.*;
 import com.miorganizacion.logotec.compilador.ast.*;
-import static com.miorganizacion.logotec.compilador.ir.TAC.*;
 
+/**
+ * Generador de Representación Intermedia (IR) desde el AST de LogoTec.
+ * Convierte el Árbol de Sintaxis Abstracta en código de tres direcciones.
+ * 
+ * FASE 2: Traducción AST → IR
+ */
 public class IRGenerator {
 
-    private final TAC tac = new TAC();
-    private final Set<String> vars = new LinkedHashSet<>();
-
+    private final IRBuilder builder;
+    private final Set<String> declaredVars;
+    
+    /**
+     * Resultado de la generación de IR.
+     * Contiene las instrucciones generadas y las variables declaradas.
+     */
     public static final class Result {
-        public final TAC tac;
-        public final Set<String> vars;
-        public Result(TAC t, Set<String> v){this.tac=t; this.vars=v;}
+        public final List<ThreeAddressInstruction> instructions;
+        public final Set<String> declaredVars;
+        
+        public Result(List<ThreeAddressInstruction> instructions, Set<String> vars) {
+            this.instructions = instructions;
+            this.declaredVars = vars;
+        }
     }
 
-    public Result generate(ProgramNode program) {
-        // main
-        emit(Instruction.label("main"));
-        for (StmtNode s : program.getMainBody()) genStmt(s);
-        tac.emit(Op.RET, null, null, null);
+    public IRGenerator() {
+        this.builder = new IRBuilder();
+        this.declaredVars = new LinkedHashSet<>();
+    }
 
-        // procedimientos
-        for (ProcDeclNode p : program.getProcDecls()) {
-            emit(Instruction.label(p.getName()));
-            for (StmtNode s : p.getBody()) genStmt(s);
-            tac.emit(Op.RET, null, null, null);
+    /**
+     * Genera código IR para un programa completo.
+     * @param program Nodo raíz del AST
+     * @return Resultado con instrucciones IR y variables declaradas
+     */
+    public Result generate(ProgramNode program) {
+        builder.comment("========================================");
+        builder.comment("Programa LogoTec - Código Intermedio");
+        builder.comment("========================================");
+        
+        // Etiqueta de inicio del programa principal
+        builder.label("main");
+        
+        // Generar código para el cuerpo principal
+        for (StmtNode stmt : program.getBody()) {
+            if (stmt != null) {
+                generateStmt(stmt);
+            }
         }
-        return new Result(tac, vars);
+        
+        builder.comment("Fin del programa");
+        
+        return new Result(builder.getInstructions(), declaredVars);
+    }
+
+    /**
+     * Genera código IR para un statement (sentencia).
+     */
+    private void generateStmt(StmtNode stmt) {
+        if (stmt == null) return;
+        
+        // ==================== DECLARACIONES Y ASIGNACIONES ====================
+        
+        if (stmt instanceof VarDeclNode) {
+            VarDeclNode varDecl = (VarDeclNode) stmt;
+            String varName = varDecl.getVariable();
+            declaredVars.add(varName);
+            
+            builder.comment("haz " + varName + " = <expr>");
+            Operand value = generateExpr(varDecl.getExpression());
+            builder.store(varName, value);
+            return;
+        }
+        
+        if (stmt instanceof VarAssignNode) {
+            VarAssignNode assign = (VarAssignNode) stmt;
+            String varName = assign.getVariable();
+            declaredVars.add(varName);
+            
+            builder.comment(varName + " = <expr>");
+            Operand value = generateExpr(assign.getExpression());
+            builder.store(varName, value);
+            return;
+        }
+        
+        // ==================== BLOQUES ====================
+        
+        if (stmt instanceof ExecBlockNode) {
+            ExecBlockNode block = (ExecBlockNode) stmt;
+            for (StmtNode s : block.getBody()) {
+                generateStmt(s);
+            }
+            return;
+        }
+        
+        // ==================== ESTRUCTURAS DE CONTROL ====================
+        
+        if (stmt instanceof IfNode) {
+            generateIfStmt((IfNode) stmt);
+            return;
+        }
+        
+        if (stmt instanceof DoWhileNode) {
+            generateDoWhileStmt((DoWhileNode) stmt);
+            return;
+        }
+        
+        if (stmt instanceof DoUntilNode) {
+            generateDoUntilStmt((DoUntilNode) stmt);
+            return;
+        }
+        
+        if (stmt instanceof RepeatNode) {
+            generateRepeatStmt((RepeatNode) stmt);
+            return;
+        }
+        
+        // ==================== COMANDOS DE TORTUGA ====================
+        
+        if (stmt instanceof ForwardNode) {
+            ForwardNode fwd = (ForwardNode) stmt;
+            builder.comment("avanza <expr>");
+            Operand distance = generateExpr(fwd.getExpression());
+            builder.forward(distance);
+            return;
+        }
+        
+        if (stmt instanceof BackwardNode) {
+            BackwardNode bwd = (BackwardNode) stmt;
+            builder.comment("retrocede <expr>");
+            Operand distance = generateExpr(bwd.getExpression());
+            builder.backward(distance);
+            return;
+        }
+        
+        if (stmt instanceof TurnRightNode) {
+            TurnRightNode tr = (TurnRightNode) stmt;
+            builder.comment("giraderecha <expr>");
+            Operand degrees = generateExpr(tr.getExpression());
+            builder.turnRight(degrees);
+            return;
+        }
+        
+        if (stmt instanceof TurnLeftNode) {
+            TurnLeftNode tl = (TurnLeftNode) stmt;
+            builder.comment("giraizquierda <expr>");
+            Operand degrees = generateExpr(tl.getExpression());
+            builder.turnLeft(degrees);
+            return;
+        }
+        
+        if (stmt instanceof PenUpNode) {
+            builder.comment("subelapiz");
+            builder.penUp();
+            return;
+        }
+        
+        if (stmt instanceof PenDownNode) {
+            builder.comment("bajalapiz");
+            builder.penDown();
+            return;
+        }
+        
+        if (stmt instanceof CenterNode) {
+            builder.comment("centro");
+            builder.center();
+            return;
+        }
+        
+        if (stmt instanceof SetPosNode) {
+            SetPosNode sp = (SetPosNode) stmt;
+            builder.comment("ponpos [<x>, <y>]");
+            Operand x = generateExpr(sp.getX());
+            Operand y = generateExpr(sp.getY());
+            builder.setPos(x, y);
+            return;
+        }
+        
+        if (stmt instanceof SetColorNode) {
+            SetColorNode sc = (SetColorNode) stmt;
+            builder.comment("poncolorlapiz [<r>, <g>, <b>]");
+            Operand r = generateExpr(sc.getR());
+            Operand g = generateExpr(sc.getG());
+            Operand b = generateExpr(sc.getB());
+            builder.setColor(r, g, b);
+            return;
+        }
+        
+        if (stmt instanceof SetHeadingNode) {
+            SetHeadingNode sh = (SetHeadingNode) stmt;
+            builder.comment("ponrumbo <expr>");
+            Operand heading = generateExpr(sh.getExpression());
+            builder.add(new ThreeAddressInstruction(
+                IROpcode.SET_HEADING, heading
+            ));
+            return;
+        }
+        
+        if (stmt instanceof HideTurtleNode) {
+            builder.comment("ocultatoruga");
+            builder.add(new ThreeAddressInstruction(IROpcode.HIDE_TURTLE));
+            return;
+        }
+        
+        if (stmt instanceof ShowTurtleNode) {
+            builder.comment("aparecetortuga");
+            builder.add(new ThreeAddressInstruction(IROpcode.SHOW_TURTLE));
+            return;
+        }
+        
+        // ==================== PROCEDIMIENTOS ====================
+        
+        if (stmt instanceof ProcCallNode) {
+            ProcCallNode call = (ProcCallNode) stmt;
+            builder.comment("Llamada a procedimiento: " + call.getName());
+            
+            // Pasar parámetros (en orden inverso para stack)
+            List<ExprNode> args = call.getArgs();
+            for (int i = args.size() - 1; i >= 0; i--) {
+                Operand arg = generateExpr(args.get(i));
+                builder.add(new ThreeAddressInstruction(
+                    IROpcode.PRINT, arg, "param " + i
+                ));
+            }
+            
+            // Llamar al procedimiento (simulado como salto)
+            builder.jump(call.getName());
+            return;
+        }
+        
+        // ==================== OTROS ====================
+        
+        if (stmt instanceof IncNode) {
+            IncNode inc = (IncNode) stmt;
+            VarRefNode varRef = inc.getVar();
+            String varName = varRef.getName();
+            declaredVars.add(varName);
+            
+            builder.comment(varName + " += <expr>");
+            Operand current = Operand.variable(varName);
+            Operand delta = generateExpr(inc.getDelta());
+            Operand result = builder.getTempGen().nextOperand();
+            builder.add(result, current, delta);
+            builder.store(varName, result);
+            return;
+        }
+        
+        // No reconocido - agregar NOP con comentario
+        builder.add(new ThreeAddressInstruction(
+            IROpcode.NOP, null, "stmt: " + stmt.getClass().getSimpleName()
+        ));
     }
 
     private void genStmt(StmtNode s) {

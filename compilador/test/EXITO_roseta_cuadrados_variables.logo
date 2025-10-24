@@ -1,0 +1,179 @@
+// Roseta de cuadrados con tamaños variables (Versión Manual)
+// Dibuja cuadrados de diferentes tamaños para crear efecto de roseta
+haz dummy 0
+haz lado1 50
+haz lado2 70
+haz lado3 90
+haz lado4 110
+haz rotacion 24
+
+centro
+bajalapiz
+
+// Patrón: alternar entre 4 tamaños diferentes
+// Cuadrado 1 (pequeño)
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 2 (mediano)
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 3 (grande)
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 4 (muy grande)
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 5 (pequeño)
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 6 (mediano)
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 7 (grande)
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 8 (muy grande)
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 9 (pequeño)
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 10 (mediano)
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 11 (grande)
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 12 (muy grande)
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+avanza lado4
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 13 (pequeño)
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+avanza lado1
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 14 (mediano)
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+avanza lado2
+giraderecha 90
+giraderecha rotacion
+
+// Cuadrado 15 (grande)
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+avanza lado3
+giraderecha 90
+giraderecha rotacion
+
+subelapiz

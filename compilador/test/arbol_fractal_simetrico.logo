@@ -1,0 +1,120 @@
+// Árbol fractal ramificado estilo orgánico
+// Estructura clara: tallo vertical → ramificaciones superiores
+haz dummy 0
+
+// Tallo (tronco principal más largo)
+haz tallo 80
+
+// Ramas principales (decrecientes desde el tallo)
+haz rama1 50
+haz rama2 38
+haz rama3 28
+haz rama4 20
+haz rama5 14
+
+// Ángulos de ramificación (más abiertos para claridad)
+haz angulo1 30
+haz angulo2 35
+haz angulo3 40
+
+// Posición inicial: desplazar a la izquierda
+haz posy 180
+haz desp 60
+
+centro
+subelapiz
+giraizquierda 90
+avanza desp
+giraderecha 90
+avanza posy
+giraderecha 180
+bajalapiz
+
+// ==================== TALLO PRINCIPAL (VERTICAL) ====================
+avanza tallo
+
+// ==================== TALLO PRINCIPAL (VERTICAL) ====================
+avanza tallo
+
+// ==================== RAMIFICACIÓN IZQUIERDA NIVEL 1 ====================
+giraizquierda angulo1
+avanza rama1
+
+// Sub-ramificación izquierda (pequeña)
+giraizquierda angulo2
+avanza rama2
+avanza rama3
+giraderecha 180
+avanza rama3
+avanza rama2
+giraderecha angulo2
+
+// Sub-ramificación central-izquierda
+giraizquierda angulo3
+avanza rama3
+avanza rama4
+giraderecha 180
+avanza rama4
+avanza rama3
+giraderecha angulo3
+
+// Regresar a punto de bifurcación
+giraderecha 180
+avanza rama1
+giraizquierda angulo1
+
+// ==================== RAMIFICACIÓN DERECHA NIVEL 1 ====================
+giraderecha angulo1
+avanza rama1
+
+// Sub-ramificación derecha (pequeña)
+giraderecha angulo2
+avanza rama2
+avanza rama3
+giraderecha 180
+avanza rama3
+avanza rama2
+giraizquierda angulo2
+
+// Sub-ramificación central-derecha
+giraderecha angulo3
+avanza rama3
+avanza rama4
+giraderecha 180
+avanza rama4
+avanza rama3
+giraizquierda angulo3
+
+// Regresar a punto de bifurcación
+giraderecha 180
+avanza rama1
+giraderecha angulo1
+
+// ==================== RAMIFICACIÓN CENTRAL SUPERIOR ====================
+avanza rama2
+
+// Punta izquierda superior
+giraizquierda angulo2
+avanza rama3
+avanza rama4
+avanza rama5
+giraderecha 180
+avanza rama5
+avanza rama4
+avanza rama3
+giraderecha angulo2
+
+// Punta central superior
+avanza rama3
+avanza rama4
+giraderecha 180
+avanza rama4
+avanza rama3
+
+// Punta derecha superior
+giraderecha angulo2
+avanza rama3
+avanza rama4
+avanza rama5
+
+subelapiz

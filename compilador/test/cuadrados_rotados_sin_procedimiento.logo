@@ -1,0 +1,22 @@
+// Patrón de cuadrados rotados - SIN PROCEDIMIENTOS
+// Prueba para verificar si Repite 10 funciona sin llamadas a procedimientos
+haz dummy 0
+haz lado 80
+
+centro
+bajalapiz
+
+// Bucle simple: 10 cuadrados sin procedimientos
+Repite 10 [
+  avanza lado
+  giraderecha 90
+  avanza lado
+  giraderecha 90
+  avanza lado
+  giraderecha 90
+  avanza lado
+  giraderecha 90
+  giraderecha 36
+]
+
+subelapiz

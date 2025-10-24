@@ -1,0 +1,18 @@
+// Patrón de cuadrados rotados
+haz dummy 0
+haz lado 80
+haz cantidad 10
+haz rotacion 24
+
+centro
+bajalapiz
+
+Repite cantidad [
+  Repite 4 [
+    avanza lado
+    giraderecha 90
+  ]
+  giraderecha rotacion
+]
+
+subelapiz

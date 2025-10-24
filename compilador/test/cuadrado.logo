@@ -1,0 +1,12 @@
+// Test procedimiento simple con parámetros
+haz dummy 0
+
+Para cuadrado [lado] [
+    Repite 4 [
+        avanza lado
+        giraderecha 90
+    ]
+] fin
+
+centro
+cuadrado 80

@@ -336,6 +336,7 @@ turtleCmd returns [StmtNode node]
     | AV e=expression            { $node = new ForwardNode($e.node); }
     | RETROCEDE e=expression     { $node = new BackwardNode($e.node); }
     | RE e=expression            { $node = new BackwardNode($e.node); }
+    | ATRAS e=expression         { $node = new BackwardNode($e.node); }
     | GIRADERECHA e=expression   { $node = new TurnRightNode($e.node); }
     | GD e=expression            { $node = new TurnRightNode($e.node); }
     | GIRAIzQUIERDA e=expression { $node = new TurnLeftNode($e.node); }
@@ -515,6 +516,7 @@ AVANZA: 'avanza';
 AV: 'av';
 RETROCEDE: 'retrocede';
 RE: 're';
+ATRAS: 'atras';
 GIRADERECHA: 'giraderecha';
 GD: 'gd';
 GIRAIzQUIERDA: 'giraizquierda';
