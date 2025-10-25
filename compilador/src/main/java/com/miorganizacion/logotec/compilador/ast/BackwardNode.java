@@ -6,6 +6,7 @@ import java.util.Map;
 public class BackwardNode implements StmtNode {
     private final ExprNode distance;
     public BackwardNode(ExprNode distance) { this.distance = distance; }
+    public ExprNode getExpr() { return distance; }
     @Override public Object execute(Map<String,Object> st) {
         Object val = distance.execute(st);
         if (!(val instanceof Number)) throw new RuntimeException("Retrocede requiere número");

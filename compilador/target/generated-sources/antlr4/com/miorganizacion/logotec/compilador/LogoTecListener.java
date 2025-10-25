@@ -43,6 +43,16 @@ public interface LogoTecListener extends ParseTreeListener {
 	 */
 	void exitProgram(@NotNull LogoTecParser.ProgramContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LogoTecParser#unary}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnary(@NotNull LogoTecParser.UnaryContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogoTecParser#unary}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnary(@NotNull LogoTecParser.UnaryContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LogoTecParser#proceduresBlock}.
 	 * @param ctx the parse tree
 	 */
@@ -62,6 +72,16 @@ public interface LogoTecListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArithExpr(@NotNull LogoTecParser.ArithExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LogoTecParser#expressionSeries}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionSeries(@NotNull LogoTecParser.ExpressionSeriesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogoTecParser#expressionSeries}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionSeries(@NotNull LogoTecParser.ExpressionSeriesContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LogoTecParser#hazHastaStmt}.
 	 * @param ctx the parse tree
@@ -182,16 +202,6 @@ public interface LogoTecListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCallProc(@NotNull LogoTecParser.CallProcContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LogoTecParser#flowStmt}.
-	 * @param ctx the parse tree
-	 */
-	void enterFlowStmt(@NotNull LogoTecParser.FlowStmtContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LogoTecParser#flowStmt}.
-	 * @param ctx the parse tree
-	 */
-	void exitFlowStmt(@NotNull LogoTecParser.FlowStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LogoTecParser#expression}.
 	 * @param ctx the parse tree

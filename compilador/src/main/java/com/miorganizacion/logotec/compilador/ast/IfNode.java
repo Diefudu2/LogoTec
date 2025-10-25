@@ -29,6 +29,7 @@ public class IfNode implements StmtNode {
     }
     
     public ExprNode getCond() { return (ExprNode) condition; }
+    public ExprNode getCondition() { return (ExprNode) condition; }
     public List<StmtNode> getThenBody() { 
         List<StmtNode> result = new ArrayList<>();
         for (ASTNode node : thenBody) {

@@ -6,8 +6,15 @@ public class AccionTortuga {
         AVANZAR,
         GIRAR,
         BAJAR_LAPIZ,
-        LEVANTAR_LAPIZ
-        // Puedes agregar más: PONPOS, ESPERA, etc.
+        LEVANTAR_LAPIZ,
+        // Acciones adicionales para compatibilidad con VM
+        RETROCEDER,
+        GIRAR_DERECHA,
+        GIRAR_IZQUIERDA,
+        SUBIR_LAPIZ,      // Alias de LEVANTAR_LAPIZ
+        CENTRAR,
+        OCULTAR_TORTUGA,
+        MOSTRAR_TORTUGA
     }
 
     private final Tipo tipo;

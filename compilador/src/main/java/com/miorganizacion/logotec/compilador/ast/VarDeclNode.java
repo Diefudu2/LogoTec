@@ -10,7 +10,9 @@ public class VarDeclNode implements StmtNode {
         this.value = value;
     }
     
+    public String getName() { return name; }
     public String getVariable() { return name; }
+    public ExprNode getValue() { return value; }
     public ExprNode getExpression() { return value; }
 
     @Override

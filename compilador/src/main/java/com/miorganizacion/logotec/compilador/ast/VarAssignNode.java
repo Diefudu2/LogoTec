@@ -10,6 +10,7 @@ public class VarAssignNode implements StmtNode {
         this.expr = expr;
     }
     
+    public String getName() { return name; }
     public String getVariable() { return name; }
     public ExprNode getExpression() { return (ExprNode) expr; }
 

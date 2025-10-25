@@ -12,6 +12,7 @@ public class WhileNode implements StmtNode {
     }
     
     public ExprNode getCond() { return condition; }
+    public ExprNode getCondition() { return condition; }
     public List<StmtNode> getBody() { return body; }
 
     @Override

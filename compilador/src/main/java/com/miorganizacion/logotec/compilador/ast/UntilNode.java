@@ -10,6 +10,9 @@ public class UntilNode implements StmtNode {
         this.condition = condition;
         this.body = body;
     }
+    
+    public ExprNode getCondition() { return condition; }
+    public List<StmtNode> getBody() { return body; }
 
     @Override
     public Object execute(Map<String,Object> st) {

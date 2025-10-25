@@ -13,6 +13,7 @@ public class DoWhileNode implements StmtNode {
     
     public List<StmtNode> getBody() { return body; }
     public ExprNode getCond() { return condition; }
+    public ExprNode getCondition() { return condition; }
 
     @Override
     public Object execute(Map<String,Object> st) {

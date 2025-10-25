@@ -57,6 +57,18 @@ public class LogoTecBaseListener implements LogoTecListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterUnary(@NotNull LogoTecParser.UnaryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnary(@NotNull LogoTecParser.UnaryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterProceduresBlock(@NotNull LogoTecParser.ProceduresBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -76,6 +88,18 @@ public class LogoTecBaseListener implements LogoTecListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArithExpr(@NotNull LogoTecParser.ArithExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpressionSeries(@NotNull LogoTecParser.ExpressionSeriesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpressionSeries(@NotNull LogoTecParser.ExpressionSeriesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -220,18 +244,6 @@ public class LogoTecBaseListener implements LogoTecListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCallProc(@NotNull LogoTecParser.CallProcContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFlowStmt(@NotNull LogoTecParser.FlowStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFlowStmt(@NotNull LogoTecParser.FlowStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

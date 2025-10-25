@@ -4,6 +4,7 @@ import java.util.Map;
 public class SetYNode implements StmtNode {
     private final ExprNode y;
     public SetYNode(ExprNode y) { this.y = y; }
+    public ExprNode getExpr() { return y; }
     @Override public Object execute(Map<String,Object> st) {
         Object val = y.execute(st);
         if (!(val instanceof Number)) throw new RuntimeException("SetY requiere número");

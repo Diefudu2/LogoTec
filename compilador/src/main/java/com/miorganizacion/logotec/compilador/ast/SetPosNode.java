@@ -14,6 +14,7 @@ public class SetPosNode implements StmtNode {
     public ExprNode getX() { return x; }
     public ExprNode getY() { return y; }
     public boolean isRelative() { return relative; }
+    public boolean isBracketed() { return relative; }
     
     @Override 
     public Object execute(Map<String,Object> st) {
