@@ -9,6 +9,9 @@ public class VarAssignNode implements StmtNode {
         this.name = name;
         this.expr = expr;
     }
+    
+    public String getVariable() { return name; }
+    public ExprNode getExpression() { return (ExprNode) expr; }
 
     @Override
     public Object execute(Map<String, Object> symbolTable) {

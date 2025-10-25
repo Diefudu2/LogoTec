@@ -9,6 +9,9 @@ public class VarDeclNode implements StmtNode {
         this.name = name;
         this.value = value;
     }
+    
+    public String getVariable() { return name; }
+    public ExprNode getExpression() { return value; }
 
     @Override
     public Object execute(Map<String, Object> symbolTable) {

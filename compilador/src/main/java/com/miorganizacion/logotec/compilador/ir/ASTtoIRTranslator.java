@@ -117,8 +117,9 @@ public class ASTtoIRTranslator {
             
             builder.comment("Repite <n> [...]");
             
-            // Contador del loop
-            Operand counter = Operand.temp("loop_counter");
+            // Contador del loop (FIX: generar temporal único por bucle)
+            // Antes: Operand counter = Operand.temp("loop_counter");
+            Operand counter = builder.getTempGen().nextOperand();
             builder.loadConst(counter, 0);
             
             // Evaluar límite

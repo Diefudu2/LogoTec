@@ -7,6 +7,8 @@ public class LogicalNotNode implements ExprNode {
     public LogicalNotNode(ExprNode expr) {
         this.expr = expr;
     }
+    
+    public ExprNode getExpr() { return expr; }
 
     @Override
     public Object execute(Map<String, Object> symbolTable) {

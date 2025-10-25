@@ -10,6 +10,9 @@ public class ProductNode implements ExprNode {
         this.first = first;
         this.rest = rest;
     }
+    
+    public ExprNode getFirst() { return first; }
+    public List<ExprNode> getRest() { return rest; }
 
     @Override
     public Object execute(Map<String,Object> st) {

@@ -8,6 +8,9 @@ public class AdditionNode implements ExprNode {
         this.left = left;
         this.right = right;
     }
+    
+    public ExprNode getLeft() { return left; }
+    public ExprNode getRight() { return right; }
 
     @Override
     public Object execute(Map<String, Object> symbolTable) {

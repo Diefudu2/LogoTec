@@ -10,19 +10,35 @@ public class DoWhileNode implements StmtNode {
         this.body = body;
         this.condition = condition;
     }
+    
+    public List<StmtNode> getBody() { return body; }
+    public ExprNode getCond() { return condition; }
 
     @Override
     public Object execute(Map<String,Object> st) {
         do {
             for (StmtNode stmt : body) {
-                stmt.execute(st);
+                if (stmt != null) {
+                    stmt.execute(st);
+                }
             }
-        } while ((Boolean) condition.execute(st));
+            
+            Object condValue = condition.execute(st);
+            
+            if (!(condValue instanceof Boolean)) {
+                throw new RuntimeException("HAZ.MIENTRAS: la condición debe ser booleana, se recibió: " + condValue);
+            }
+            
+            if (!(Boolean) condValue) {
+                break;
+            }
+        } while (true);
+        
         return null;
     }
 
     @Override
     public String toString() {
-        return "DoWhile(" + condition + ", body=" + body + ")";
+        return "DoWhile(body=" + body + ", cond=" + condition + ")";
     }
 }

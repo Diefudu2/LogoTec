@@ -13,9 +13,23 @@ public class UntilNode implements StmtNode {
 
     @Override
     public Object execute(Map<String,Object> st) {
-        while (!(Boolean) condition.execute(st)) {
+        while (true) {
+            Object condValue = condition.execute(st);
+            
+            if (!(condValue instanceof Boolean)) {
+                throw new RuntimeException("HASTA: la condición debe ser booleana, se recibió: " + condValue);
+            }
+            
+            // HASTA se ejecuta HASTA que la condición sea verdadera
+            // Es decir, mientras la condición sea falsa
+            if ((Boolean) condValue) {
+                break;
+            }
+            
             for (StmtNode stmt : body) {
-                stmt.execute(st);
+                if (stmt != null) {
+                    stmt.execute(st);
+                }
             }
         }
         return null;
@@ -23,6 +37,6 @@ public class UntilNode implements StmtNode {
 
     @Override
     public String toString() {
-        return "Until(" + condition + ", body=" + body + ")";
+        return "Hasta(" + condition + ", " + body + ")";
     }
 }

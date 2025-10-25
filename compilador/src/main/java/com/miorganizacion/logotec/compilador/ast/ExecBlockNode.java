@@ -8,6 +8,8 @@ public class ExecBlockNode implements StmtNode {
     public ExecBlockNode(List<StmtNode> body) {
         this.body = body;
     }
+    
+    public List<StmtNode> getBody() { return body; }
 
     @Override
     public Object execute(Map<String,Object> st) {

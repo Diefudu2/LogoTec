@@ -10,6 +10,9 @@ public class ProcCallNode implements StmtNode {
         this.name = name;
         this.args = args;
     }
+    
+    public String getName() { return name; }
+    public List<ExprNode> getArgs() { return args; }
 
     @Override
     public Object execute(Map<String, Object> symbolTable) {

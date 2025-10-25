@@ -28,6 +28,23 @@ public class IfNode implements StmtNode {
         }
     }
     
+    public ExprNode getCond() { return (ExprNode) condition; }
+    public List<StmtNode> getThenBody() { 
+        List<StmtNode> result = new ArrayList<>();
+        for (ASTNode node : thenBody) {
+            if (node instanceof StmtNode) result.add((StmtNode) node);
+        }
+        return result;
+    }
+    public List<StmtNode> getElseBody() { 
+        if (elseBody == null) return null;
+        List<StmtNode> result = new ArrayList<>();
+        for (ASTNode node : elseBody) {
+            if (node instanceof StmtNode) result.add((StmtNode) node);
+        }
+        return result;
+    }
+    
     @Override 
     public Object execute(Map<String,Object> st) {
         if ((Boolean)condition.execute(st)) {

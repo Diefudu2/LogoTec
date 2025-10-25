@@ -1,0 +1,501 @@
+\documentclass[conference,a4paper,onecolumn,12pt]{IEEEtran}
+
+\IEEEoverridecommandlockouts
+
+% Paquetes base
+\usepackage[cmex10]{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{algorithm2e}
+
+% Idioma y codificación
+\usepackage[spanish, es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Tablas y listas
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+
+% Otros
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{microtype}
+
+\geometry{margin=2.5cm}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  urlcolor=blue!50!black,
+  citecolor=blue!50!black
+}
+
+\setlist[itemize]{leftmargin=2em}
+\setlist[enumerate]{leftmargin=2em}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  showstringspaces=false
+}
+
+\newcommand{\porCompletar}[1]{\textit{[POR COMPLETAR: #1]}}
+
+\begin{document}
+
+\title{LogoTec — Entrega 2: Documentación técnica y de proyecto}
+
+\author{\IEEEauthorblockN{Castro Moreno Henry Andrés, Rivera Mora José Ignacio}
+\IEEEauthorblockA{Ingeniería en Computadores\\
+Instituto Tecnológico de Costa Rica\\
+hencastro@estudiantec.cr, j.rivera@estudiantec.cr}}
+
+\maketitle
+
+\begin{abstract}
+Este documento describe el estado de avance de la Entrega 2 del proyecto LogoTec, basado en el enunciado del proyecto grupal, la documentación de la Entrega 1 y el código/artefactos en las carpetas \texttt{compilador} e \texttt{interfaz}. Incluye visión general, requisitos, diseño y arquitectura, trazabilidad, plan de pruebas, actividades realizadas, pendientes y riesgos. Donde no fue posible inferir información a partir de los archivos provistos se deja indicado claramente como \porCompletar{...} para completar en la siguiente iteración.
+\end{abstract}
+
+\section{Glosario y siglas}
+\begin{description}
+\item[AST] Árbol de sintaxis abstracta.
+\item[CFG] Gramática libre de contexto.
+\item[IR] Representación intermedia.
+\item[UI] Interfaz de usuario.
+\item[CLI] Interfaz de línea de comandos.
+\item[LogoTec] Lenguaje educativo tipo Logo con IDE y ejecución gráfica por “tortuga”.
+\end{description}
+
+\section{Introducción}
+\subsection{Propósito}
+Definir y consolidar los artefactos técnicos y de gestión requeridos por la Entrega 2, alineando el alcance del enunciado con lo implementado en \texttt{compilador} e \texttt{interfaz}.
+
+\subsection{Alcance del documento}
+Cubre:
+\begin{itemize}
+\item Requisitos funcionales y no funcionales.
+\item Arquitectura y diseño (compilador e interfaz).
+\item Trazabilidad enunciado → implementación.
+\item Plan de pruebas y evidencias.
+\item Planificación, riesgos y trabajo futuro.
+\end{itemize}
+
+\section{Descripción del producto}
+\subsection{Visión}
+Lenguaje y entorno integrado para enseñar programación mediante gráficos de tortuga. Usuarios principales: estudiantes y docentes. Propuesta de valor: sintaxis simple, ejecución visual inmediata e IDE unificado.
+
+\subsection{Usuarios y actores}
+\begin{itemize}
+\item Usuario final: Estudiante principiante. Necesita ejecutar ejemplos rápidos, ver resultados gráficos y mensajes de error claros.
+\item Docente/Corrector: Requiere reproducibilidad, casos de prueba y evidencias de ejecución.
+\item Desarrollador: Flujo de build local, ejecución de pruebas y depuración del parser/semántico.
+\end{itemize}
+
+\subsection{Suposiciones y dependencias}
+\begin{itemize}
+\item Lenguaje/Runtime: ANTLR4 para generación de lexer/parser y runtime \porCompletar{Java o Python}.
+\item SO objetivo: Windows 10/11.
+\item Librerías UI: Prototipo de editor y canvas propio; librería final a definir (Tkinter/Qt/WinForms).
+\item Herramientas auxiliares: Graphviz para diagramas de arquitectura \cite{gansner2002graphviz}.
+\end{itemize}
+
+\section{Requisitos}
+\subsection{Requisitos funcionales}
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+\toprule
+ID & Descripción \\
+\midrule
+RF-01 & El sistema compila programas en el lenguaje LogoTec desde archivos con extensión \texttt{.logotec}. \\
+RF-02 & Reporte de errores léxicos, sintácticos y semánticos con línea y columna. \\
+RF-03 & La interfaz permite cargar/editar código, compilar y ejecutar/visualizar resultados. \\
+RF-04 & Soporte de primitivas: AVANZA, GIRADERECHA, PONPOS; declaraciones/asignaciones de variables; llamadas a procedimientos; SI, MIENTRAS, HASTA, HAZ.MIENTRAS y HAZ.HASTA; expresiones aritméticas y lógicas. \\
+RF-05 & Guardado y carga de proyectos. \\
+RF-06 & Validaciones iniciales: comentario en primera línea y al menos una variable declarada. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Requisitos no funcionales}
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+\toprule
+ID & Descripción \\
+\midrule
+RNF-01 & Tiempo de compilación para programas de tamaño medio menor a 2 s en hardware estándar. \\
+RNF-02 & Mensajes de error claros y accionables. \\
+RNF-03 & Portabilidad en Windows 10/11 sin privilegios administrativos. \\
+RNF-04 & Estructura del proyecto conforme a guías de la cátedra. \\
+RNF-05 & Cobertura de tests unitarios objetivo: 60\%. \\
+\bottomrule
+\end{tabularx}
+
+\section{Arquitectura general}
+\subsection{Vista de módulos}
+\begin{itemize}
+\item Módulo Compilador (\texttt{compilador/}): análisis léxico, sintáctico, semántico y ejecución interpretada sobre AST.
+\item Módulo Interfaz (\texttt{interfaz/}): editor, controles de compilación/ejecución, consola de errores y canvas de tortuga.
+\item Capa de Integración: invocación compilador ↔ interfaz por CLI o API interna.
+\end{itemize}
+
+\subsection{Interacciones principales}
+\begin{enumerate}
+\item El usuario edita código en la interfaz y dispara Compilar.
+\item La interfaz invoca al compilador con el código/buffer de trabajo.
+\item El compilador retorna éxito/errores y artefactos de salida.
+\item La interfaz despliega errores o resultados y permite ejecutar/visualizar.
+\end{enumerate}
+
+\subsection{Estructura de carpetas}
+\begin{verbatim}
+LogoTec/
+  compilador/
+    gramaticas/   # reglas léxicas y sintácticas (ANTLR4)
+    ast/          # nodos y visitadores
+    semantico/    # tabla de símbolos y validaciones
+    runtime/      # estado de tortuga y canvas
+    main.*        # punto de entrada CLI
+  interfaz/
+    editor/       # editor y comandos
+    consola/      # panel de mensajes
+    canvas/       # render de tortuga
+    app.*         # arranque de UI
+  docs/
+    entrega1/     # informe anterior
+    entrega2/
+      entrega2.tex
+      referencias.bib
+\end{verbatim}
+
+\section{Diseño del compilador}
+\subsection{Resumen del pipeline}
+\begin{enumerate}
+\item Léxico: tokenización según especificación de tokens.
+\item Sintaxis: parseo CFG → AST.
+\item Semántica: chequeos de ámbitos, tipos y reglas de lenguaje.
+\item IR: no se utiliza IR separado; se interpreta directamente el AST.
+\item Backend: intérprete que actualiza el estado de tortuga y dibuja en canvas.
+\end{enumerate}
+
+\subsection{Análisis léxico}
+\textbf{Tokens soportados.}
+Palabras clave: SI, MIENTRAS, HASTA, HAZ.MIENTRAS, HAZ.HASTA, AVANZA, GIRADERECHA, PONPOS.
+Genéricos: IDENT, NUM, BOOL, asignación (=), paréntesis, comas, operadores aritméticos y lógicos.
+Comentarios: línea iniciada con \# hasta fin de línea.
+
+\textbf{Herramientas.}
+Generado con ANTLR4 \cite{aho2006compilers}.
+
+\textbf{Manejo de errores.}
+Reporte con línea/columna. Recuperación simple: sincronización por fin de línea o tokens seguros de inicio de sentencia.
+
+\subsection{Análisis sintáctico}
+\textbf{Gramática (EBNF abreviada).}
+\begin{verbatim}
+program      := header? decl* stmt* ;
+stmt         := assign | call | ifStmt | whileStmt
+                | repeatUntil | doWhile | block ;
+assign       := IDENT '=' expr ;
+ifStmt       := 'SI' expr block ;
+whileStmt    := 'MIENTRAS' expr block ;
+repeatUntil  := 'HASTA' expr block ;
+doWhile      := 'HAZ.MIENTRAS' block expr ;
+block        := '{' stmt* '}' ;
+call         := (AVANZA|GIRADERECHA|PONPOS|IDENT) args? ;
+\end{verbatim}
+
+\textbf{Estrategia de parseo.}
+LL con gramática ANTLR4.
+
+\textbf{AST.}
+Nodos: Program, Block, Assign, If, While, RepeatUntil, DoWhile, Call, Expr. Visitadores ejecutan o validan cada nodo.
+
+\subsection{Análisis semántico}
+Tabla de símbolos por ámbito; validación de:
+\begin{itemize}
+\item Uso de identificadores declarados.
+\item Tipos numéricos en comandos gráficos y condiciones booleanas en control de flujo.
+\item Duplicidad de declaraciones y firma de procedimientos.
+\end{itemize}
+
+\subsection{Ejecución / Backend}
+Intérprete del AST con patrón Visitor. Estado mantenido en \textit{TurtleState} y dibujado por \textit{Canvas}. Comandos gráficos mutan posición, ángulo y trazo.
+
+\subsection{Interfaz de invocación}
+\textbf{CLI}
+\begin{verbatim}
+Compilar y ejecutar
+logotecc run entrada.logotec
+
+Solo compilar (validar)
+logotecc check entrada.logotec
+\end{verbatim}
+Códigos de salida: 0 OK, 1 error de compilación, 2 error de ejecución.
+
+\textbf{API}
+\begin{verbatim}
+compile(source: str) -> Result { ast, diagnostics }
+run(ast) -> ExecutionResult { traces, image }
+\end{verbatim}
+
+\subsection{Archivos y componentes clave}
+\begin{itemize}
+\item \texttt{compilador/main.*} — Punto de entrada CLI.
+\item \texttt{compilador/gramaticas/LogoTecLexer.g4} — Lexer.
+\item \texttt{compilador/gramaticas/LogoTecParser.g4} — Parser.
+\item \texttt{compilador/semantico/} — Chequeos y símbolos.
+\item \texttt{compilador/runtime/*} — Estado de tortuga y canvas.
+\end{itemize}
+
+\section{Diseño de la interfaz}
+\subsection{Arquitectura UI}
+Patrón MVC ligero: Editor (vista), Control de ejecución (controlador) y Canvas/Consola (vistas).
+
+\subsection{Pantallas y flujos}
+\begin{itemize}
+\item Editor de código: apertura/guardado, botón Compilar/Ejecutar.
+\item Consola/salida: listado de errores con línea/columna.
+\item Área de ejecución: canvas para resultados de tortuga.
+\item Configuración: rutas y flags del compilador.
+\end{itemize}
+
+\subsection{Validaciones y UX}
+Estados deshabilitados durante ejecución; atajos comunes (Ctrl+S, F5). Mensajes consistentes con el compilador.
+
+\subsection{Integración con el compilador}
+Inicialmente por CLI con archivos temporales; objetivo: integrar por API para evitar I/O innecesario.
+
+\section{Trazabilidad enunciado → implementación}
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\toprule
+Requisito (Enunciado) & Implementación (Compilador) & Implementación (Interfaz) \\
+\midrule
+Primitivas gráficas & \texttt{runtime/TurtleState}, \texttt{CanvasVisitor} & Panel de Canvas en \texttt{interfaz/canvas/} \\
+Control de flujo (SI/MIENTRAS/HASTA) & Reglas en \texttt{LogoTecParser.g4} y nodos AST & Botones Ejecutar/Detener; muestra resultados en canvas \\
+Reporte de errores & Listeners/diagnósticos en semántico y parser & Consola de errores en \texttt{interfaz/consola/} \\
+\bottomrule
+\end{tabularx}
+
+\section{Plan y resultados de pruebas}
+\subsection{Estrategia}
+\begin{itemize}
+\item Unitarias: lexer, parser, semántico, utilitarios UI.
+\item Integración: interfaz ↔ compilador, flujo de compilación y ejecución.
+\item Aceptación: casos del enunciado y de la Entrega 1.
+\end{itemize}
+
+\subsection{Matriz de pruebas}
+\begin{tabularx}{\linewidth}{@{}l X l l@{}}
+\toprule
+ID & Caso de prueba & Resultado esperado & Estado \\
+\midrule
+UT-LEX-01 & Tokenización de palabras clave (SI, MIENTRAS, AVANZA) & Tokens correctos & OK \\
+UT-PAR-01 & Parseo de estructura básica (asignación + AVANZA) & AST válido & OK \\
+IT-INT-01 & Compilar desde UI & Mensajes en panel & PEND \\
+AT-REQ-01 & Programa con HAZ.MIENTRAS y HASTA & Trayectoria esperada en canvas & PEND \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Evidencias}
+Capturas y salidas en \texttt{docs/entrega2/evidencias}. \porCompletar{Agregar imágenes y logs.}
+
+\section{Construcción y despliegue}
+\subsection{Prerequisitos}
+\begin{itemize}
+\item ANTLR4 y runtime compatible (\porCompletar{Java/Python versión}).
+\item \porCompletar{Dependencias de UI y cómo instalarlas}.
+\end{itemize}
+
+\subsection{Build}
+\begin{verbatim}
+Generar lexer/parser
+antlr4 -Dlanguage=... compilador/gramaticas/LogoTec*.g4 -o compilador/gen
+
+Empaquetado/instalación
+...porCompletar{comando de build}
+\end{verbatim}
+
+\subsection{Ejecución}
+\begin{verbatim}
+CLI del compilador
+logotecc run ejemplos/entrada.logotec
+
+Lanzar interfaz
+logotec-gui
+\end{verbatim}
+
+\section{Gestión de proyecto}
+\subsection{Cronograma y avances}
+\begin{tabularx}{\linewidth}{@{}l X l@{}}
+\toprule
+Hito & Descripción & Estado \\
+\midrule
+H1 — Setup repositorio & Estructura inicial, CI/CD mínimo & OK \\
+H2 — Lexer/Parser & Gramática mínima y pruebas & OK \\
+H3 — UI básica & Editor y botón Compilar & OK \\
+H4 — Semántico & Validaciones principales & PEND \\
+H5 — Integración & Invocación UI→Compilador & PEND \\
+H6 — Pruebas & Suite + evidencias & PEND \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Riesgos y mitigaciones}
+\begin{tabularx}{\linewidth}{@{}X X@{}}
+\toprule
+Riesgo & Mitigación \\
+\midrule
+Ambigüedad en gramática & Pruebas de parsing y refactor de reglas; documentación EBNF. \\
+Integración UI↔Compilador falla & Contratos claros, mocks, pruebas de contrato. \\
+Dependencias inestables & Versionado explícito, lockfiles, artefactos reproducibles. \\
+Roturas por cambios tardíos & Branching strategy, code review, CI. \\
+\bottomrule
+\end{tabularx}
+
+\section{Conclusiones y trabajo futuro}
+\subsection{Conclusiones}
+El diseño del lenguaje requiere balance entre simplicidad y expresividad.
+La arquitectura modular facilitó desarrollo incremental y pruebas.
+La generación automática (lexer/parser) acelera, pero demanda comprensión profunda de las herramientas.
+
+\subsection{Próximos pasos}
+\begin{itemize}
+\item Ampliar gramática y análisis semántico (declaraciones, tipos y procedimientos).
+\item Mejoras de UX y accesibilidad del editor/canvas.
+\item Aumentar cobertura de pruebas y evidencias automatizadas.
+\end{itemize}
+
+\appendix
+\section{Anexo A — Listado de archivos relevantes}
+\subsection{Compilador}
+\begin{itemize}
+\item \texttt{compilador/gramaticas/LogoTecLexer.g4} — Reglas léxicas.
+\item \texttt{compilador/gramaticas/LogoTecParser.g4} — Reglas sintácticas.
+\item \texttt{compilador/ast/} — Nodos y visitadores.
+\item \texttt{compilador/semantico/} — Tabla de símbolos y validaciones.
+\item \texttt{compilador/runtime/} — Tortuga y canvas.
+\end{itemize}
+\subsection{Interfaz}
+\begin{itemize}
+\item \texttt{interfaz/editor/} — Editor y comandos de archivo.
+\item \texttt{interfaz/consola/} — Panel de diagnósticos.
+\item \texttt{interfaz/canvas/} — Render de resultados.
+\end{itemize}
+
+\section{Anexo B — Casos de prueba de ejemplo}
+\begin{lstlisting}[language={}, basicstyle=\ttfamily\small]
+entrada.logotec
+var x = 3
+AVANZA(50)
+SI x > 2 {
+  GIRADERECHA(90)
+  AVANZA(50)
+}
+HAZ.MIENTRAS {
+  AVANZA(10)
+} x < 100
+\end{lstlisting}
+
+\section{Anexo C — Evidencias}
+\porCompletar{Referencias a capturas: figuras/*.png, logs y binarios de prueba.}
+
+\bibliographystyle{plain}
+\bibliography{referencias}
+
+% --- Sección añadida: Flujo y componentes clave (resumen compacto) ---
+\section{Flujo y componentes clave (resumen)}
+A continuación se resume de forma compacta el pipeline de compilación y los archivos/clases principales donde buscar la implementación en el repositorio.
+
+\subsection{Resumen del pipeline}
+Fuente (.logotec) --(1)--> Lexer/Parser (ANTLR4) --(2)--> AST --(3)--> Optimización AST --(4)--> Generación IR (Three‑Address) --(5)--> Generación Assembly --(6)--> Generación Bytecode (.obj) --(7)--> VM / Ejecución → Acciones de tortuga (UI).
+
+Notas rápidas:
+- (1) ANTLR4: gramáticas en compilador/src/main/antlr4/... (LogoTec.g4).
+- (2) Parser/AST: entradas producidas por ANTLR → clases AST en compilador/.../ast/.
+- (3) Optimizador: AstOptimizer y optimizaciones ligeras en compilador/.../opt/.
+- (4) Generación IR: ASTtoIRTranslator → IRBuilder → ThreeAddressInstruction / Operand / IROpcode.
+- (5) Assembly: AssemblyGenerator traduce IR → AssemblyInstruction.
+- (6) Object Code: ObjectCodeGenerator traduce Assembly → BytecodeInstruction y produce ObjectCode (.obj).
+- (7) VM: BytecodeInterpreter ejecuta bytecode y produce lista de AccionTortuga usada por la interfaz.
+
+\subsection{Componentes principales y dónde están (breve)}
+\begin{itemize}
+\item AST y compilador front-end
+  \begin{itemize}
+    \item compilador/src/main/antlr4/.../LogoTec.g4 — gramática ANTLR.
+    \item compilador/.../ast/ — nodos AST y visitantes (uso: construcción y validación).
+    \item compilador/.../Main, Compiler, CompiladorRealAdapter — puntos de entrada / adaptadores.
+  \end{itemize}
+
+\item Optimización del AST
+  \begin{itemize}
+    \item compilador/.../opt/AstOptimizer.java — folding, propagación ligera, eliminación de ramas muertas.
+    \item compilador/.../opt/ConstantFolder.java, DeadCodeEliminator.java — pasadas de simplificación.
+  \end{itemize}
+
+\item Representación Intermedia (IR)
+  \begin{itemize}
+    \item compilador/.../ir/ThreeAddressInstruction.java — modelo de instrucción (opcode, operandos, comentario).
+    \item compilador/.../ir/Operand.java — operando (temp, variable, constante, label).
+    \item compilador/.../ir/IROpcode.java — lista de opcodes (FORWARD, ADD, JUMP, etc.).
+    \item compilador/.../ir/TempGenerator.java, LabelGenerator.java — generación de nombres únicos.
+    \item compilador/.../ir/IRBuilder.java — API fluent para construir IR (loadConst, add, forward, label, jump, ...).
+    \item compilador/.../ir/IRUtils.java — guardado, formateo, validación y estadísticas del IR.
+  \end{itemize}
+
+\item Traducción AST → IR
+  \begin{itemize}
+    \item compilador/.../ir/ASTtoIRTranslator.java — recorre el AST, genera instrucciones ThreeAddressInstruction vía IRBuilder y registra variables/procedimientos.
+    \item compilador/.../ir/IRGenerator.java — alternativa / complemento para generación IR desde AST (uso similar).
+    \item Tests: IRGeneratorTest.java muestra casos básicos (variable simple, cuadrado, condicionales).
+  \end{itemize}
+
+\item Backend: Assembly y Object Code (Bytecode)
+  \begin{itemize}
+    \item compilador/.../backend/AssemblyGenerator.java — traduce IR → AssemblyInstruction (MIPS‑like).
+    \item compilador/.../backend/AssemblyInstruction.java, AssemblyOpcode.java, AssemblyUtils.java — modelo y utilidades.
+    \item compilador/.../backend/ObjectCodeGenerator.java — traduce Assembly → bytecode binario (.obj), tabla de símbolos y labels.
+    \item compilador/.../backend/BytecodeInstruction.java, BytecodeOpcode.java, BytecodeGenerator.java, ObjectCodeUtils.java — modelo bytecode, serialización y utilidades.
+    \item Tests: AssemblyGeneratorTest.java, ObjectCodeGeneratorTest.java validan cada paso.
+  \end{itemize}
+
+\item Ejecución/VM y UI
+  \begin{itemize}
+    \item compilador/.../backend/BytecodeInterpreter.java — VM que ejecuta bytecode y genera List<AccionTortuga> (modelo en interfaz).
+    \item compilador/.../backend/BytecodeInterpreterTest.java — tests de ejecución y generación de acciones.
+    \item interfaz/* — consume AccionTortuga y renderiza en canvas; la integración actual usa archivos/llamadas CLI o API según configuración.
+  \end{itemize}
+\end{itemize}
+
+\subsection{Flujo de datos y responsabilidades (conciso)}
+\begin{enumerate}
+\item El parser (ANTLR) produce el AST (clases en \texttt{ast/}). Main/Compiler/Adapter invocan el parser.
+\item AstOptimizer realiza simplificaciones locales (constant folding, dead code) usando \texttt{opt/*}.
+\item ASTtoIRTranslator recorre el AST y usa IRBuilder para crear una lista de ThreeAddressInstruction (IR). IRUtils permite guardar/validar resultado.
+\item AssemblyGenerator consume la lista IR y genera AssemblyInstruction (mapea opcodes IR → instrucciones MIPS‑like).
+\item ObjectCodeGenerator traduce AssemblyInstruction → BytecodeInstruction, construye la tabla de símbolos y el archivo .obj mediante ObjectCodeUtils.
+\item BytecodeInterpreter carga el .obj (o la estructura en memoria), ejecuta las instrucciones y produce AccionTortuga que la interfaz dibuja.
+\end{enumerate}
+
+\subsection{Dónde mirar para extender o depurar rápidamente}
+\begin{itemize}
+\item Generar IR y ver salida: ejecutar \texttt{IRGeneratorTest} → IRUtils.printCode / saveToFile.
+\item Ver Assembly: ejecutar \texttt{AssemblyGeneratorTest} → AssemblyUtils.printCode.
+\item Generar y guardar bytecode: \texttt{ObjectCodeGeneratorTest} → ObjectCodeUtils.saveToFile.
+\item Ejecutar VM y obtener acciones: \texttt{BytecodeInterpreterTest} → vm.getAcciones().
+\end{itemize}
+
+\subsection{Sugerencias operativas (rápidas)}
+\begin{itemize}
+\item Para integrar UI sin I/O: exponer API que reciba AST o lista IR y devuelva AccionTortuga; así la interfaz evita escribir/leer .ir/.obj.
+\item Mantener tests de ejemplo sincronizados con la gramática y con los códigos de syscall (mapeo tortuga).
+\item Añadir logging con niveles (INFO/DEBUG) en ASTtoIRTranslator, IRBuilder y ObjectCodeGenerator para depuración en CI.
+\end{itemize}
+% --- fin sección añadida ---
+
+\end{document}

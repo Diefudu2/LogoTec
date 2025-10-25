@@ -105,11 +105,21 @@ public class IRGenerator {
             return;
         }
         
+        if (stmt instanceof WhileNode) {
+            generateWhileStmt((WhileNode) stmt);
+            return;
+        }
+
         if (stmt instanceof DoWhileNode) {
             generateDoWhileStmt((DoWhileNode) stmt);
             return;
         }
         
+        if (stmt instanceof UntilNode) {
+            generateUntilStmt((UntilNode) stmt);
+            return;
+        }
+
         if (stmt instanceof DoUntilNode) {
             generateDoUntilStmt((DoUntilNode) stmt);
             return;
@@ -125,7 +135,7 @@ public class IRGenerator {
         if (stmt instanceof ForwardNode) {
             ForwardNode fwd = (ForwardNode) stmt;
             builder.comment("avanza <expr>");
-            Operand distance = generateExpr(fwd.getExpression());
+            Operand distance = generateExpr(fwd.getExpr());
             builder.forward(distance);
             return;
         }
@@ -141,7 +151,7 @@ public class IRGenerator {
         if (stmt instanceof TurnRightNode) {
             TurnRightNode tr = (TurnRightNode) stmt;
             builder.comment("giraderecha <expr>");
-            Operand degrees = generateExpr(tr.getExpression());
+            Operand degrees = generateExpr(tr.getExpr());
             builder.turnRight(degrees);
             return;
         }
@@ -174,7 +184,7 @@ public class IRGenerator {
         
         if (stmt instanceof SetPosNode) {
             SetPosNode sp = (SetPosNode) stmt;
-            builder.comment("ponpos [<x>, <y>]");
+            builder.comment("ponpos [<x>, <y>]);
             Operand x = generateExpr(sp.getX());
             Operand y = generateExpr(sp.getY());
             builder.setPos(x, y);
@@ -224,12 +234,12 @@ public class IRGenerator {
             for (int i = args.size() - 1; i >= 0; i--) {
                 Operand arg = generateExpr(args.get(i));
                 builder.add(new ThreeAddressInstruction(
-                    IROpcode.PRINT, arg, "param " + i
+                    IROpcode.PARAM, arg, "param " + i
                 ));
             }
             
             // Llamar al procedimiento (simulado como salto)
-            builder.jump(call.getName());
+            builder.call(call.getName());
             return;
         }
         
@@ -252,196 +262,218 @@ public class IRGenerator {
         
         // No reconocido - agregar NOP con comentario
         builder.add(new ThreeAddressInstruction(
-            IROpcode.NOP, null, "stmt: " + stmt.getClass().getSimpleName()
+            IROpcode.NOP, null, "stmt no reconocido: " + stmt.getClass().getSimpleName()
         ));
     }
 
-    private void genStmt(StmtNode s) {
-        if (s instanceof VarDeclNode v) {
-            vars.add(v.getName());
-            Operand rhs = genExpr(v.getExpr());
-            tac.emit(Op.ASSIGN, rhs, null, new Var(v.getName()));
-            return;
+    private void generateIfStmt(IfNode stmt) {
+        builder.comment("si (<cond>) { ... } else { ... }");
+        String elseLabel = builder.getTempGen().newLabel("if_else");
+        String endLabel = builder.getTempGen().newLabel("if_end");
+
+        Operand condition = generateExpr(stmt.getCond());
+        builder.jumpIfFalse(condition, elseLabel);
+
+        // Bloque 'then'
+        for (StmtNode s : stmt.getThenBody()) {
+            generateStmt(s);
         }
-        if (s instanceof VarAssignNode v) {
-            vars.add(v.getName());
-            Operand rhs = genExpr(v.getExpr());
-            tac.emit(Op.ASSIGN, rhs, null, new Var(v.getName()));
-            return;
-        }
-        if (s instanceof ExecBlockNode b) {
-            for (StmtNode i : b.getBody()) genStmt(i);
-            return;
-        }
-        if (s instanceof IfNode i) {
-            Operand c = genCond(i.getCond());
-            String lElse = tac.newLabel(), lEnd = tac.newLabel();
-            tac.emit(Op.IF_GOTO, c, new Label(lElse), null); // saltar a else si c == 0
-            for (StmtNode t : i.getThenBody()) genStmt(t);
-            tac.emit(Op.GOTO, new Label(lEnd), null, null);
-            emit(Instruction.label(lElse));
-            if (i.getElseBody()!=null) for (StmtNode e : i.getElseBody()) genStmt(e);
-            emit(Instruction.label(lEnd));
-            return;
-        }
-        if (s instanceof WhileNode w) {
-            String lTop = tac.newLabel(), lExit = tac.newLabel();
-            emit(Instruction.label(lTop));
-            Operand c = genCond(w.getCond());
-            tac.emit(Op.IF_GOTO, c, new Label(lExit), null);
-            for (StmtNode b : w.getBody()) genStmt(b);
-            tac.emit(Op.GOTO, new Label(lTop), null, null);
-            emit(Instruction.label(lExit));
-            return;
-        }
-        if (s instanceof DoWhileNode dw) {
-            String lTop = tac.newLabel();
-            emit(Instruction.label(lTop));
-            for (StmtNode b : dw.getBody()) genStmt(b);
-            Operand c = genCond(dw.getCond());
-            // repetir si c != 0
-            TAC.Temp one = tac.newTemp();
-            tac.emit(Op.ASSIGN, new Imm(0), null, one);
-            tac.emit(Op.CMPNE, c, one, one);
-            tac.emit(Op.IF_GOTO, one, new Label(lTop), null);
-            return;
-        }
-        if (s instanceof RepeatNode r) {
-            Temp i = tac.newTemp();
-            Temp limit = (Temp)genExpr(r.getTimes());
-            tac.emit(Op.ASSIGN, new Imm(0), null, i);
-            String lTop = tac.newLabel(), lExit = tac.newLabel();
-            emit(Instruction.label(lTop));
-            Temp cmp = tac.newTemp();
-            tac.emit(Op.CMPLT, i, limit, cmp);
-            tac.emit(Op.IF_GOTO, cmp, new Label(lExit), null);
-            for (StmtNode b : r.getBody()) genStmt(b);
-            Temp one = tac.newTemp();
-            tac.emit(Op.ASSIGN, new Imm(1), null, one);
-            Temp sum = tac.newTemp();
-            tac.emit(Op.ADD, i, one, sum);
-            tac.emit(Op.ASSIGN, sum, null, i);
-            tac.emit(Op.GOTO, new Label(lTop), null, null);
-            emit(Instruction.label(lExit));
-            return;
-        }
-        if (s instanceof ProcCallNode pc) {
-            // Pasa args como PARAM y CALL
-            List<ExprNode> args = pc.getArgs();
-            for (int k = args.size()-1; k>=0; k--) {
-                tac.emit(Op.PARAM, genExpr(args.get(k)), null, null);
+        builder.jump(endLabel);
+
+        // Bloque 'else'
+        builder.label(elseLabel);
+        if (stmt.getElseBody() != null && !stmt.getElseBody().isEmpty()) {
+            for (StmtNode s : stmt.getElseBody()) {
+                generateStmt(s);
             }
-            tac.emit(Op.CALL, new Imm(pc.getName()), new Imm(args.size()), null);
-            return;
         }
 
-        // Comandos turtle => llamadas a runtime
-        if (s instanceof ForwardNode n) { emitRuntime("rt_forward", List.of(n.getExpr())); return; }
-        if (s instanceof BackwardNode n) { emitRuntime("rt_backward", List.of(n.getExpr())); return; }
-        if (s instanceof TurnRightNode n) { emitRuntime("rt_turn_right", List.of(n.getExpr())); return; }
-        if (s instanceof TurnLeftNode n) { emitRuntime("rt_turn_left", List.of(n.getExpr())); return; }
-        if (s instanceof SetPosNode n) { emitRuntime("rt_setpos", List.of(n.getX(), n.getY())); return; }
-        if (s instanceof SetHeadingNode n) { emitRuntime("rt_setheading", List.of(n.getExpr())); return; }
-        if (s instanceof SetXNode n) { emitRuntime("rt_setx", List.of(n.getExpr())); return; }
-        if (s instanceof SetYNode n) { emitRuntime("rt_sety", List.of(n.getExpr())); return; }
-        if (s instanceof WaitNode n) { emitRuntime("rt_wait", List.of(n.getExpr())); return; }
-        if (s instanceof IncNode n) {
-            vars.add(n.getVar().getName());
-            Temp sum = tac.newTemp();
-            tac.emit(Op.ADD, new Var(n.getVar().getName()), genExpr(n.getDelta()), sum);
-            tac.emit(Op.ASSIGN, sum, null, new Var(n.getVar().getName()));
-            return;
-        }
-
-        tac.emit(Op.NOP, null, null, null, s.getClass().getSimpleName());
+        builder.label(endLabel);
     }
 
-    private void emitRuntime(String name, List<ExprNode> args) {
-        for (int k = args.size()-1; k>=0; k--) tac.emit(Op.PARAM, genExpr(args.get(k)), null, null);
-        tac.emit(Op.CALL, new Imm(name), new Imm(args.size()), null);
+    private void generateWhileStmt(WhileNode stmt) {
+        builder.comment("mientras (<cond>) { ... }");
+        String loopStartLabel = builder.getTempGen().newLabel("while_start");
+        String loopEndLabel = builder.getTempGen().newLabel("while_end");
+
+        builder.label(loopStartLabel);
+
+        Operand condition = generateExpr(stmt.getCond());
+        builder.jumpIfFalse(condition, loopEndLabel);
+
+        for (StmtNode s : stmt.getBody()) {
+            generateStmt(s);
+        }
+
+        builder.jump(loopStartLabel);
+        builder.label(loopEndLabel);
     }
 
-    private Operand genCond(ExprNode e) {
-        Operand v = genExpr(e);
-        // Se asume 0 = false, !=0 = true
-        return v;
+    private void generateDoWhileStmt(DoWhileNode stmt) {
+        builder.comment("haz { ... } mientras (<cond>)");
+        String loopStartLabel = builder.getTempGen().newLabel("do_while_start");
+
+        builder.label(loopStartLabel);
+
+        for (StmtNode s : stmt.getBody()) {
+            generateStmt(s);
+        }
+
+        Operand condition = generateExpr(stmt.getCond());
+        builder.jumpIfTrue(condition, loopStartLabel);
     }
 
-    private Operand genExpr(ExprNode e) {
-        if (e instanceof ConstNode c) {
-            Object v = c.getValue();
-            if (v instanceof Boolean b) return new Imm(b ? 1 : 0);
-            return new Imm(v);
-        }
-        if (e instanceof VarRefNode v) {
-            vars.add(v.getName());
-            return new Var(v.getName());
-        }
-        if (e instanceof AdditionNode n) return bin(n, Op.ADD);
-        if (e instanceof SubtractionNode n) return bin(n, Op.SUB);
-        if (e instanceof MultiplicationNode n) return bin(n, Op.MUL);
-        if (e instanceof DivisionNode n) return bin(n, Op.DIV);
-        if (e instanceof ExponentiationNode n) {
-            // pow(a,b) naive: call runtime
-            Temp tA = (Temp)genExpr(n.getLeft()); Temp tB = (Temp)genExpr(n.getRight());
-            tac.emit(Op.PARAM, tB, null, null);
-            tac.emit(Op.PARAM, tA, null, null);
-            Temp dst = tac.newTemp();
-            tac.emit(Op.CALL, new Imm("rt_pow"), new Imm(2), dst);
-            return dst;
-        }
-        if (e instanceof LogicalAndNode n) return bin(n, Op.AND);
-        if (e instanceof LogicalOrNode n) return bin(n, Op.OR);
-        if (e instanceof LogicalNotNode n) {
-            Operand a = genExpr(n.getExpr());
-            Temp t = tac.newTemp();
-            tac.emit(Op.NOT, a, null, t);
-            return t;
-        }
-        if (e instanceof EqualsNode n) return bin(n, Op.CMPEQ);
-        if (e instanceof NotEqualsNode n) return bin(n, Op.CMPNE);
-        if (e instanceof GreaterThanNode n) return bin(n, Op.CMPGT);
-        if (e instanceof LessThanNode n) return bin(n, Op.CMPLT);
-        if (e instanceof GreaterEqualNode n) return bin(n, Op.CMPGE);
-        if (e instanceof LessEqualNode n) return bin(n, Op.CMPLE);
+    private void generateUntilStmt(UntilNode stmt) {
+        builder.comment("hasta (<cond>) { ... }");
+        String loopStartLabel = builder.getTempGen().newLabel("until_start");
+        String loopEndLabel = builder.getTempGen().newLabel("until_end");
 
-        if (e instanceof ProductNode n) return n.getRest().stream().reduce(genExpr(n.getFirst()),
-            (acc, x) -> {
-                Temp t = tac.newTemp();
-                tac.emit(Op.MUL, acc, genExpr(x), t);
-                return t;
-            }, (a,b)->b);
+        builder.label(loopStartLabel);
 
-        if (e instanceof SumNode n) return n.getRest().stream().reduce(genExpr(n.getFirst()),
-            (acc, x) -> {
-                Temp t = tac.newTemp();
-                tac.emit(Op.ADD, acc, genExpr(x), t);
-                return t;
-            }, (a,b)->b);
+        Operand condition = generateExpr(stmt.getCond());
+        builder.jumpIfTrue(condition, loopEndLabel);
 
-        if (e instanceof DifferenceNode n) {
-            Iterator<ExprNode> it = n.getRest().iterator();
-            Operand acc = genExpr(n.getFirst());
-            while (it.hasNext()) {
-                Temp t = tac.newTemp();
-                tac.emit(Op.SUB, acc, genExpr(it.next()), t);
-                acc = t;
+        for (StmtNode s : stmt.getBody()) {
+            generateStmt(s);
+        }
+
+        builder.jump(loopStartLabel);
+        builder.label(loopEndLabel);
+    }
+
+    private void generateDoUntilStmt(DoUntilNode stmt) {
+        builder.comment("haz { ... } hasta (<cond>)");
+        String loopStartLabel = builder.getTempGen().newLabel("do_until_start");
+
+        builder.label(loopStartLabel);
+
+        for (StmtNode s : stmt.getBody()) {
+            generateStmt(s);
+        }
+
+        Operand condition = generateExpr(stmt.getCond());
+        builder.jumpIfFalse(condition, loopStartLabel);
+    }
+
+    private void generateRepeatStmt(RepeatNode stmt) {
+        builder.comment("repite <n> { ... }");
+        String loopStartLabel = builder.getTempGen().newLabel("repeat_start");
+        String loopEndLabel = builder.getTempGen().newLabel("repeat_end");
+
+        // Inicializar contador
+        String counterVar = builder.getTempGen().newVariable("repeat_counter");
+        declaredVars.add(counterVar);
+        builder.store(counterVar, Operand.literal(0));
+
+        // Obtener el límite
+        Operand limit = generateExpr(stmt.getTimes());
+
+        builder.label(loopStartLabel);
+
+        // Condición: if (counter >= limit) goto end
+        Operand counter = Operand.variable(counterVar);
+        Operand condition = builder.getTempGen().nextOperand();
+        builder.compare(IROpcode.CMP_GE, condition, counter, limit);
+        builder.jumpIfTrue(condition, loopEndLabel);
+
+        // Cuerpo del bucle
+        for (StmtNode s : stmt.getBody()) {
+            generateStmt(s);
+        }
+
+        // Incrementar contador: counter = counter + 1
+        Operand newCounterVal = builder.getTempGen().nextOperand();
+        builder.add(newCounterVal, counter, Operand.literal(1));
+        builder.store(counterVar, newCounterVal);
+
+        builder.jump(loopStartLabel);
+        builder.label(loopEndLabel);
+    }
+
+    private Operand generateExpr(ExprNode expr) {
+        if (expr == null) {
+            return Operand.literal(0); // O un valor nulo si se soporta
+        }
+
+        if (expr instanceof ConstNode) {
+            Object value = ((ConstNode) expr).getValue();
+            if (value instanceof Boolean) {
+                return Operand.literal((Boolean) value ? 1 : 0);
+            }
+            return Operand.literal(value);
+        }
+
+        if (expr instanceof VarRefNode) {
+            return Operand.variable(((VarRefNode) expr).getName());
+        }
+
+        // Operaciones binarias
+        if (expr instanceof AdditionNode n) return generateBinaryExpr(IROpcode.ADD, n.getLeft(), n.getRight());
+        if (expr instanceof SubtractionNode n) return generateBinaryExpr(IROpcode.SUB, n.getLeft(), n.getRight());
+        if (expr instanceof MultiplicationNode n) return generateBinaryExpr(IROpcode.MUL, n.getLeft(), n.getRight());
+        if (expr instanceof DivisionNode n) return generateBinaryExpr(IROpcode.DIV, n.getLeft(), n.getRight());
+        if (expr instanceof ExponentiationNode n) return generateBinaryExpr(IROpcode.POW, n.getLeft(), n.getRight());
+
+        // Lógica y relacional
+        if (expr instanceof LogicalAndNode n) return generateBinaryExpr(IROpcode.AND, n.getLeft(), n.getRight());
+        if (expr instanceof LogicalOrNode n) return generateBinaryExpr(IROpcode.OR, n.getLeft(), n.getRight());
+        if (expr instanceof EqualsNode n) return generateBinaryExpr(IROpcode.CMP_EQ, n.getLeft(), n.getRight());
+        if (expr instanceof NotEqualsNode n) return generateBinaryExpr(IROpcode.CMP_NE, n.getLeft(), n.getRight());
+        if (expr instanceof GreaterThanNode n) return generateBinaryExpr(IROpcode.CMP_GT, n.getLeft(), n.getRight());
+        if (expr instanceof LessThanNode n) return generateBinaryExpr(IROpcode.CMP_LT, n.getLeft(), n.getRight());
+        if (expr instanceof GreaterEqualNode n) return generateBinaryExpr(IROpcode.CMP_GE, n.getLeft(), n.getRight());
+        if (expr instanceof LessEqualNode n) return generateBinaryExpr(IROpcode.CMP_LE, n.getLeft(), n.getRight());
+
+        // Unario
+        if (expr instanceof LogicalNotNode n) {
+            Operand operand = generateExpr(n.getExpr());
+            Operand result = builder.getTempGen().nextOperand();
+            builder.add(new ThreeAddressInstruction(IROpcode.NOT, result, operand));
+            return result;
+        }
+
+        // Funciones con múltiples argumentos
+        if (expr instanceof ProductNode n) {
+            Operand acc = generateExpr(n.getFirst());
+            for (ExprNode e : n.getRest()) {
+                Operand next = generateExpr(e);
+                Operand tempResult = builder.getTempGen().nextOperand();
+                builder.add(new ThreeAddressInstruction(IROpcode.MUL, tempResult, acc, next));
+                acc = tempResult;
+            }
+            return acc;
+        }
+        if (expr instanceof SumNode n) {
+            Operand acc = generateExpr(n.getFirst());
+            for (ExprNode e : n.getRest()) {
+                Operand next = generateExpr(e);
+                Operand tempResult = builder.getTempGen().nextOperand();
+                builder.add(new ThreeAddressInstruction(IROpcode.ADD, tempResult, acc, next));
+                acc = tempResult;
+            }
+            return acc;
+        }
+        if (expr instanceof DifferenceNode n) {
+            Operand acc = generateExpr(n.getFirst());
+            for (ExprNode e : n.getRest()) {
+                Operand next = generateExpr(e);
+                Operand tempResult = builder.getTempGen().nextOperand();
+                builder.add(new ThreeAddressInstruction(IROpcode.SUB, tempResult, acc, next));
+                acc = tempResult;
             }
             return acc;
         }
 
-        Temp t = tac.newTemp();
-        tac.emit(Op.NOP, null, null, t, "expr:" + e.getClass().getSimpleName());
-        return t;
+        Operand temp = builder.getTempGen().nextOperand();
+        builder.add(new ThreeAddressInstruction(IROpcode.NOP, temp, "expr no reconocido: " + expr.getClass().getSimpleName()));
+        return temp;
     }
 
-    private Operand bin(BinaryNode n, Op op) {
-        Operand a = genExpr(n.getLeft());
-        Operand b = genExpr(n.getRight());
-        Temp t = tac.newTemp();
-        tac.emit(op, a, b, t);
-        return t;
+    private Operand generateBinaryExpr(IROpcode op, ExprNode left, ExprNode right) {
+        Operand leftOp = generateExpr(left);
+        Operand rightOp = generateExpr(right);
+        Operand result = builder.getTempGen().nextOperand();
+        builder.add(new ThreeAddressInstruction(op, result, leftOp, rightOp));
+        return result;
     }
-
-    private void emit(Instruction i){ tac.emit(i); }
 }
