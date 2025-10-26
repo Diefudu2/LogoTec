@@ -33,6 +33,14 @@ public class SumNode implements ExprNode {
         return total;
     }
 
+    public ExprNode getFirst() {
+        return first;
+    }
+
+    public List<ExprNode> getRest() {
+        return rest;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Sum(");

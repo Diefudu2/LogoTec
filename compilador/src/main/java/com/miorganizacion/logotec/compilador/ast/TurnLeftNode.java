@@ -6,6 +6,7 @@ import java.util.Map;
 public class TurnLeftNode implements StmtNode {
     private final ExprNode angle;
     public TurnLeftNode(ExprNode angle) { this.angle = angle; }
+    public ExprNode getExpr() { return angle; }
     @Override public Object execute(Map<String,Object> st) {
         Object val = angle.execute(st);
         if (!(val instanceof Number)) throw new RuntimeException("Giraizquierda requiere número");

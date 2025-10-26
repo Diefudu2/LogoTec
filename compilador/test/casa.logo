@@ -1,0 +1,95 @@
+// ========================================
+//  CASA CON PROCEDIMIENTOS
+//  Dibuja una casa usando procedimientos
+// ========================================
+
+// Procedimiento para dibujar un cuadrado (base de la casa)
+Para cuadrado [lado] [
+  Repite 4 [
+    avanza lado
+    giraderecha 90
+  ]
+] fin
+
+// Procedimiento para dibujar un triángulo equilátero (techo)
+Para triangulo [lado] [
+  Repite 3 [
+    avanza lado
+    giraderecha 120
+  ]
+] fin
+
+// Procedimiento para dibujar una ventana pequeña
+Para ventana [tamano] [
+  Repite 4 [
+    avanza tamano
+    giraderecha 90
+  ]
+] fin
+
+// Procedimiento para dibujar la puerta rectangular
+Para puerta [ancho alto] [
+  avanza alto
+  giraderecha 90
+  avanza ancho
+  giraderecha 90
+  avanza alto
+  giraderecha 90
+  avanza ancho
+  giraderecha 90
+] fin
+
+// Programa principal
+centro
+bajalapiz
+
+// Tamaño base de la casa
+haz tamanoCasa 80
+haz anchoPuerta 20
+haz altoPuerta 40
+haz tamanoVentana 16
+haz desplazamiento 30
+haz espacioVentana 20
+haz espacioHorizontal 16
+haz separacionVentanas 40
+
+// Dibujar la base (cuadrado)
+cuadrado tamanoCasa
+
+// Posicionarse para el techo
+giraderecha 90
+avanza tamanoCasa
+giraizquierda 150
+
+// Dibujar el techo (triángulo)
+triangulo tamanoCasa
+
+// Volver a la posición inicial (abajo izquierda de la casa)
+giraizquierda 90
+avanza tamanoCasa
+
+// Dibujar puerta en el centro inferior
+avanza desplazamiento
+puerta anchoPuerta altoPuerta
+
+// Posicionar para ventana izquierda
+subelapiz
+giraizquierda 90
+avanza altoPuerta
+avanza espacioVentana
+giraderecha 90
+avanza espacioHorizontal
+bajalapiz
+
+// Dibujar ventana izquierda
+ventana tamanoVentana
+
+// Posicionar para ventana derecha
+subelapiz
+avanza separacionVentanas
+bajalapiz
+
+// Dibujar ventana derecha
+ventana tamanoVentana
+
+subelapiz

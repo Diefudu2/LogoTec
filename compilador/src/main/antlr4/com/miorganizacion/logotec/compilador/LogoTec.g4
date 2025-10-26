@@ -551,39 +551,39 @@ funcCall returns [ExprNode node, Value val]
       { $node = new LessThanNode($e1.node,$e2.node);  }
     | AZAR PAR_OPEN e=expression PAR_CLOSE
       { $node = new RandomNode($e.node); }
-    | PRODUCTO PAR_OPEN e1=expression (COMMA e2+=expression)* PAR_CLOSE
+    | PRODUCTO PAR_OPEN e1=expression (COMMA rest+=expression)* PAR_CLOSE
       {
-        List<ExprNode> rest = new ArrayList<>();
-        if ($e2 != null) {
-            for (ExpressionContext ctx : $e2) {
-                rest.add(ctx.node);
+        List<ExprNode> restNodes = new ArrayList<>();
+        if ($rest != null) {
+            for (ExpressionContext ctx : $rest) {
+                restNodes.add(ctx.node);
             }
         }
-        $node = new ProductNode($e1.node, rest);
+        $node = new ProductNode($e1.node, restNodes);
       }
     | POTENCIA PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
       { $node = new ExponentiationNode($e1.node, $e2.node); }
     | DIVISION PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
       { $node = new DivisionNode($e1.node, $e2.node); }
-    | SUMA PAR_OPEN e1=expression (COMMA e2+=expression)* PAR_CLOSE
+    | SUMA PAR_OPEN e1=expression (COMMA rest+=expression)* PAR_CLOSE
       {
-        List<ExprNode> rest = new ArrayList<>();
-        if ($e2 != null) {
-            for (ExpressionContext ctx : $e2) {
-                rest.add(ctx.node);
+        List<ExprNode> restNodes = new ArrayList<>();
+        if ($rest != null) {
+            for (ExpressionContext ctx : $rest) {
+                restNodes.add(ctx.node);
             }
         }
-        $node = new SumNode($e1.node, $e2, rest);
+        $node = new SumNode($e1.node, restNodes);
       }
-    | DIFERENCIA PAR_OPEN e1=expression (COMMA e2+=expression)* PAR_CLOSE
+    | DIFERENCIA PAR_OPEN e1=expression (COMMA rest+=expression)* PAR_CLOSE
       {
-        List<ExprNode> rest = new ArrayList<>();
-        if ($e2 != null) {
-            for (ExpressionContext ctx : $e2) {
-                rest.add(ctx.node);
+        List<ExprNode> restNodes = new ArrayList<>();
+        if ($rest != null) {
+            for (ExpressionContext ctx : $rest) {
+                restNodes.add(ctx.node);
             }
         }
-        $node = new DifferenceNode($e1.node, $e2, rest);
+        $node = new DifferenceNode($e1.node, restNodes);
       }
     ;
 

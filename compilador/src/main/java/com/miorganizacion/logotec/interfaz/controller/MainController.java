@@ -2,6 +2,7 @@ package com.miorganizacion.logotec.interfaz.controller;
 
 import com.miorganizacion.logotec.compilador.CompiladorRealAdapter;
 import com.miorganizacion.logotec.compilador.ast.ProgramNode;
+import com.miorganizacion.logotec.compilador.opt.AstOptimizer;
 import com.miorganizacion.logotec.compilador.ir.*;
 import com.miorganizacion.logotec.compilador.backend.*;
 import com.miorganizacion.logotec.interfaz.modelo.AccionTortuga;
@@ -18,6 +19,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -84,10 +87,15 @@ public class MainController {
             ProgramNode ast = CompiladorRealAdapter.compile(codigo);
             System.out.println("✅ AST generado correctamente\n");
             
+            // PASO 1.5: Optimizar AST
+            System.out.println("🔧 PASO 1.5: Optimizando AST...");
+            ProgramNode astOptimizado = AstOptimizer.optimize(ast);
+            System.out.println("✅ AST optimizado (constant folding, propagation, dead code elimination)\n");
+            
             // PASO 2: Generar IR (Código Intermedio)
             System.out.println("🔧 PASO 2: Generando código IR...");
             ASTtoIRTranslator irTranslator = new ASTtoIRTranslator();
-            ASTtoIRTranslator.Result irResult = irTranslator.generate(ast);
+            ASTtoIRTranslator.Result irResult = irTranslator.generate(astOptimizado);
             System.out.println("✅ IR generado: " + irResult.instructions.size() + " instrucciones\n");
             
             // PASO 3: Generar Assembly
@@ -105,7 +113,35 @@ public class MainController {
             // Guardar bytecode para ejecución
             this.bytecodeCargado = objResult;
             
-            System.out.println("═══════════════════════════════════════════════════════");
+            // PASO 5: Guardar archivo objeto .ltbc
+            System.out.println("🔧 PASO 5: Generando archivo objeto ejecutable...");
+            try {
+                String nombreArchivo = gestorArchivos.getUltimoArchivoCargado();
+                if (nombreArchivo == null || nombreArchivo.isEmpty()) {
+                    nombreArchivo = "programa";
+                } else {
+                    // Remover extensión .logo si existe
+                    if (nombreArchivo.endsWith(".logo")) {
+                        nombreArchivo = nombreArchivo.substring(0, nombreArchivo.length() - 5);
+                    }
+                }
+                
+                String outputPath = "output/" + nombreArchivo + ".ltbc";
+                ExecutableGenerator.saveToFile(objResult, outputPath);
+                System.out.println("✅ Archivo objeto guardado: " + outputPath + "\n");
+                
+                // PASO 5.5: Construir JAR de la VM si no existe
+                verificarYConstruirVMJar();
+                
+                System.out.println("   Para ejecutar independientemente:");
+                System.out.println("   java -jar ../logotec-vm.jar " + outputPath);
+                System.out.println("   O hacer doble clic en el archivo .ltbc");
+            } catch (Exception e) {
+                System.err.println("⚠️  Advertencia: No se pudo guardar el archivo .ltbc");
+                System.err.println("   " + e.getMessage());
+            }
+            
+            System.out.println("\n═══════════════════════════════════════════════════════");
             System.out.println("✅ COMPILACIÓN EXITOSA");
             System.out.println("   Variables declaradas: " + objResult.symbolTable.size());
             System.out.println("   Labels generados: " + objResult.labelTable.size());
@@ -113,11 +149,27 @@ public class MainController {
             System.out.println("═══════════════════════════════════════════════════════");
             
         } catch (RuntimeException ex) {
-            System.err.println("❌ Error en la compilación:");
+            System.err.println("\n❌ Error en la compilación:");
             String mensajeError = ex.getMessage();
             if (mensajeError != null && !mensajeError.isEmpty()) {
                 System.err.println("   " + mensajeError);
+            } else {
+                System.err.println("   Error desconocido");
+                ex.printStackTrace(System.err);
             }
+            this.bytecodeCargado = null;
+        } catch (Error err) {
+            // Capturar errores de compilación Java (como PROCEDURE not resolved)
+            System.err.println("\n❌ Error crítico en la compilación:");
+            System.err.println("   " + err.getMessage());
+            System.err.println("\n⚠️  Este error indica un problema interno del compilador.");
+            System.err.println("   El código fuente contiene sintaxis no reconocida o inválida.");
+            this.bytecodeCargado = null;
+        } catch (Throwable t) {
+            // Último recurso: capturar cualquier otra excepción
+            System.err.println("\n❌ Error inesperado:");
+            System.err.println("   " + t.getClass().getSimpleName() + ": " + t.getMessage());
+            t.printStackTrace(System.err);
             this.bytecodeCargado = null;
         } finally {
             // Restaurar System.out y System.err
@@ -155,8 +207,41 @@ public class MainController {
         System.setErr(psErr);
 
         try {
-            // Verificar que hay bytecode compilado
-            if (bytecodeCargado == null) {
+            // Intentar cargar desde archivo .ltbc primero (ejecución standalone)
+            ObjectCodeGenerator.Result programToExecute = null;
+            String nombreArchivo = gestorArchivos.getUltimoArchivoCargado();
+            
+            if (nombreArchivo != null && !nombreArchivo.isEmpty()) {
+                // Quitar extensión .logo y agregar .ltbc
+                String nombreBase = nombreArchivo.replace(".logo", "");
+                String archivoLTBC = "output/" + nombreBase + ".ltbc";
+                File ltbcFile = new File(archivoLTBC);
+                
+                if (ltbcFile.exists()) {
+                    System.out.println("╔═══════════════════════════════════════════════════════╗");
+                    System.out.println("║   Ejecutando desde archivo objeto .ltbc              ║");
+                    System.out.println("╚═══════════════════════════════════════════════════════╝\n");
+                    System.out.println("📁 Cargando: " + archivoLTBC);
+                    
+                    try {
+                        programToExecute = ExecutableGenerator.loadFromFile(archivoLTBC);
+                        System.out.println("✅ Archivo .ltbc cargado exitosamente\n");
+                    } catch (IOException e) {
+                        System.err.println("⚠️  Error al cargar .ltbc: " + e.getMessage());
+                        System.err.println("   Usando bytecode en memoria...\n");
+                        programToExecute = bytecodeCargado;
+                    }
+                } else {
+                    System.out.println("ℹ️  Archivo .ltbc no encontrado: " + archivoLTBC);
+                    System.out.println("   Usando bytecode en memoria...\n");
+                    programToExecute = bytecodeCargado;
+                }
+            } else {
+                programToExecute = bytecodeCargado;
+            }
+            
+            // Verificar que hay bytecode para ejecutar
+            if (programToExecute == null) {
                 System.err.println("❌ Error: Primero debes COMPILAR el programa");
                 System.err.println("   Presiona el botón 'Compilar' antes de ejecutar");
                 System.out.flush();
@@ -178,8 +263,8 @@ public class MainController {
             // PASO 5: Ejecutar bytecode en la VM
             System.out.println("🔧 Cargando programa en la VM...");
             BytecodeInterpreter vm = new BytecodeInterpreter();
-            vm.loadProgram(bytecodeCargado);
-            System.out.println("✅ Programa cargado: " + bytecodeCargado.bytecode.size() + " instrucciones\n");
+            vm.loadProgram(programToExecute);
+            System.out.println("✅ Programa cargado: " + programToExecute.bytecode.size() + " instrucciones\n");
             
             System.out.println("🚀 Ejecutando bytecode...");
             long startTime = System.currentTimeMillis();
@@ -352,6 +437,131 @@ public class MainController {
             if (!salidaErr.isEmpty()) {
                 zonaErrores.agregarMensaje(salidaErr);
             }
+        }
+    }
+    
+    /**
+     * Verifica si existe logotec-vm.jar y lo construye si es necesario
+     */
+    private void verificarYConstruirVMJar() {
+        try {
+            // Verificar si el JAR ya existe
+            File jarFile = new File("../logotec-vm.jar");
+            if (jarFile.exists()) {
+                System.out.println("✅ VM JAR encontrado: " + jarFile.getAbsolutePath());
+                return;
+            }
+            
+            System.out.println("📦 Construyendo logotec-vm.jar (primera vez)...");
+            
+            // Crear directorio temporal para el JAR
+            File tempDir = new File("target/vm-jar");
+            if (!tempDir.exists()) {
+                tempDir.mkdirs();
+            }
+            
+            // Copiar clases compiladas necesarias
+            File classesDir = new File("target/classes/com");
+            File destDir = new File("target/vm-jar/com");
+            
+            if (classesDir.exists()) {
+                copiarDirectorio(classesDir, destDir);
+            }
+            
+            // Crear MANIFEST.MF
+            File manifestFile = new File("target/vm-jar/MANIFEST.MF");
+            try (PrintStream ps = new PrintStream(manifestFile)) {
+                ps.println("Manifest-Version: 1.0");
+                ps.println("Main-Class: com.miorganizacion.logotec.vm.VMMain");
+                ps.println();
+            }
+            
+            // Crear JAR usando java.util.jar
+            File jarOutput = new File("target/vm-jar/logotec-vm.jar");
+            crearJar(new File("target/vm-jar"), jarOutput, manifestFile);
+            
+            // Mover a la raíz del proyecto
+            File finalJar = new File("../logotec-vm.jar");
+            if (jarOutput.exists()) {
+                copiarArchivo(jarOutput, finalJar);
+                System.out.println("✅ VM JAR creado: " + finalJar.getAbsolutePath());
+            }
+            
+        } catch (Exception e) {
+            System.err.println("⚠️  No se pudo construir el VM JAR automáticamente");
+            System.err.println("   Ejecuta manualmente: build-vm.bat");
+        }
+    }
+    
+    private void copiarDirectorio(File origen, File destino) throws IOException {
+        if (origen.isDirectory()) {
+            if (!destino.exists()) {
+                destino.mkdirs();
+            }
+            
+            String[] archivos = origen.list();
+            if (archivos != null) {
+                for (String archivo : archivos) {
+                    copiarDirectorio(
+                        new File(origen, archivo),
+                        new File(destino, archivo)
+                    );
+                }
+            }
+        } else {
+            copiarArchivo(origen, destino);
+        }
+    }
+    
+    private void copiarArchivo(File origen, File destino) throws IOException {
+        if (!destino.getParentFile().exists()) {
+            destino.getParentFile().mkdirs();
+        }
+        
+        try (java.io.FileInputStream fis = new java.io.FileInputStream(origen);
+             java.io.FileOutputStream fos = new java.io.FileOutputStream(destino)) {
+            byte[] buffer = new byte[8192];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+        }
+    }
+    
+    private void crearJar(File baseDir, File jarFile, File manifestFile) throws IOException {
+        try (java.util.jar.JarOutputStream jos = new java.util.jar.JarOutputStream(
+                new java.io.FileOutputStream(jarFile),
+                new java.util.jar.Manifest(new java.io.FileInputStream(manifestFile)))) {
+            
+            agregarAlJar(new File(baseDir, "com"), "com/", jos);
+        }
+    }
+    
+    private void agregarAlJar(File archivo, String rutaEnJar, java.util.jar.JarOutputStream jos) throws IOException {
+        if (archivo.isDirectory()) {
+            String[] archivos = archivo.list();
+            if (archivos != null) {
+                for (String nombre : archivos) {
+                    agregarAlJar(
+                        new File(archivo, nombre),
+                        rutaEnJar + nombre + (new File(archivo, nombre).isDirectory() ? "/" : ""),
+                        jos
+                    );
+                }
+            }
+        } else {
+            java.util.jar.JarEntry entry = new java.util.jar.JarEntry(rutaEnJar);
+            jos.putNextEntry(entry);
+            
+            try (java.io.FileInputStream fis = new java.io.FileInputStream(archivo)) {
+                byte[] buffer = new byte[8192];
+                int length;
+                while ((length = fis.read(buffer)) > 0) {
+                    jos.write(buffer, 0, length);
+                }
+            }
+            
+            jos.closeEntry();
         }
     }
 }

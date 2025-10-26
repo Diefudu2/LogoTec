@@ -8,6 +8,8 @@ public class RandomNode implements ExprNode {
     public RandomNode(ExprNode max) {
         this.max = max;
     }
+    
+    public ExprNode getExpr() { return max; }
 
     @Override
     public Object execute(Map<String,Object> st) {

@@ -1,4 +1,4 @@
-// Generated from com\miorganizacion\logotec\compilador\LogoTec.g4 by ANTLR 4.5.1
+// Generated from LogoTec.g4 by ANTLR 4.4
 package com.miorganizacion.logotec.compilador;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LogoTecLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -33,6 +33,18 @@ public class LogoTecLexer extends Lexer {
 		"DEFAULT_MODE"
 	};
 
+	public static final String[] tokenNames = {
+		"'\\u0000'", "'\\u0001'", "'\\u0002'", "'\\u0003'", "'\\u0004'", "'\\u0005'", 
+		"'\\u0006'", "'\\u0007'", "'\b'", "'\t'", "'\n'", "'\\u000B'", "'\f'", 
+		"'\r'", "'\\u000E'", "'\\u000F'", "'\\u0010'", "'\\u0011'", "'\\u0012'", 
+		"'\\u0013'", "'\\u0014'", "'\\u0015'", "'\\u0016'", "'\\u0017'", "'\\u0018'", 
+		"'\\u0019'", "'\\u001A'", "'\\u001B'", "'\\u001C'", "'\\u001D'", "'\\u001E'", 
+		"'\\u001F'", "' '", "'!'", "'\"'", "'#'", "'$'", "'%'", "'&'", "'''", 
+		"'('", "')'", "'*'", "'+'", "','", "'-'", "'.'", "'/'", "'0'", "'1'", 
+		"'2'", "'3'", "'4'", "'5'", "'6'", "'7'", "'8'", "'9'", "':'", "';'", 
+		"'<'", "'='", "'>'", "'?'", "'@'", "'A'", "'B'", "'C'", "'D'", "'E'", 
+		"'F'", "'G'", "'H'", "'I'", "'J'", "'K'", "'L'", "'M'", "'N'", "'O'"
+	};
 	public static final String[] ruleNames = {
 		"PARA", "HAZ", "FIN", "EJECUTA", "REPITE", "APARECETORTUGA", "AT", "PONPOS", 
 		"PONXY", "PONRUMBO", "RUMBO", "PONX", "PONY", "BAJALAPIZ", "BL", "SUBELAPIZ", 
@@ -47,62 +59,6 @@ public class LogoTecLexer extends Lexer {
 		"WS", "COLOR"
 	};
 
-	private static final String[] _LITERAL_NAMES = {
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, "'SI'", "'HASTA'", 
-		"'MIENTRAS'", "'INIC'", "'avanza'", "'av'", "'retrocede'", "'re'", "'atras'", 
-		"'giraderecha'", "'gd'", "'giraizquierda'", "'gi'", "'ocultatortuga'", 
-		"'ot'", "'poncolorlapiz'", "'poncl'", null, "'Y'", "'O'", null, null, 
-		null, null, null, null, null, null, "'+'", "'-'", "'*'", "'/'", "'^'", 
-		"'&&'", "'||'", "'!'", "'>'", "'<'", "'>='", "'<='", "'=='", "'!='", "'='", 
-		null, null, "'('", "')'", "';'", null, "'.'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, "PARA", "HAZ", "FIN", "EJECUTA", "REPITE", "APARECETORTUGA", "AT", 
-		"PONPOS", "PONXY", "PONRUMBO", "RUMBO", "PONX", "PONY", "BAJALAPIZ", "BL", 
-		"SUBELAPIZ", "SB", "CENTRO", "ESPERA", "INC", "SI", "HASTA", "MIENTRAS", 
-		"INIC", "AVANZA", "AV", "RETROCEDE", "RE", "ATRAS", "GIRADERECHA", "GD", 
-		"GIRAIZQUIERDA", "GI", "OCULTATORTUGA", "OT", "PONCOLORLAPIZ", "PONCL", 
-		"IGUALESQ", "YFUNC", "OFUNC", "MAYORQ", "MENORQ", "DIFERENCIA", "AZAR", 
-		"PRODUCTO", "POTENCIA", "DIVISION", "SUMA", "PLUS", "MINUS", "MULT", "DIV", 
-		"EXP", "AND", "OR", "NOT", "GT", "LT", "GEQ", "LEQ", "EQ", "NEQ", "ASSIGN", 
-		"BRACKET_OPEN", "BRACKET_CLOSE", "PAR_OPEN", "PAR_CLOSE", "SEMICOLON", 
-		"COMMA", "DOT", "BOOLEAN", "DECIMAL", "NUMBER", "STRING", "ID", "FIRSTLINE_COMMENT", 
-		"COMMENT_LINE", "WS", "COLOR"
-	};
-	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
-
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
-	@Deprecated
-	public static final String[] tokenNames;
-	static {
-		tokenNames = new String[_SYMBOLIC_NAMES.length];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = VOCABULARY.getLiteralName(i);
-			if (tokenNames[i] == null) {
-				tokenNames[i] = VOCABULARY.getSymbolicName(i);
-			}
-
-			if (tokenNames[i] == null) {
-				tokenNames[i] = "<INVALID>";
-			}
-		}
-	}
-
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
-	}
-
-	@Override
-
-	public Vocabulary getVocabulary() {
-		return VOCABULARY;
-	}
-
 
 	public LogoTecLexer(CharStream input) {
 		super(input);
@@ -111,6 +67,9 @@ public class LogoTecLexer extends Lexer {
 
 	@Override
 	public String getGrammarFileName() { return "LogoTec.g4"; }
+
+	@Override
+	public String[] getTokenNames() { return tokenNames; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -127,24 +86,20 @@ public class LogoTecLexer extends Lexer {
 	@Override
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 68:
-			return COMMA_sempred((RuleContext)_localctx, predIndex);
-		case 75:
-			return FIRSTLINE_COMMENT_sempred((RuleContext)_localctx, predIndex);
+		case 68: return COMMA_sempred((RuleContext)_localctx, predIndex);
+		case 75: return FIRSTLINE_COMMENT_sempred((RuleContext)_localctx, predIndex);
 		}
 		return true;
 	}
 	private boolean COMMA_sempred(RuleContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0:
-			return  !(Character.isDigit((char)_input.LA(-1)) && Character.isDigit((char)_input.LA(1)) ) ;
+		case 0: return  !(Character.isDigit((char)_input.LA(-1)) && Character.isDigit((char)_input.LA(1)) ) ;
 		}
 		return true;
 	}
 	private boolean FIRSTLINE_COMMENT_sempred(RuleContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 1:
-			return getLine()==1;
+		case 1: return getLine()==1;
 		}
 		return true;
 	}

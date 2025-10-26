@@ -4,15 +4,17 @@ import java.nio.file.*;
 import java.io.*;
 import java.util.*;
 import com.miorganizacion.logotec.compilador.ast.*;
+import com.miorganizacion.logotec.compilador.opt.AstOptimizer;
 import com.miorganizacion.logotec.compilador.ir.*;
 import com.miorganizacion.logotec.compilador.backend.*;
 
 /**
  * Compilador completo de LogoTec.
- * Pipeline: LogoTec → AST → IR → Assembly
+ * Pipeline: LogoTec → AST → AST Optimizado → IR → Assembly
  * 
  * Este compilador usa la nueva arquitectura con:
  * - CompiladorRealAdapter para generar AST
+ * - AstOptimizer para optimizar AST
  * - ASTtoIRTranslator para generar IR
  * - AssemblyGenerator para generar Assembly
  */
@@ -31,10 +33,15 @@ public class Compiler {
         }
         System.out.println("✅ AST generado correctamente");
 
-        // PASO 2: Generar IR desde AST
+        // PASO 1.5: Optimizar AST
+        System.out.println("🔧 Optimizando AST...");
+        ProgramNode astOptimizado = AstOptimizer.optimize(ast);
+        System.out.println("✅ AST optimizado (constant folding, propagation, dead code elimination)");
+
+        // PASO 2: Generar IR desde AST optimizado
         System.out.println("🔧 Generando código IR...");
         ASTtoIRTranslator irTranslator = new ASTtoIRTranslator();
-        ASTtoIRTranslator.Result irResult = irTranslator.generate(ast);
+        ASTtoIRTranslator.Result irResult = irTranslator.generate(astOptimizado);
         
         if (irResult == null || irResult.instructions == null) {
             throw new RuntimeException("Error: No se pudo generar el código IR");

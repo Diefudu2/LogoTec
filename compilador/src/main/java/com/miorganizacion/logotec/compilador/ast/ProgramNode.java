@@ -12,7 +12,15 @@ public class ProgramNode implements ASTNode {
         this.body = body;
     }
     
+    public List<ProcDeclNode> getDecls() {
+        return decls;
+    }
+    
     public List<StmtNode> getBody() {
+        return body;
+    }
+    
+    public List<StmtNode> getMainBody() {
         return body;
     }
 

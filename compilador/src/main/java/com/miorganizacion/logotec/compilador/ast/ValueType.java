@@ -1,7 +1,7 @@
 package com.miorganizacion.logotec.compilador.ast;
 
 public enum ValueType {
-    INT, BOOL, STR, UNKNOWN;
+    INT, BOOL, STR, PROCEDURE, UNKNOWN;
 
     /**
      * Deducción de tipo a partir de un nodo de expresión.

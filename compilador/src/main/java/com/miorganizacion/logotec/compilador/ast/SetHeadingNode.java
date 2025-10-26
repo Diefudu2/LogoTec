@@ -5,6 +5,7 @@ import java.util.Map;
 public class SetHeadingNode implements StmtNode {
     private final ExprNode angle;
     public SetHeadingNode(ExprNode angle) { this.angle = angle; }
+    public ExprNode getExpr() { return angle; }
     @Override public Object execute(Map<String,Object> st) {
         Object val = angle.execute(st);
         if (!(val instanceof Number)) throw new RuntimeException("Rumbo requiere número");

@@ -38,6 +38,14 @@ public class DifferenceNode implements ExprNode {
         return result;
     }
 
+    public ExprNode getFirst() {
+        return first;
+    }
+
+    public List<ExprNode> getRest() {
+        return rest;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Difference(");

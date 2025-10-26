@@ -57,6 +57,12 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCallProc(LogoTecParser.CallProcContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LogoTecParser#expressionSeries}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpressionSeries(LogoTecParser.ExpressionSeriesContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#execBlock}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -68,12 +74,6 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitRepiteBlock(LogoTecParser.RepiteBlockContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LogoTecParser#flowStmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFlowStmt(LogoTecParser.FlowStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#siStmt}.
 	 * @param ctx the parse tree
@@ -87,12 +87,6 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHazHastaStmt(LogoTecParser.HazHastaStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogoTecParser#hastaStmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHastaStmt(LogoTecParser.HastaStmtContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#hazMientrasStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -104,6 +98,12 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMientrasStmt(LogoTecParser.MientrasStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LogoTecParser#hastaStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHastaStmt(LogoTecParser.HastaStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#turtleCmd}.
 	 * @param ctx the parse tree
@@ -158,6 +158,12 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExponent(LogoTecParser.ExponentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LogoTecParser#unary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnary(LogoTecParser.UnaryContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#funcCall}.
 	 * @param ctx the parse tree
