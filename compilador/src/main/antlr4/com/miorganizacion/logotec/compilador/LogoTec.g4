@@ -50,7 +50,19 @@ grammar LogoTec;
     }
 }
 
-/* ------------------- Programa ------------------- */
+/* ------------------- Programa ------------------- 
+Parsea la unidad completa de un fichero LogoTec y construye el nodo raíz 
+del AST (ProgramNode).
+
+Comportamiento:
+Acepta opcionalmente un comentario inicial (cmtFirstLine).
+Procesa un proceduresBlock que puede contener declaraciones de procedimiento y 
+sentencias principales mezcladas.
+Acumula ProcDeclNode en la lista decls y StmtNode en la lista mainBody.
+
+Llama a ensureProgramConstraints() para validar restricciones globales antes 
+de devolver el ProgramNode
+*/
 
 program returns [ProgramNode node]
     : cmtFirstLine?                // el comentario inicial es OPCIONAL para parsear,
@@ -75,7 +87,19 @@ proceduresBlock returns [ProgramNode node]
       }
     ;
 
-/* ------------------- Procedimientos ------------------- */
+/* ------------------- Procedimientos ------------------- 
+Parsear una declaración de procedimiento y construir su nodo AST (ProcDeclNode).
+Sintaxis: PARA <procName> (lista de parámetros entre corchetes) 
+(cuerpo de sentencias entre corchetes) FIN.
+
+Durante el parseo acumula los nombres de parámetros en params y las sentencias 
+en body.
+
+Marca atLeastOneVariable = true si el procedimiento declara parámetros, 
+contando éstos como variables válidas para las comprobaciones globales.
+
+Al finalizar crea y devuelve new ProcDeclNode(procName, params, body).
+*/
 
 procedureDecl returns [ProcDeclNode node]
 @init { List<String> params = new ArrayList<>(); List<StmtNode> body = new ArrayList<>(); }
@@ -90,7 +114,32 @@ procedureDecl returns [ProcDeclNode node]
 ;
 
 
-/* ------------------- Sentencias ------------------- */
+/* ------------------- Sentencias ------------------- 
+Define las formas válidas de sentencia en el lenguaje y construir los nodos AST 
+correspondientes (StmtNode).
+
+sentence:
+Alternativa que agrupa todas las formas de sentencia: declaración de variable, asignación, comando de tortuga, control de flujo, bloque de ejecución o llamada a procedimiento.
+Devuelve el nodo específico producido por la subregla seleccionada.
+
+varDecl (HAZ):
+Sintaxis: HAZ <name> <literal|string> [;]
+Infiera el tipo del literal con ValueType.infer(...), registra la variable
+mediante declareOrAssign(...), y devuelve VarDeclNode(name, value).
+Nota: permite punto y coma opcional al final.
+
+varInit (INIC):
+Sintaxis: INIC <name> ASSIGN <expression> ;
+Infiera el tipo de la expresión, registra la asignación con declareOrAssign(...), 
+y devuelve VarAssignNode(name, expression).
+Requiere el punto y coma final para terminar la sentencia.
+
+callProc:
+Sintaxis flexible: <procName> (args entre corchetes) | procName arg1 arg2 ...
+Acumula expresiones de argumento en una lista args y construye 
+ProcCallNode(procName, args).
+Soporta cero o más argumentos; corchetes opcionales según la forma usada.
+*/
 
 sentence returns [StmtNode node]
     : varDecl           { $node = $varDecl.node; }
@@ -132,7 +181,19 @@ callProc returns [StmtNode node]
       }
     ;
 
-/* ------------------- Bloques ------------------- */
+/* ------------------- Bloques ------------------- 
+Parsear bloques compuestos de sentencias y convertirlos en nodos AST que 
+representan ejecución secuencial y bucles.
+
+execBlock
+Sintaxis: EJECUTA [ <sentences> ]
+Acumula sentencias en la lista body y devuelve ExecBlockNode(body) que representa un bloque de ejecución secuencial.
+
+repiteBlock
+Sintaxis: REPITE <times> [ <sentences> ]
+Visita la expresión times para obtener el contador (ExprNode),
+acumula las sentencias en body y devuelve RepeatNode(times, body) que representa un bucle con número fijo de repeticiones.
+*/
 
 execBlock returns [StmtNode node]
     @init { List<StmtNode> body = new ArrayList<>(); }
@@ -150,7 +211,37 @@ repiteBlock returns [StmtNode node]
       }
     ;
 
-/* ------------------- Control de flujo ------------------- */
+/* ------------------- Control de flujo ------------------- 
+Parsear las construcciones de control del lenguaje y construir los nodos 
+AST correspondientes (IfNode, WhileNode, DoWhileNode, UntilNode, DoUntilNode, 
+RepeatNode).
+
+flowStmt: 
+regla agregadora que delega en las subreglas específicas de control 
+(si, haz/hasta, hasta, haz/mientras, mientras, repite).
+
+siStmt (SI): 
+evalúa la condición, acumula sentencias del bloque "then" y opcionalmente del 
+bloque "else", devuelve IfNode(cond, thenBody, elseBody|null).
+
+hazHastaStmt (HAZ . HASTA): 
+ejecuta el cuerpo al menos una vez y luego evalúa la condición; 
+devuelve DoUntilNode(body, cond).
+
+hastaStmt (HASTA): 
+evalúa la condición antes o después según la semántica; construye 
+UntilNode(cond, body).
+
+hazMientrasStmt (HAZ . MIENTRAS): 
+ejecuta el cuerpo al menos una vez y repite mientras la condición sea verdadera; 
+devuelve DoWhileNode(body, cond).
+
+mientrasStmt (MIENTRAS): 
+evalúa la condición y, si es verdadera, ejecuta el cuerpo repetidamente; devuelve WhileNode(cond, body).
+
+repiteBlock: 
+bucle con contador fijo (ya documentado en la sección de bloques).
+*/
 
 flowStmt returns [StmtNode node]
     : siStmt            { $node = $siStmt.node; }
@@ -207,7 +298,32 @@ mientrasStmt returns [StmtNode node]
       }
     ;
 
-/* ------------------- Comandos de tortuga ------------------- */
+/* ------------------- Comandos de tortuga ------------------- 
+Parsear todas las instrucciones que controlan la "tortuga" 
+(movimiento, orientación, lápiz, posición y utilidades) y convertirlas en nodos 
+AST específicos de sentencia.
+
+Soporta formas largas y abreviadas del mismo comando 
+(por ejemplo AVANZA / AV, GIRADERECHA / GD).
+
+Para comandos con argumentos visita la(s) expresión(es) correspondiente(s) y 
+crea el nodo con esos ExprNode.
+
+Para comandos sin argumentos construye nodos simples sin expresión 
+(HideTurtleNode, CenterNode, ShowHeadingNode, PenUpNode, PenDownNode).
+
+PONPOS admite versión con corchetes para separar X e Y; PONXY acepta ambos 
+argumentos en secuencia sin corchetes.
+
+INC admite incremento por 1 implícito o incremento por expresión explícita, 
+construyendo un IncNode con VarRefNode y ConstNode/ExprNode.
+
+Nodos generados (ejemplos):
+ForwardNode, BackwardNode, TurnRightNode, TurnLeftNode
+SetPosNode, SetHeadingNode, ShowHeadingNode, SetXNode, SetYNode
+PenDownNode, PenUpNode, CenterNode, WaitNode
+IncNode con VarRefNode + ExprNode
+*/
 
 turtleCmd returns [StmtNode node]
     : AVANZA e=expression        { $node = new ForwardNode($e.node); }
@@ -238,7 +354,35 @@ turtleCmd returns [StmtNode node]
       { $node = new IncNode(new VarRefNode($id.text), $n.node); }
     ;
 
-/* ------------------- Expresiones ------------------- */
+/* ------------------- Expresiones ------------------- 
+Parsear expresiones aritméticas, lógicas y de funciones, construir su 
+jerarquía de ExprNode y realizar inferencia de valor parcial usando el 
+atributo val.
+
+Estructura y precedencia
+Nivel lógico: OR (expression) → AND (logicTerm) → NOT / relacional (logicFactor).
+Comparaciones: relational aplica GT, LT, GEQ, LEQ, EQ, NEQ sobre arithExpr.
+Aritmética: arithExpr maneja PLUS/MINUS; term maneja MULT/DIV; factor y exponente 
+manejan EXP (exponenciación).
+primary cubre literales (NUMBER, BOOLEAN, STRING), identificadores (ID) y 
+paréntesis.
+
+Funciones y formas especiales
+funcCall define funciones por palabra (IGUALESQ, YFUNC, OFUNC, MAYORQ, MENORQ, 
+AZAR, PRODUCTO, POTENCIA, DIVISION, SUMA, DIFERENCIA).
+Algunas funciones permiten múltiples argumentos acumulados (PRODUCTO, SUMA, 
+DIFERENCIA) y construyen nodos compuestos con listas auxiliares.
+
+Variantes de función mappean a nodos reutilizando operadores
+lógicos/relacionales cuando aplica (por ejemplo YFUNC → LogicalAndNode).
+
+Atributos semánticos
+Cada regla devuelve ExprNode node y Value val cuando aplica; val se usa para 
+inferencia temprana de tipos/valores y debe tratar unknown y errores 
+explícitamente.
+
+primary asigna valores concretos para literales y unknown para ID.
+*/
 
 expression returns [ExprNode node, Value val]
     : t1=logicTerm { $node = $t1.node; $val = $t1.val; }

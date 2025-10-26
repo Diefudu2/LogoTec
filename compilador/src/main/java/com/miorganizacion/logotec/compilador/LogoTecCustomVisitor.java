@@ -6,7 +6,14 @@ import java.util.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
-
+	
+	/*visitProgram
+	Este método recorre el contexto raíz devuelto por el parser y construye el 
+	nodo raíz del AST. Extrae todas las declaraciones de procedimientos y las 
+	sentencias principales llamando recursivamente a visit sobre cada 
+	subcontexto, acumula los resultados en dos listas y finalmente crea y 
+	devuelve un ProgramNode con esas listas.
+	*/
     @Override
     public ASTNode visitProgram(LogoTecParser.ProgramContext ctx) {
         List<ProcDeclNode> decls = new ArrayList<>();
@@ -23,6 +30,19 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         return new ProgramNode(decls, sentences);
     }
 
+    /*visitVarDecl
+	Extrae el identificador de la declaración de variable y crea un 
+	VarDeclNode cuyo valor inicial es un ConstNode según el literal
+
+	Si hay NUMBER, convierte el texto a int y devuelve 
+	VarDeclNode(name, ConstNode(int)).
+
+	Si hay BOOLEAN, parsea a boolean y devuelve 
+	VarDeclNode(name, ConstNode(boolean)).
+
+	Si hay STRING, quita las comillas y devuelve 
+	VarDeclNode(name, ConstNode(string)). Si no encuentra ningún literal válido, retorna null.
+	*/
     @Override
     public ASTNode visitVarDecl(LogoTecParser.VarDeclContext ctx) {
         String name = ctx.ID().getText();
@@ -42,6 +62,11 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
     }
 
 
+    /*visitVarInit
+    Toma el identificador de la asignación, visita la subregla de expresión para 
+    construir su AST y devuelve un VarAssignNode que representa la asignación de
+    esa expresión a la variable indicada.
+    */
     @Override
     public ASTNode visitVarInit(LogoTecParser.VarInitContext ctx) {
         String name = ctx.ID().getText();
@@ -49,6 +74,12 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         return new VarAssignNode(name, expr);
     }
 
+    /*visitCallProc
+    Obtiene el nombre del procedimiento llamado, recorre las expresiones de 
+    argumentos llamando recursivamente a visit(...) para construir sus nodos 
+    ExprNode, las recopila en una lista y devuelve un ProcCallNode con el nombre 
+    y la lista de argumentos.
+    */
     @Override
     public ASTNode visitCallProc(LogoTecParser.CallProcContext ctx) {
         String name = ctx.ID().getText();
@@ -62,6 +93,12 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
     }
 
 
+    /*visitExecBlock
+    Recorre las sentencias dentro del bloque de ejecución, visita cada una para
+    obtener su nodo AST, verifica que cada resultado sea una sentencia (StmtNode)
+    y arroja una excepción si encuentra algo distinto, y finalmente devuelve un 
+    ExecBlockNode que contiene la lista de sentencias del cuerpo.
+    */
     @Override
     public StmtNode visitExecBlock(LogoTecParser.ExecBlockContext ctx) {
         List<StmtNode> body = new ArrayList<>();
@@ -75,6 +112,12 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         return new ExecBlockNode(body);
     }
 
+    /*visitRepiteBlock
+    Visita la expresión que indica cuántas veces repetir y la convierte en un 
+    ExprNode, recorre las sentencias del cuerpo construyendo una lista de 
+    StmtNode, y devuelve un RepeatNode que representa un bloque "repite" con
+    su contador y su lista de sentencias.
+    */
     @Override
     public ASTNode visitRepiteBlock(LogoTecParser.RepiteBlockContext ctx) {
         ExprNode times = (ExprNode) visit(ctx.expression());
@@ -85,7 +128,19 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         return new RepeatNode(times, body);
     }
 
+    /*visitTurtleCmd
+    Detecta qué comando de tortuga aparece en el contexto y construye 
+    el nodo AST correspondiente.
 
+	Para comandos con argumento (avanza/retrae/gira/duración) visita la 
+	expresión 0 y crea ForwardNode, BackwardNode, TurnRightNode, TurnLeftNode o 
+	WaitNode con ese ExprNode.
+
+	Para comandos sin argumento devuelve HideTurtleNode o CenterNode según el 
+	token presente.
+
+	Si no coincide ningún token devuelve null.
+    */
     @Override
     public ASTNode visitTurtleCmd(LogoTecParser.TurtleCmdContext ctx) {
         if (ctx.AVANZA() != null || ctx.AV() != null) {
@@ -112,7 +167,14 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         return null;
     }
 
-
+    /*visitPrimary
+    Convierte un literal o referencia básica en su nodo AST correspondiente: 
+    NUMBER → ConstNode(int), BOOLEAN → ConstNode(boolean)
+    STRING → ConstNode(String sin comillas)
+    ID → VarRefNode(nombre)
+    si contiene una expresión anidada delega a visit(expression); 
+    si no hay ningún caso válido retorna null
+    */
     @Override
     public ASTNode visitPrimary(LogoTecParser.PrimaryContext ctx) {
         if (ctx.NUMBER() != null) {
