@@ -139,7 +139,7 @@ public class LogoTecParser extends Parser {
 	    List<PendingCall> pendingCalls = new ArrayList<>();
 
 	    void ensureProgramConstraints() {
-	        // Ya no fallar por falta de comentario en la primera l√≠nea.
+	        // Ya no fallar por falta de comentario en la primera lÌnea.
 	        if (!atLeastOneVariable) {
 	            errors.add("Error: el programa debe definir al menos una variable con 'Haz' o 'INIC'.");
 	        }
@@ -147,13 +147,13 @@ public class LogoTecParser extends Parser {
 	        for (PendingCall pc : pendingCalls) {
 	            Symbol s = symbols.get(pc.name);
 	            if (s == null) {
-	                errors.add("Error sem√°ntico: procedimiento '" + pc.name + "' no est√° definido.");
+	                errors.add("Error sem·ntico: procedimiento '" + pc.name + "' no est· definido.");
 	            } else if (s.type != ValueType.PROCEDURE) {
-	                errors.add("Error sem√°ntico: '" + pc.name + "' no es un procedimiento.");
+	                errors.add("Error sem·ntico: '" + pc.name + "' no es un procedimiento.");
 	            } else {
 	                int expectedParams = (Integer) s.value;
 	                if (pc.argCount != expectedParams) {
-	                    errors.add("Error sem√°ntico: procedimiento '" + pc.name + "' espera " + expectedParams + " par√°metros, pero se llam√≥ con " + pc.argCount + ".");
+	                    errors.add("Error sem·ntico: procedimiento '" + pc.name + "' espera " + expectedParams + " par·metros, pero se llamÛ con " + pc.argCount + ".");
 	                }
 	            }
 	        }
@@ -175,7 +175,7 @@ public class LogoTecParser extends Parser {
 
 	    void declareOrAssign(String name, ValueType type, Object value) {
 	        if (!isValidVarName(name)) {
-	            errors.add("Error l√©xico: identificador inv√°lido '" + name + "'.");
+	            errors.add("Error lÈxico: identificador inv·lido '" + name + "'.");
 	            return;
 	        }
 	        Symbol s = symbols.get(name);
@@ -184,7 +184,7 @@ public class LogoTecParser extends Parser {
 	            atLeastOneVariable = true;
 	        } else {
 	            if (s.type != type) {
-	                errors.add("Error sem√°ntico: intento de asignar " + type + " a variable '" + name + "' de tipo " + s.type + ".");
+	                errors.add("Error sem·ntico: intento de asignar " + type + " a variable '" + name + "' de tipo " + s.type + ".");
 	            } else {
 	                s.value = value;
 	            }
@@ -196,9 +196,9 @@ public class LogoTecParser extends Parser {
 	        if (s == null) {
 	            symbols.put(name, new Symbol(name, ValueType.PROCEDURE, null));
 	        } else if (s.type == ValueType.PROCEDURE && s.value == null) {
-	            errors.add("Error sem√°ntico: procedimiento '" + name + "' ya est√° en proceso de definici√≥n.");
+	            errors.add("Error sem·ntico: procedimiento '" + name + "' ya est· en proceso de definiciÛn.");
 	        } else {
-	            errors.add("Error sem√°ntico: s√≠mbolo '" + name + "' ya est√° definido y no puede volver a declararse como procedimiento.");
+	            errors.add("Error sem·ntico: sÌmbolo '" + name + "' ya est· definido y no puede volver a declararse como procedimiento.");
 	        }
 	    }
 
@@ -207,30 +207,30 @@ public class LogoTecParser extends Parser {
 	        if (s == null) {
 	            symbols.put(name, new Symbol(name, ValueType.PROCEDURE, paramCount));
 	        } else if (s.type != ValueType.PROCEDURE) {
-	            errors.add("Error sem√°ntico: s√≠mbolo '" + name + "' ya est√° definido y no es un procedimiento.");
+	            errors.add("Error sem·ntico: sÌmbolo '" + name + "' ya est· definido y no es un procedimiento.");
 	        } else if (s.value == null) {
 	            s.value = paramCount;
 	        } else {
 	            int expectedParams = (Integer) s.value;
 	            if (expectedParams != paramCount) {
-	                errors.add("Error sem√°ntico: procedimiento '" + name + "' ya est√° definido con " + expectedParams + " par√°metros.");
+	                errors.add("Error sem·ntico: procedimiento '" + name + "' ya est· definido con " + expectedParams + " par·metros.");
 	            }
 	        }
 	    }
 
 	    void validateProcedureCall(String name, int argCount) {
 	        Symbol s = symbols.get(name);
-	        // Si no existe a√∫n o est√° predeclarado sin aridad, difiere la validaci√≥n
+	        // Si no existe a˙n o est· predeclarado sin aridad, difiere la validaciÛn
 	        if (s == null || (s.type == ValueType.PROCEDURE && s.value == null)) {
 	            pendingCalls.add(new PendingCall(name, argCount, getCurrentToken()!=null ? getCurrentToken().getLine() : -1));
 	            return;
 	        }
 	        if (s.type != ValueType.PROCEDURE) {
-	            errors.add("Error sem√°ntico: '" + name + "' no es un procedimiento.");
+	            errors.add("Error sem·ntico: '" + name + "' no es un procedimiento.");
 	        } else {
 	            int expectedParams = (Integer) s.value;
 	            if (argCount != expectedParams) {
-	                errors.add("Error sem√°ntico: procedimiento '" + name + "' espera " + expectedParams + " par√°metros, pero se llam√≥ con " + argCount + ".");
+	                errors.add("Error sem·ntico: procedimiento '" + name + "' espera " + expectedParams + " par·metros, pero se llamÛ con " + argCount + ".");
 	            }
 	        }
 	    }
@@ -2054,7 +2054,7 @@ public class LogoTecParser extends Parser {
 
 				        List<ExprNode> coordsList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (coordsList.size() != 2) {
-				            errors.add("Error sem√°ntico: 'PONPOS' requiere exactamente dos expresiones para X e Y.");
+				            errors.add("Error sem·ntico: 'PONPOS' requiere exactamente dos expresiones para X e Y.");
 				        }
 				        ExprNode xNode = coordsList.size() > 0 ? coordsList.get(0) : new ConstNode(0);
 				        ExprNode yNode = coordsList.size() > 1 ? coordsList.get(1) : new ConstNode(0);
@@ -2206,12 +2206,12 @@ public class LogoTecParser extends Parser {
 
 				        List<ExprNode> colorList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (colorList.size() != 3) {
-				            errors.add("Error sem√°ntico: 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
+				            errors.add("Error sem·ntico: 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
 				        }
 				        ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
 				        ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
 				        ExprNode bNode = colorList.size() > 2 ? colorList.get(2) : new ConstNode(0);
-				        // Nota: La validaci√≥n de colores permitidos se hace en SetColorNode.execute()
+				        // Nota: La validaciÛn de colores permitidos se hace en SetColorNode.execute()
 				        ((TurtleCmdContext)_localctx).node =  new SetColorNode(rNode, gNode, bNode);
 				      
 				}
@@ -2230,12 +2230,12 @@ public class LogoTecParser extends Parser {
 
 				        List<ExprNode> colorList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (colorList.size() != 3) {
-				            errors.add("Error sem√°ntico: 'PONCL' requiere exactamente tres valores RGB.");
+				            errors.add("Error sem·ntico: 'PONCL' requiere exactamente tres valores RGB.");
 				        }
 				        ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
 				        ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
 				        ExprNode bNode = colorList.size() > 2 ? colorList.get(2) : new ConstNode(0);
-				        // Nota: La validaci√≥n de colores permitidos se hace en SetColorNode.execute()
+				        // Nota: La validaciÛn de colores permitidos se hace en SetColorNode.execute()
 				        ((TurtleCmdContext)_localctx).node =  new SetColorNode(rNode, gNode, bNode);
 				      
 				}

@@ -9,6 +9,10 @@ import java.util.List;
 public class IRExample {
 
     public static void main(String[] args) {
+        runAllExamples();
+    }
+
+    private static void runAllExamples() {
         System.out.println("╔═══════════════════════════════════════════════════════╗");
         System.out.println("║      Ejemplo: Construcción Manual de IR              ║");
         System.out.println("╚═══════════════════════════════════════════════════════╝\n");
@@ -115,11 +119,9 @@ public class IRExample {
         printIR(builder.build());
     }
 
-    /**
-     * Ejemplo 3: Expresión aritmética
-     * haz x 10 + 20 * 2
-     * avanza x
-     */
+    // Ejemplo 3: Expresión aritmética
+    // haz x 10 + 20 * 2
+    // avanza x
     private static void ejemplo3_ExpresionAritmetica() {
         System.out.println("\n=== Ejemplo 3: Expresión Aritmética ===");
         System.out.println("Código LogoTec: haz x 10 + 20 * 2; avanza x\n");

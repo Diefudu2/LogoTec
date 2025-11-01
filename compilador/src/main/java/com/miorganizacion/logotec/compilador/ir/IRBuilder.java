@@ -1,5 +1,6 @@
 package com.miorganizacion.logotec.compilador.ir;
 
+import com.miorganizacion.logotec.compilador.ast.ExprNode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,8 +164,9 @@ public class IRBuilder {
     /**
      * Comando de tortuga: girar derecha.
      */
-    public IRBuilder turnRight(Operand angle) {
-        instructions.add(new ThreeAddressInstruction(IROpcode.TURN_RIGHT, angle));
+    public IRBuilder turnRight(ExprNode angle) {
+        Operand value = evaluate(angle);
+        instructions.add(ThreeAddressInstruction.turnRight(value));
         return this;
     }
     
@@ -180,23 +182,23 @@ public class IRBuilder {
      * Comando de tortuga: subir lápiz.
      */
     public IRBuilder penUp() {
-        instructions.add(new ThreeAddressInstruction(IROpcode.PEN_UP));
+        instructions.add(ThreeAddressInstruction.penUp());
         return this;
     }
-    
+
     /**
      * Comando de tortuga: bajar lápiz.
      */
     public IRBuilder penDown() {
-        instructions.add(new ThreeAddressInstruction(IROpcode.PEN_DOWN));
+        instructions.add(ThreeAddressInstruction.penDown());
         return this;
     }
-    
+
     /**
      * Comando de tortuga: centrar.
      */
     public IRBuilder center() {
-        instructions.add(new ThreeAddressInstruction(IROpcode.CENTER));
+        instructions.add(ThreeAddressInstruction.center());
         return this;
     }
     
@@ -228,5 +230,10 @@ public class IRBuilder {
      */
     public int size() {
         return instructions.size();
+    }
+
+    private Operand evaluate(ExprNode expr) {
+        // TODO: implementar generación de temporales a partir de ExprNode
+        throw new UnsupportedOperationException("evaluate(ExprNode) aún no está implementado");
     }
 }

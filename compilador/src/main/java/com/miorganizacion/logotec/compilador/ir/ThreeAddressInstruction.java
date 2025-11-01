@@ -65,6 +65,46 @@ public class ThreeAddressInstruction {
         return new ThreeAddressInstruction(IROpcode.NOP);
     }
     
+    public static ThreeAddressInstruction forward(Operand distance) {
+        return new ThreeAddressInstruction(IROpcode.FORWARD, distance, null, null);
+    }
+
+    public static ThreeAddressInstruction backward(Operand distance) {
+        return new ThreeAddressInstruction(IROpcode.BACKWARD, distance, null, null);
+    }
+
+    public static ThreeAddressInstruction turnRight(Operand angle) {
+        return new ThreeAddressInstruction(IROpcode.TURN_RIGHT, angle, null, null);
+    }
+
+    public static ThreeAddressInstruction turnLeft(Operand angle) {
+        return new ThreeAddressInstruction(IROpcode.TURN_LEFT, angle, null, null);
+    }
+
+    public static ThreeAddressInstruction penUp() {
+        return new ThreeAddressInstruction(IROpcode.PEN_UP, null, null, null);
+    }
+
+    public static ThreeAddressInstruction penDown() {
+        return new ThreeAddressInstruction(IROpcode.PEN_DOWN, null, null, null);
+    }
+
+    public static ThreeAddressInstruction center() {
+        return new ThreeAddressInstruction(IROpcode.CENTER, null, null, null);
+    }
+
+    public static ThreeAddressInstruction setColor(Operand r, Operand g, Operand b) {
+        return new ThreeAddressInstruction(IROpcode.SET_COLOR, r, g, b);
+    }
+
+    public static ThreeAddressInstruction setPos(Operand x, Operand y) {
+        return new ThreeAddressInstruction(IROpcode.SET_POS, x, y, null);
+    }
+
+    public static ThreeAddressInstruction setHeading(Operand angle) {
+        return new ThreeAddressInstruction(IROpcode.SET_HEADING, angle, null, null);
+    }
+    
     // Getters
     public IROpcode getOpcode() { return opcode; }
     public Operand getDest() { return dest; }

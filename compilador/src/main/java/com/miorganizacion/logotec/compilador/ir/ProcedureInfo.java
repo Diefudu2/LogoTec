@@ -21,6 +21,10 @@ public class ProcedureInfo {
     public int getParamCount() {
         return paramCount;
     }
+
+    public int getParameters() {
+        return paramCount;
+    }
     
     public String getLabel() {
         return label;

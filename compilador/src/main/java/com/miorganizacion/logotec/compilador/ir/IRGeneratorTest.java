@@ -83,7 +83,7 @@ public class IRGeneratorTest {
                 return;
             }
             
-            System.out.println("✅ IR generado: " + irResult.instructions.size() + " instrucciones");
+            System.out.println("✅ IR generado: " + irResult.instructions.size() + " instrucciones totales");
             
             // Mostrar IR
             System.out.println("\n📄 Código IR Generado:");
@@ -93,6 +93,7 @@ public class IRGeneratorTest {
                 System.out.printf("%4d: %s%n", addr++, instr);
             }
             
+            System.out.println(separator);
             System.out.println("\n✅ TEST COMPLETADO EXITOSAMENTE");
             
         } catch (Exception e) {

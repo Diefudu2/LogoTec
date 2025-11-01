@@ -1,5 +1,7 @@
 package com.miorganizacion.logotec.compilador.ir;
 
+import java.util.Objects;
+
 /**
  * Representa un operando en una instrucción de tres direcciones.
  */
@@ -54,34 +56,25 @@ public class Operand {
     public boolean isLabel() { return type == Type.LABEL; }
     
     @Override
-    public String toString() {
-        switch (type) {
-            case CONSTANT:
-                // Mostrar como entero si no tiene decimales
-                if (numericValue == (int) numericValue) {
-                    return "#" + (int) numericValue;
-                }
-                return "#" + numericValue;
-            case VARIABLE:
-                return "[" + value + "]";
-            case TEMP:
-                return value;
-            case LABEL:
-                return value;
-            default:
-                return value;
-        }
-    }
-    
-    @Override
     public boolean equals(Object obj) {
+        if (this == obj) return true;
         if (!(obj instanceof Operand)) return false;
         Operand other = (Operand) obj;
-        return this.type == other.type && this.value.equals(other.value);
+        return type == other.type
+            && Objects.equals(value, other.value)
+            && Objects.equals(numericValue, other.numericValue);
     }
-    
+
     @Override
     public int hashCode() {
-        return type.hashCode() * 31 + value.hashCode();
+        return Objects.hash(type, value, numericValue);
+    }
+
+    @Override
+    public String toString() {
+        if (numericValue != 0) {
+            return type + "(" + numericValue + ")";
+        }
+        return type + "(" + value + ")";
     }
 }
