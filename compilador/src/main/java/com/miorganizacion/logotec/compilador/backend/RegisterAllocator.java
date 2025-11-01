@@ -3,111 +3,127 @@ package com.miorganizacion.logotec.compilador.backend;
 import java.util.*;
 
 /**
- * Asignador de registros para traducir temporales de IR a registros físicos.
- * Usa una estrategia simple de asignación con spilling a memoria si es necesario.
+ * Allocador simple de registros.
+ * Asigna registros temporales ($t0-$t9) a variables y temporales del IR.
  * 
- * FASE 3: Register Allocation
+ * Estrategia: First-fit con spilling cuando se agotan los registros.
  */
 public class RegisterAllocator {
     
-    // Pool de registros disponibles
-    private final Queue<Register> availableRegisters;
+    // Pool de registros temporales disponibles
+    private final Deque<Register> availableRegs;
     
-    // Mapa: temporal IR → registro físico
+    // Mapeo de nombres (temporales/variables) a registros
     private final Map<String, Register> allocation;
     
-    // Temporales que se han desbordado a memoria
-    private final Set<String> spilledTemps;
-    
-    // Contador de offsets en el stack para spilling
-    private int stackOffset;
+    // Registros usados (para estadísticas)
+    private final Set<Register> usedRegs;
     
     public RegisterAllocator() {
-        this.availableRegisters = new LinkedList<>();
-        this.allocation = new HashMap<>();
-        this.spilledTemps = new HashSet<>();
-        this.stackOffset = 0;
+        this.availableRegs = new ArrayDeque<Register>();
+        this.allocation = new HashMap<String, Register>();
+        this.usedRegs = new HashSet<Register>();
         
         // Inicializar pool con registros temporales
-        availableRegisters.addAll(Arrays.asList(Register.TEMP_REGISTERS));
+        initializePool();
+    }
+    
+    private void initializePool() {
+        availableRegs.clear();
+        // Usar $t0-$t9 para temporales
+        availableRegs.add(Register.T0);
+        availableRegs.add(Register.T1);
+        availableRegs.add(Register.T2);
+        availableRegs.add(Register.T3);
+        availableRegs.add(Register.T4);
+        availableRegs.add(Register.T5);
+        availableRegs.add(Register.T6);
+        availableRegs.add(Register.T7);
+        availableRegs.add(Register.T8);
+        availableRegs.add(Register.T9);
     }
     
     /**
-     * Obtiene el registro asignado a un temporal.
-     * Si no tiene registro, asigna uno (o hace spill si es necesario).
+     * Obtiene un registro para un nombre dado (temporal o variable).
+     * Si ya tiene uno asignado, lo retorna. Si no, asigna uno nuevo.
      */
-    public Register getRegister(String tempName) {
-        // Si ya está asignado, retornar
-        if (allocation.containsKey(tempName)) {
-            return allocation.get(tempName);
+    public Register getRegister(String name) {
+        // ¿Ya tiene registro asignado?
+        Register existing = allocation.get(name);
+        if (existing != null) {
+            return existing;
         }
         
-        // Si hay registros disponibles, asignar uno
-        if (!availableRegisters.isEmpty()) {
-            Register reg = availableRegisters.poll();
-            allocation.put(tempName, reg);
-            return reg;
+        // Asignar nuevo registro
+        Register reg;
+        if (!availableRegs.isEmpty()) {
+            reg = availableRegs.removeFirst();
+        } else {
+            // Spilling: reusar $t9 si se agotan
+            reg = Register.T9;
         }
         
-        // No hay registros libres - hacer spill (usar $t0 como temporal)
-        // En una implementación real, se elegiría el registro menos usado
-        spilledTemps.add(tempName);
-        return Register.T0; // Registro temporal para valores spilleados
+        allocation.put(name, reg);
+        usedRegs.add(reg);
+        return reg;
     }
     
     /**
-     * Libera el registro asignado a un temporal.
+     * Libera el registro asociado a un nombre.
      */
-    public void freeRegister(String tempName) {
-        if (allocation.containsKey(tempName)) {
-            Register reg = allocation.remove(tempName);
-            if (!spilledTemps.contains(tempName)) {
-                availableRegisters.offer(reg);
-            }
+    public void freeRegister(String name) {
+        Register reg = allocation.remove(name);
+        if (reg != null && reg.isTemporary()) {
+            availableRegs.addLast(reg);
         }
     }
     
     /**
-     * Verifica si un temporal ha sido spilleado a memoria.
+     * Verifica si un nombre tiene registro asignado.
      */
-    public boolean isSpilled(String tempName) {
-        return spilledTemps.contains(tempName);
+    public boolean hasRegister(String name) {
+        return allocation.containsKey(name);
     }
     
     /**
-     * Obtiene el offset en el stack para un temporal spilleado.
+     * Obtiene el registro asignado sin crear uno nuevo.
      */
-    public int getStackOffset(String tempName) {
-        if (!spilledTemps.contains(tempName)) {
-            // Asignar nuevo offset
-            spilledTemps.add(tempName);
-            stackOffset += 4; // 4 bytes por palabra
-        }
-        return stackOffset;
+    public Register getAllocatedRegister(String name) {
+        return allocation.get(name);
     }
     
     /**
-     * Libera todos los registros (para iniciar un nuevo bloque).
+     * Reinicia el allocador.
      */
     public void reset() {
-        availableRegisters.clear();
-        availableRegisters.addAll(Arrays.asList(Register.TEMP_REGISTERS));
         allocation.clear();
-        spilledTemps.clear();
-        stackOffset = 0;
+        usedRegs.clear();
+        initializePool();
     }
     
     /**
-     * Obtiene el mapa completo de asignación.
+     * Obtiene el número de registros usados.
+     */
+    public int getUsedCount() {
+        return usedRegs.size();
+    }
+    
+    /**
+     * Obtiene todos los registros usados.
+     */
+    public Set<Register> getUsedRegisters() {
+        return new HashSet<Register>(usedRegs);
+    }
+    
+    /**
+     * Obtiene el mapeo actual.
      */
     public Map<String, Register> getAllocation() {
-        return new HashMap<>(allocation);
+        return new HashMap<String, Register>(allocation);
     }
     
-    /**
-     * Obtiene el tamaño total del stack necesario para spilling.
-     */
-    public int getTotalStackSize() {
-        return stackOffset;
+    @Override
+    public String toString() {
+        return "RegisterAllocator{used=" + usedRegs.size() + ", available=" + availableRegs.size() + "}";
     }
 }

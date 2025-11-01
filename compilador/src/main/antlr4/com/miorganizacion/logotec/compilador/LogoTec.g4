@@ -264,16 +264,21 @@ callProc returns [StmtNode node]
             )?
         BRACKET_CLOSE
         |
-        // Forma 2: argumentos directos sin corchetes (para procedimientos simples)
-        ( expression { args.add($expression.node); }
-          ( (COMMA)? expression { args.add($expression.node); } )*
-        )?
+        // Forma 2: argumentos directos sin corchetes
+        // SOLO acepta primarios simples (números, variables, expresiones entre paréntesis)
+        ( primaryArg { args.add($primaryArg.node); } )*
       )
       {
-        // Validar (o diferir) que el procedimiento exista y tenga el número correcto de argumentos
         validateProcedureCall($proc.text, args.size());
         $node = new ProcCallNode($proc.text, args);
       }
+   ;
+
+// Argumento primario simple (para llamadas sin corchetes)
+primaryArg returns [ExprNode node]
+    : NUMBER { $node = new ConstNode(Integer.parseInt($NUMBER.text)); }
+    | ID { $node = new VarRefNode($ID.text); }
+    | PAR_OPEN expression PAR_CLOSE { $node = $expression.node; }
     ;
 
 expressionSeries returns [List<ExprNode> list]
@@ -445,6 +450,40 @@ turtleCmd returns [StmtNode node]
       { $node = new IncNode(new VarRefNode($id.text), new ConstNode(1)); }
     | INC BRACKET_OPEN id=ID n=expression BRACKET_CLOSE
       { $node = new IncNode(new VarRefNode($id.text), $n.node); }
+    // NUEVO: Comandos de color
+    | PONCOLORLAPIZ BRACKET_OPEN coords=expressionSeries BRACKET_CLOSE
+      {
+        List<ExprNode> colorList = $coords.list;
+        if (colorList.size() != 3) {
+            errors.add("Error semántico: 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
+        }
+        ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
+        ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
+        ExprNode bNode = colorList.size() > 2 ? colorList.get(2) : new ConstNode(0);
+        // Nota: La validación de colores permitidos se hace en SetColorNode.execute()
+        $node = new SetColorNode(rNode, gNode, bNode);
+      }
+    | PONCL BRACKET_OPEN coords=expressionSeries BRACKET_CLOSE
+      {
+        List<ExprNode> colorList = $coords.list;
+        if (colorList.size() != 3) {
+            errors.add("Error semántico: 'PONCL' requiere exactamente tres valores RGB.");
+        }
+        ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
+        ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
+        ExprNode bNode = colorList.size() > 2 ? colorList.get(2) : new ConstNode(0);
+        // Nota: La validación de colores permitidos se hace en SetColorNode.execute()
+        $node = new SetColorNode(rNode, gNode, bNode);
+      }
+    | PONCOLORLAPIZ c=colorName
+      { $node = new SetPenColorNode($c.value); }
+    | PONCL c=colorName
+      { $node = new SetPenColorNode($c.value); }
+    ;
+
+colorName returns [String value]
+    : c=COLOR { $value = $c.getText().toLowerCase(); }
+    | id=ID   { $value = $id.getText().toLowerCase(); }
     ;
 
 /* ------------------- Expresiones ------------------- 
@@ -703,9 +742,8 @@ GIRAIZQUIERDA: 'giraizquierda';
 GI: 'gi';
 OCULTATORTUGA: 'ocultatortuga';
 OT: 'ot';
-PONCOLORLAPIZ: 'poncolorlapiz';
-PONCL: 'poncl';
-
+PONCOLORLAPIZ: 'poncolorlapiz' | 'PONCOLORLAPIZ' | 'PonColorLapiz';
+PONCL: 'poncl' | 'PONCL' | 'PonCL';
 
 /* Funciones (case-tolerant) */
 IGUALESQ: 'iguales?' | 'Iguales?' | 'IGUALES?';
@@ -719,8 +757,6 @@ PRODUCTO: 'producto' | 'Producto' | 'PRODUCTO';
 POTENCIA: 'potencia' | 'Potencia' | 'POTENCIA';
 DIVISION: 'division' | 'Division' | 'DIVISION';
 SUMA: 'suma' | 'Suma' | 'SUMA';
-
-
 
 /* Operadores y símbolos */
 PLUS: '+';
@@ -776,9 +812,4 @@ COMMENT_LINE
 WS: [ \t\r\n]+ -> skip;
 
 /* Colores */
-COLOR: 'Negro' | 'Azul' | 'Rojo';
-
-/* Regla parser para colores */
-colorName
-    : c=COLOR
-    ;
+COLOR: 'Negro' | 'Azul' | 'Rojo' | 'negro' | 'azul' | 'rojo' | 'NEGRO' | 'AZUL' | 'ROJO';

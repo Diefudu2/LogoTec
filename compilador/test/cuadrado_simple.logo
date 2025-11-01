@@ -1,9 +1,0 @@
-// Programa simple de prueba
-// Dibuja un cuadrado de 100 píxeles
-
-haz lado 100
-
-Repite 4 [
-  avanza lado
-  giraderecha 90
-]

@@ -1,0 +1,58 @@
+// Stress test: procedimientos + bucles anidados + colores
+
+Haz ladobase 40
+Haz escala 1
+Haz giros 0
+Haz pasoini 20
+
+Para segmentoescalado [reps ang factor] [
+  INIC ladoactual = ladobase * factor;
+  bajalapiz
+  Repite reps [
+    avanza ladoactual
+    giraderecha ang
+  ]
+  subelapiz
+]
+fin
+
+Para florcompuesta [capas repint angint] [
+  Repite capas [
+    poncolorlapiz Negro
+    segmentoescalado repint angint escala
+    inc [giros 60]
+    poncolorlapiz Azul
+    segmentoescalado repint angint escala
+    inc [escala 1]
+    giraderecha giros
+  ]
+]
+fin
+
+Para espiralcolor [vueltas incremento] [
+  INIC paso = pasoini;
+  Repite vueltas [
+    poncolorlapiz Rojo
+    segmentoescalado 6 60 escala
+    inc [paso incremento]
+    Repite 6 [
+      avanza paso
+      giraderecha 60
+    ]
+  ]
+]
+fin
+
+centro
+bajalapiz
+florcompuesta 4 6 60
+subelapiz
+espiralcolor 5 5
+centro
+poncolorlapiz Azul
+bajalapiz
+Repite 8 [
+  florcompuesta 2 3 120
+  giraderecha 45
+]
+subelapiz

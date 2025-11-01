@@ -56,6 +56,8 @@ public class BytecodeInterpreter {
     private static final int REG_V0 = 2;     // $v0 - syscall code
     private static final int REG_A0 = 4;     // $a0 - argumento 1
     private static final int REG_A1 = 5;     // $a1 - argumento 2
+    private static final int REG_A2 = 6;     // $a2 - argumento 3
+    private static final int REG_A3 = 7;     // $a3 - argumento 4
     private static final int REG_SP = 29;    // $sp - stack pointer
     private static final int REG_RA = 31;    // $ra - return address
     
@@ -96,6 +98,14 @@ public class BytecodeInterpreter {
         
         // Inicializar stack pointer al final de la memoria
         registers[REG_SP] = MEMORY_SIZE - 1;
+        
+        // DEBUG: Mostrar symbol table
+        if (debugMode) {
+            System.out.println("📋 Symbol Table cargada:");
+            for (Map.Entry<String, Integer> entry : symbols.entrySet()) {
+                System.out.println("   " + entry.getKey() + " → addr " + entry.getValue());
+            }
+        }
         
         resetTurtle();
     }
@@ -166,26 +176,40 @@ public class BytecodeInterpreter {
                 // reg = immediate (16 bits)
                 int immediate = instr.getImmediate16();
                 registers[op1] = immediate;
+                if (debugMode) {
+                    System.out.println("     → $" + op1 + " = " + immediate);
+                }
                 break;
             }
             
             case LOAD_MEM: {
                 // reg = memory[addr]
                 int addr = instr.getImmediate16();
-                registers[op1] = readMemory(addr);
+                int value = readMemory(addr);
+                registers[op1] = value;
+                if (debugMode) {
+                    System.out.println("     → $" + op1 + " = mem[" + addr + "] = " + value);
+                }
                 break;
             }
             
             case STORE_MEM: {
                 // memory[addr] = reg
                 int addr = instr.getImmediate16();
-                writeMemory(addr, registers[op1]);
+                int value = registers[op1];
+                writeMemory(addr, value);
+                if (debugMode) {
+                    System.out.println("     → mem[" + addr + "] = $" + op1 + " = " + value);
+                }
                 break;
             }
             
             case MOVE: {
                 // dest = src
                 registers[op1] = registers[op2];
+                if (debugMode) {
+                    System.out.println("     → $" + op1 + " = $" + op2 + " = " + registers[op1]);
+                }
                 break;
             }
             
@@ -193,29 +217,31 @@ public class BytecodeInterpreter {
             case ADD: {
                 // dest = src1 + src2
                 registers[op1] = registers[op2] + registers[op3];
+                if (debugMode) {
+                    System.out.println("     → $" + op1 + " = " + registers[op2] + " + " + registers[op3] + " = " + registers[op1]);
+                }
                 break;
             }
             
             case ADD_IMM: {
-                // dest = src + immediate
                 registers[op1] = registers[op2] + op3;
                 break;
             }
             
             case SUB: {
-                // dest = src1 - src2
                 registers[op1] = registers[op2] - registers[op3];
+                if (debugMode) {
+                    System.out.println("     → $" + op1 + " = " + registers[op2] + " - " + registers[op3] + " = " + registers[op1]);
+                }
                 break;
             }
             
             case MUL: {
-                // dest = src1 * src2
                 registers[op1] = registers[op2] * registers[op3];
                 break;
             }
             
             case DIV: {
-                // dest = src1 / src2
                 if (registers[op3] == 0) {
                     throw new RuntimeException("División por cero");
                 }
@@ -224,7 +250,6 @@ public class BytecodeInterpreter {
             }
             
             case REM: {
-                // dest = src1 % src2
                 if (registers[op3] == 0) {
                     throw new RuntimeException("Módulo por cero");
                 }
@@ -255,13 +280,11 @@ public class BytecodeInterpreter {
             
             // === Comparaciones ===
             case SEQ: {
-                // Set if equal
                 registers[op1] = (registers[op2] == registers[op3]) ? 1 : 0;
                 break;
             }
             
             case SNE: {
-                // Set if not equal
                 registers[op1] = (registers[op2] != registers[op3]) ? 1 : 0;
                 break;
             }
@@ -269,31 +292,33 @@ public class BytecodeInterpreter {
             case SLT: {
                 // Set if less than
                 registers[op1] = (registers[op2] < registers[op3]) ? 1 : 0;
+                if (debugMode) {
+                    System.out.println("     → $" + op1 + " = (" + registers[op2] + " < " + registers[op3] + ") = " + registers[op1]);
+                }
                 break;
             }
             
             case SLE: {
-                // Set if less or equal
                 registers[op1] = (registers[op2] <= registers[op3]) ? 1 : 0;
                 break;
             }
             
             case SGT: {
-                // Set if greater than
                 registers[op1] = (registers[op2] > registers[op3]) ? 1 : 0;
                 break;
             }
             
             case SGE: {
-                // Set if greater or equal
                 registers[op1] = (registers[op2] >= registers[op3]) ? 1 : 0;
                 break;
             }
             
             // === Control de flujo ===
             case JUMP: {
-                // Salto incondicional
                 int addr = instr.getImmediate16();
+                if (debugMode) {
+                    System.out.println("     → JUMP to " + addr);
+                }
                 pc = addr - 1; // -1 porque se incrementará después
                 break;
             }
@@ -302,7 +327,14 @@ public class BytecodeInterpreter {
                 // Branch if equal to zero
                 if (registers[op1] == 0) {
                     int addr = instr.getImmediate16();
+                    if (debugMode) {
+                        System.out.println("     → BEQZ: $" + op1 + " == 0, jumping to " + addr);
+                    }
                     pc = addr - 1;
+                } else {
+                    if (debugMode) {
+                        System.out.println("     → BEQZ: $" + op1 + " = " + registers[op1] + " != 0, not jumping");
+                    }
                 }
                 break;
             }
@@ -311,13 +343,15 @@ public class BytecodeInterpreter {
                 // Branch if not equal to zero
                 if (registers[op1] != 0) {
                     int addr = instr.getImmediate16();
+                    if (debugMode) {
+                        System.out.println("     → BNEZ: $" + op1 + " != 0, jumping to " + addr);
+                    }
                     pc = addr - 1;
                 }
                 break;
             }
             
             case BEQ: {
-                // Branch if equal
                 if (registers[op1] == registers[op2]) {
                     pc = op3 - 1;
                 }
@@ -325,7 +359,6 @@ public class BytecodeInterpreter {
             }
             
             case BNE: {
-                // Branch if not equal
                 if (registers[op1] != registers[op2]) {
                     pc = op3 - 1;
                 }
@@ -336,6 +369,9 @@ public class BytecodeInterpreter {
                 // Llamada a función
                 callStack.push(pc + 1);
                 int addr = instr.getImmediate16();
+                if (debugMode) {
+                    System.out.println("     → CALL to " + addr + ", return addr = " + (pc + 1));
+                }
                 pc = addr - 1;
                 break;
             }
@@ -343,9 +379,16 @@ public class BytecodeInterpreter {
             case RET: {
                 // Retorno de función
                 if (callStack.isEmpty()) {
+                    if (debugMode) {
+                        System.out.println("     → RET: call stack empty, terminating");
+                    }
                     return false; // Terminar programa
                 }
-                pc = callStack.pop() - 1;
+                int returnAddr = callStack.pop();
+                if (debugMode) {
+                    System.out.println("     → RET to " + returnAddr);
+                }
+                pc = returnAddr - 1;
                 break;
             }
             
@@ -372,12 +415,10 @@ public class BytecodeInterpreter {
             
             // === Especiales ===
             case NOP: {
-                // No operation
                 break;
             }
             
             case HALT: {
-                // Terminar programa
                 return false;
             }
             
@@ -397,9 +438,10 @@ public class BytecodeInterpreter {
     private void executeSyscall(int code) {
         int arg1 = registers[REG_A0];
         int arg2 = registers[REG_A1];
+        int arg3 = registers[REG_A2];
         
         if (debugMode) {
-            System.out.printf("   → SYSCALL %d (arg1=%d, arg2=%d)%n", code, arg1, arg2);
+            System.out.printf("   → SYSCALL %d (arg1=%d, arg2=%d, arg3=%d)%n", code, arg1, arg2, arg3);
         }
         
         switch (code) {
@@ -435,8 +477,8 @@ public class BytecodeInterpreter {
                 setPosicion(arg1, arg2);
                 break;
                 
-            case 9:  // SET_COLOR (poncolor)
-                // No implementado en este momento
+            case 9:  // SET_COLOR (poncolorlapiz)
+                setColor(arg1, arg2, arg3);
                 break;
                 
             case 10: // SET_HEADING (ponrumbo)
@@ -568,5 +610,10 @@ public class BytecodeInterpreter {
     
     public boolean isDebugMode() {
         return debugMode;
+    }
+    
+    private void setColor(int r, int g, int b) {
+        System.out.println("   → SET_COLOR RGB(" + r + ", " + g + ", " + b + ")");
+        acciones.add(new AccionTortuga(Tipo.CAMBIAR_COLOR, r, g, b));
     }
 }

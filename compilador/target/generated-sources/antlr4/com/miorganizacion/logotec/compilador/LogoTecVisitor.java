@@ -57,6 +57,12 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCallProc(LogoTecParser.CallProcContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LogoTecParser#primaryArg}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimaryArg(LogoTecParser.PrimaryArgContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#expressionSeries}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -110,6 +116,12 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTurtleCmd(LogoTecParser.TurtleCmdContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LogoTecParser#colorName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColorName(LogoTecParser.ColorNameContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#expression}.
 	 * @param ctx the parse tree
@@ -188,10 +200,4 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCmtFirstLine(LogoTecParser.CmtFirstLineContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LogoTecParser#colorName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitColorName(LogoTecParser.ColorNameContext ctx);
 }

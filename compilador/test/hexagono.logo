@@ -1,0 +1,28 @@
+// Hexágono simple con colores alternados
+
+Haz lado 80
+
+// Dibujar hexágono con colores alternados
+// Primera mitad: Rojo
+poncolorlapiz Rojo
+centro
+bajalapiz
+
+avanza lado
+giraderecha 60
+avanza lado
+giraderecha 60
+avanza lado
+giraderecha 60
+
+// Segunda mitad: Azul
+poncolorlapiz Azul
+
+avanza lado
+giraderecha 60
+avanza lado
+giraderecha 60
+avanza lado
+giraderecha 60
+
+subelapiz

@@ -4,50 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Builder para facilitar la construcción de código IR.
- * Proporciona métodos fluent para crear instrucciones de forma más legible.
- * 
- * Ejemplo de uso:
- * <pre>
- * IRBuilder builder = new IRBuilder();
- * builder.loadConst(t1, 50)
- *        .store("lado", t1)
- *        .loadVar(t2, "lado")
- *        .forward(t2);
- * List&lt;ThreeAddressInstruction&gt; code = builder.getInstructions();
- * </pre>
+ * Builder para construir listas de instrucciones IR.
  */
 public class IRBuilder {
     
     private final List<ThreeAddressInstruction> instructions;
-    private final TempGenerator tempGen;
-    private final LabelGenerator labelGen;
     
     public IRBuilder() {
         this.instructions = new ArrayList<>();
-        this.tempGen = new TempGenerator();
-        this.labelGen = new LabelGenerator();
-    }
-    
-    // ==================== GENERADORES ====================
-    
-    public TempGenerator getTempGen() {
-        return tempGen;
-    }
-    
-    public LabelGenerator getLabelGen() {
-        return labelGen;
     }
     
     /**
-     * Obtiene todas las instrucciones generadas
-     */
-    public List<ThreeAddressInstruction> getInstructions() {
-        return instructions;
-    }
-    
-    /**
-     * Agrega una instrucción existente
+     * Agrega una instrucción a la lista.
      */
     public IRBuilder add(ThreeAddressInstruction instr) {
         instructions.add(instr);
@@ -55,324 +23,210 @@ public class IRBuilder {
     }
     
     /**
-     * Agrega múltiples instrucciones
+     * Agrega una etiqueta.
      */
-    public IRBuilder addAll(List<ThreeAddressInstruction> instrs) {
-        instructions.addAll(instrs);
+    public IRBuilder label(String name) {
+        instructions.add(ThreeAddressInstruction.label(name));
         return this;
     }
     
     /**
-     * Limpia todas las instrucciones
+     * Agrega un comentario.
      */
-    public IRBuilder clear() {
-        instructions.clear();
+    public IRBuilder comment(String text) {
+        instructions.add(ThreeAddressInstruction.comment(text));
         return this;
     }
     
-    // ==================== OPERACIONES DE MOVIMIENTO ====================
+    /**
+     * Agrega una instrucción NOP.
+     */
+    public IRBuilder nop() {
+        instructions.add(ThreeAddressInstruction.nop());
+        return this;
+    }
     
+    // ==================== MÉTODOS AUXILIARES ====================
+    
+    /**
+     * Carga una constante en un temporal.
+     */
+    public IRBuilder loadConst(Operand dest, int value) {
+        instructions.add(new ThreeAddressInstruction(IROpcode.LOAD_CONST, dest, Operand.constant(value)));
+        return this;
+    }
+    
+    /**
+     * Carga una constante double en un temporal.
+     */
     public IRBuilder loadConst(Operand dest, double value) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.LOAD_CONST, dest, Operand.constant(value)
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.LOAD_CONST, dest, Operand.constant(value)));
         return this;
     }
     
+    /**
+     * Carga una variable en un temporal.
+     */
     public IRBuilder loadVar(Operand dest, String varName) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.LOAD_VAR, dest, Operand.variable(varName)
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.LOAD_VAR, dest, Operand.variable(varName)));
         return this;
     }
     
+    /**
+     * Guarda un valor en una variable.
+     */
     public IRBuilder store(String varName, Operand source) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.STORE, Operand.variable(varName), source
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.STORE, Operand.variable(varName), source));
         return this;
     }
     
+    /**
+     * Mueve un valor de un operando a otro.
+     */
     public IRBuilder move(Operand dest, Operand source) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.MOVE, dest, source
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.MOVE, dest, source));
         return this;
     }
     
-    // ==================== OPERACIONES ARITMÉTICAS ====================
-    
+    /**
+     * Suma: dest = op1 + op2
+     */
     public IRBuilder add(Operand dest, Operand op1, Operand op2) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.ADD, dest, op1, op2
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.ADD, dest, op1, op2));
         return this;
     }
     
+    /**
+     * Resta: dest = op1 - op2
+     */
     public IRBuilder sub(Operand dest, Operand op1, Operand op2) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.SUB, dest, op1, op2
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.SUB, dest, op1, op2));
         return this;
     }
     
+    /**
+     * Multiplicación: dest = op1 * op2
+     */
     public IRBuilder mul(Operand dest, Operand op1, Operand op2) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.MUL, dest, op1, op2
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.MUL, dest, op1, op2));
         return this;
     }
     
+    /**
+     * División: dest = op1 / op2
+     */
     public IRBuilder div(Operand dest, Operand op1, Operand op2) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.DIV, dest, op1, op2
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.DIV, dest, op1, op2));
         return this;
     }
     
-    public IRBuilder pow(Operand dest, Operand base, Operand exp) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.POW, dest, base, exp
-        ));
-        return this;
-    }
-    
-    // ==================== OPERACIONES DE COMPARACIÓN ====================
-    
-    public IRBuilder eq(Operand dest, Operand op1, Operand op2) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.EQ, dest, op1, op2
-        ));
-        return this;
-    }
-    
+    /**
+     * Menor que: dest = (op1 < op2)
+     */
     public IRBuilder lt(Operand dest, Operand op1, Operand op2) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.LT, dest, op1, op2
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.LT, dest, op1, op2));
         return this;
     }
     
-    public IRBuilder gt(Operand dest, Operand op1, Operand op2) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.GT, dest, op1, op2
-        ));
-        return this;
-    }
-    
-    // ==================== CONTROL DE FLUJO ====================
-    
-    public IRBuilder label(String labelName) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.LABEL, Operand.label(labelName)
-        ));
-        return this;
-    }
-    
-    public IRBuilder label(Operand label) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.LABEL, label
-        ));
-        return this;
-    }
-    
+    /**
+     * Salto incondicional.
+     */
     public IRBuilder jump(String labelName) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.JUMP, Operand.label(labelName)
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.JUMP, Operand.label(labelName)));
         return this;
     }
     
-    public IRBuilder jump(Operand label) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.JUMP, label
-        ));
+    /**
+     * Salto si falso.
+     */
+    public IRBuilder jumpIfFalse(String labelName, Operand cond) {
+        instructions.add(new ThreeAddressInstruction(IROpcode.JUMP_IF_FALSE, Operand.label(labelName), cond));
         return this;
     }
     
-    public IRBuilder jumpIfFalse(Operand label, Operand condition) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.JUMP_IF_FALSE, label, condition
-        ));
+    /**
+     * Salto si verdadero.
+     */
+    public IRBuilder jumpIfTrue(String labelName, Operand cond) {
+        instructions.add(new ThreeAddressInstruction(IROpcode.JUMP_IF_TRUE, Operand.label(labelName), cond));
         return this;
     }
     
-    public IRBuilder jumpIfTrue(Operand label, Operand condition) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.JUMP_IF_TRUE, label, condition
-        ));
-        return this;
-    }
-    
-    // ==================== COMANDOS DE TORTUGA ====================
-    
+    /**
+     * Comando de tortuga: avanzar.
+     */
     public IRBuilder forward(Operand distance) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.FORWARD, distance
-        ));
+        instructions.add(new ThreeAddressInstruction(IROpcode.FORWARD, distance));
         return this;
     }
     
-    public IRBuilder backward(Operand distance) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.BACKWARD, distance
-        ));
+    /**
+     * Comando de tortuga: girar derecha.
+     */
+    public IRBuilder turnRight(Operand angle) {
+        instructions.add(new ThreeAddressInstruction(IROpcode.TURN_RIGHT, angle));
         return this;
     }
     
-    public IRBuilder turnRight(Operand degrees) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.TURN_RIGHT, degrees
-        ));
+    /**
+     * Comando de tortuga: girar izquierda.
+     */
+    public IRBuilder turnLeft(Operand angle) {
+        instructions.add(new ThreeAddressInstruction(IROpcode.TURN_LEFT, angle));
         return this;
     }
     
-    public IRBuilder turnLeft(Operand degrees) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.TURN_LEFT, degrees
-        ));
-        return this;
-    }
-    
-    public IRBuilder penDown() {
-        instructions.add(new ThreeAddressInstruction(IROpcode.PEN_DOWN));
-        return this;
-    }
-    
+    /**
+     * Comando de tortuga: subir lápiz.
+     */
     public IRBuilder penUp() {
         instructions.add(new ThreeAddressInstruction(IROpcode.PEN_UP));
         return this;
     }
     
+    /**
+     * Comando de tortuga: bajar lápiz.
+     */
+    public IRBuilder penDown() {
+        instructions.add(new ThreeAddressInstruction(IROpcode.PEN_DOWN));
+        return this;
+    }
+    
+    /**
+     * Comando de tortuga: centrar.
+     */
     public IRBuilder center() {
         instructions.add(new ThreeAddressInstruction(IROpcode.CENTER));
         return this;
     }
     
-    public IRBuilder setColor(Operand r, Operand g, Operand b) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.SET_COLOR, r, g, b
-        ));
-        return this;
-    }
-    
-    public IRBuilder setPos(Operand x, Operand y) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.SET_POS, x, y
-        ));
-        return this;
-    }
-    
-    // ==================== UTILIDADES ====================
-    
-    public IRBuilder comment(String text) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.COMMENT, null, text
-        ));
-        return this;
-    }
-    
-    public IRBuilder nop() {
-        instructions.add(new ThreeAddressInstruction(IROpcode.NOP));
-        return this;
-    }
-    
-    // ==================== PROCEDIMIENTOS ====================
+    // ==================== GETTERS ====================
     
     /**
-     * Inicio de definición de procedimiento
+     * Obtiene la lista de instrucciones construida (copia).
      */
-    public IRBuilder procBegin(String procName) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.PROC_BEGIN, Operand.label(procName), "procedure " + procName
-        ));
-        return this;
+    public List<ThreeAddressInstruction> build() {
+        return new ArrayList<>(instructions);
     }
     
     /**
-     * Fin de definición de procedimiento
+     * Obtiene la lista de instrucciones (referencia directa).
      */
-    public IRBuilder procEnd(String procName) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.PROC_END, Operand.label(procName), "end " + procName
-        ));
-        return this;
+    public List<ThreeAddressInstruction> getInstructions() {
+        return instructions;
     }
     
     /**
-     * Llamada a procedimiento
-     * @param dest Operando donde se almacena el resultado (puede ser null para procedimientos void)
-     * @param procName Nombre del procedimiento
-     * @param numArgs Número de argumentos
+     * Limpia todas las instrucciones.
      */
-    public IRBuilder call(Operand dest, String procName, int numArgs) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.CALL, dest, Operand.label(procName), Operand.constant(numArgs),
-            "call " + procName + "(" + numArgs + " args)"
-        ));
-        return this;
+    public void clear() {
+        instructions.clear();
     }
     
     /**
-     * Parámetro para llamada a procedimiento
-     * @param index Índice del parámetro (0, 1, 2, ...)
-     * @param value Valor del parámetro
+     * Obtiene el número de instrucciones.
      */
-    public IRBuilder param(int index, Operand value) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.PARAM, Operand.constant(index), value,
-            "param[" + index + "] = " + value
-        ));
-        return this;
-    }
-    
-    /**
-     * Obtener argumento dentro del procedimiento
-     * @param dest Donde almacenar el argumento
-     * @param index Índice del argumento
-     */
-    public IRBuilder getArg(Operand dest, int index) {
-        instructions.add(new ThreeAddressInstruction(
-            IROpcode.GET_ARG, dest, Operand.constant(index),
-            dest + " = arg[" + index + "]"
-        ));
-        return this;
-    }
-    
-    /**
-     * Retorno de procedimiento
-     * @param value Valor de retorno (null para void)
-     */
-    public IRBuilder returnStmt(Operand value) {
-        if (value != null) {
-            instructions.add(new ThreeAddressInstruction(
-                IROpcode.RETURN, value, "return " + value
-            ));
-        } else {
-            instructions.add(new ThreeAddressInstruction(
-                IROpcode.RETURN, null, "return"
-            ));
-        }
-        return this;
-    }
-    
-    /**
-     * Imprime todas las instrucciones en formato legible
-     */
-    public void print() {
-        for (ThreeAddressInstruction instr : instructions) {
-            System.out.println(instr);
-        }
-    }
-    
-    /**
-     * Obtiene el código IR como String
-     */
-    public String toIRCode() {
-        StringBuilder sb = new StringBuilder();
-        for (ThreeAddressInstruction instr : instructions) {
-            sb.append(instr.toString()).append("\n");
-        }
-        return sb.toString();
+    public int size() {
+        return instructions.size();
     }
 }

@@ -2,97 +2,70 @@ package com.miorganizacion.logotec.compilador.ir;
 
 /**
  * Representa un operando en una instrucción de tres direcciones.
- * Puede ser un temporal, una variable, una constante o una etiqueta.
  */
 public class Operand {
     
     public enum Type {
-        TEMPORARY,   // t1, t2, t3...
-        VARIABLE,    // lado, color, x...
-        CONSTANT,    // #50, #3.14...
-        LABEL        // L1, L2, L3...
+        CONSTANT,   // Valor literal
+        VARIABLE,   // Variable con nombre
+        TEMP,       // Temporal generado
+        LABEL       // Etiqueta de salto
     }
     
     private final Type type;
     private final String value;
+    private final double numericValue;
     
-    /**
-     * Constructor privado. Usar métodos estáticos para crear operandos.
-     */
-    private Operand(Type type, String value) {
+    private Operand(Type type, String value, double numericValue) {
         this.type = type;
         this.value = value;
+        this.numericValue = numericValue;
     }
     
-    // ==================== FACTORY METHODS ====================
-    
-    public static Operand temp(String name) {
-        return new Operand(Type.TEMPORARY, name);
-    }
-    
-    public static Operand variable(String name) {
-        return new Operand(Type.VARIABLE, name);
-    }
-    
+    // Factory methods
     public static Operand constant(double value) {
-        return new Operand(Type.CONSTANT, String.valueOf(value));
+        return new Operand(Type.CONSTANT, String.valueOf(value), value);
     }
     
     public static Operand constant(int value) {
-        return new Operand(Type.CONSTANT, String.valueOf(value));
+        return new Operand(Type.CONSTANT, String.valueOf(value), value);
+    }
+    
+    public static Operand variable(String name) {
+        return new Operand(Type.VARIABLE, name, 0);
+    }
+    
+    public static Operand temp(String name) {
+        return new Operand(Type.TEMP, name, 0);
     }
     
     public static Operand label(String name) {
-        return new Operand(Type.LABEL, name);
+        return new Operand(Type.LABEL, name, 0);
     }
     
-    // ==================== GETTERS ====================
+    // Getters
+    public Type getType() { return type; }
+    public String getValue() { return value; }
+    public double getNumericValue() { return numericValue; }
     
-    public Type getType() {
-        return type;
-    }
-    
-    public String getValue() {
-        return value;
-    }
-    
-    public boolean isTemporary() {
-        return type == Type.TEMPORARY;
-    }
-    
-    public boolean isVariable() {
-        return type == Type.VARIABLE;
-    }
-    
-    public boolean isConstant() {
-        return type == Type.CONSTANT;
-    }
-    
-    public boolean isLabel() {
-        return type == Type.LABEL;
-    }
-    
-    /**
-     * Obtiene el valor numérico si es una constante.
-     */
-    public double getNumericValue() {
-        if (!isConstant()) {
-            throw new IllegalStateException("El operando no es una constante");
-        }
-        return Double.parseDouble(value);
-    }
-    
-    // ==================== REPRESENTACIÓN ====================
+    public boolean isConstant() { return type == Type.CONSTANT; }
+    public boolean isVariable() { return type == Type.VARIABLE; }
+    public boolean isTemp() { return type == Type.TEMP; }
+    public boolean isLabel() { return type == Type.LABEL; }
     
     @Override
     public String toString() {
         switch (type) {
-            case TEMPORARY:
-                return value;
+            case CONSTANT:
+                // Mostrar como entero si no tiene decimales
+                if (numericValue == (int) numericValue) {
+                    return "#" + (int) numericValue;
+                }
+                return "#" + numericValue;
             case VARIABLE:
                 return "[" + value + "]";
-            case CONSTANT:
-                return "#" + value;
+            case TEMP:
+                return value;
             case LABEL:
                 return value;
             default:
@@ -102,14 +75,13 @@ public class Operand {
     
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Operand operand = (Operand) obj;
-        return type == operand.type && value.equals(operand.value);
+        if (!(obj instanceof Operand)) return false;
+        Operand other = (Operand) obj;
+        return this.type == other.type && this.value.equals(other.value);
     }
     
     @Override
     public int hashCode() {
-        return 31 * type.hashCode() + value.hashCode();
+        return type.hashCode() * 31 + value.hashCode();
     }
 }

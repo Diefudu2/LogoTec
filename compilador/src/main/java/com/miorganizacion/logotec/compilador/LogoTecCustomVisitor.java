@@ -158,7 +158,7 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         if (ctx.GIRADERECHA() != null || ctx.GD() != null) {
             return new TurnRightNode((ExprNode) visit(ctx.expression(0)));
         }
-        if (ctx.GIRAIzQUIERDA() != null || ctx.GI() != null) {
+        if (ctx.GIRAIZQUIERDA() != null || ctx.GI() != null) {
             return new TurnLeftNode((ExprNode) visit(ctx.expression(0)));
         }
         if (ctx.OCULTATORTUGA() != null || ctx.OT() != null) {
@@ -208,37 +208,29 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
     */
     @Override
     public ASTNode visitSentence(LogoTecParser.SentenceContext ctx) {
-        // Delegar a la subregla correspondiente
+        // Declaraciones de variables
         if (ctx.varDecl() != null) {
             return visit(ctx.varDecl());
         }
         if (ctx.varInit() != null) {
             return visit(ctx.varInit());
         }
+        // Comandos de tortuga
         if (ctx.turtleCmd() != null) {
             return visit(ctx.turtleCmd());
         }
-        if (ctx.flowStmt() != null) {
-            return visit(ctx.flowStmt());
-        }
+        // Bloques
         if (ctx.execBlock() != null) {
             return visit(ctx.execBlock());
         }
-        if (ctx.callProc() != null) {
-            return visit(ctx.callProc());
-        }
-        return null;
-    }
-
-    /*visitFlowStmt
-    Delega a las subreglas de control de flujo (repiteBlock, ifStmt, etc.)
-    */
-    @Override
-    public ASTNode visitFlowStmt(LogoTecParser.FlowStmtContext ctx) {
-        // Delegar a la subregla correspondiente
         if (ctx.repiteBlock() != null) {
             return visit(ctx.repiteBlock());
         }
+        // Llamada a procedimiento
+        if (ctx.callProc() != null) {
+            return visit(ctx.callProc());
+        }
+        // Control de flujo (ahora directamente en sentence, no en flowStmt)
         if (ctx.siStmt() != null) {
             return visit(ctx.siStmt());
         }
@@ -257,5 +249,36 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         return null;
     }
 
+    @Override
+    public ASTNode visitArithExpr(LogoTecParser.ArithExprContext ctx) {
+        ASTNode result = visit(ctx.term(0));
+        
+        for (int i = 1; i < ctx.term().size(); i++) {
+            ASTNode right = visit(ctx.term(i));
+            // Determinar si es suma o resta basado en el operador
+            if (ctx.getChild(2 * i - 1).getText().equals("+")) {
+                result = new AdditionNode((ExprNode) result, (ExprNode) right);
+            } else {
+                result = new SubtractionNode((ExprNode) result, (ExprNode) right);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public ASTNode visitTerm(LogoTecParser.TermContext ctx) {
+        ASTNode result = visit(ctx.factor(0));
+        
+        for (int i = 1; i < ctx.factor().size(); i++) {
+            ASTNode right = visit(ctx.factor(i));
+            // Determinar si es multiplicación o división
+            if (ctx.getChild(2 * i - 1).getText().equals("*")) {
+                result = new MultiplicationNode((ExprNode) result, (ExprNode) right);
+            } else {
+                result = new DivisionNode((ExprNode) result, (ExprNode) right);
+            }
+        }
+        return result;
+    }
 
 }

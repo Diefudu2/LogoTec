@@ -1,634 +1,641 @@
 package com.miorganizacion.logotec.compilador.ir;
 
-import java.util.*;
-import java.lang.reflect.Field;
 import com.miorganizacion.logotec.compilador.ast.*;
+import java.util.*;
 
 /**
- * Generador de Representación Intermedia (IR) desde el AST de LogoTec.
- * Convierte el Árbol de Sintaxis Abstracta en código de tres direcciones.
- * 
- * FASE 2: Traducción AST → IR (COMPLETADO + PROCEDIMIENTOS)
+ * Traductor de AST a Representación Intermedia (IR).
+ * Genera código de tres direcciones desde el AST.
  */
 public class ASTtoIRTranslator {
-
-    private final IRBuilder builder;
-    private final Set<String> declaredVars;
-    private final Map<String, ProcedureInfo> procedures;  // Tabla de procedimientos
-    private final Set<String> currentProcParams;           // Parámetros del procedimiento actual
-    private boolean insideProcedure;                       // Flag: estamos dentro de un procedimiento
+    
+    private List<ThreeAddressInstruction> instructions;
+    private TempGenerator tempGen;
+    private LabelGenerator labelGen;
+    private Map<String, ProcedureInfo> procedures;
+    
+    public ASTtoIRTranslator() {
+        this.instructions = new ArrayList<>();
+        this.tempGen = new TempGenerator();
+        this.labelGen = new LabelGenerator();
+        this.procedures = new HashMap<>();
+    }
     
     /**
-     * Resultado de la generación de IR.
-     */
-    public static final class Result {
-        public final List<ThreeAddressInstruction> instructions;
-        public final Set<String> declaredVars;
-        
-        public Result(List<ThreeAddressInstruction> instructions, Set<String> vars) {
-            this.instructions = instructions;
-            this.declaredVars = vars;
-        }
-    }
-
-    public ASTtoIRTranslator() {
-        this.builder = new IRBuilder();
-        this.declaredVars = new LinkedHashSet<>();
-        this.procedures = new HashMap<>();
-        this.currentProcParams = new HashSet<>();
-        this.insideProcedure = false;
-    }
-
-    /**
-     * Genera código IR para un programa completo.
+     * Genera IR desde un ProgramNode
      */
     public Result generate(ProgramNode program) {
-        builder.comment("========================================");
-        builder.comment("Programa LogoTec - Código Intermedio");
-        builder.comment("========================================");
+        instructions.clear();
+        tempGen.reset();
+        labelGen.reset();
+        procedures.clear();
         
-        // Obtener procedimientos y cuerpo principal
-        List<ProcDeclNode> procs = getFieldList(program, "decls", ProcDeclNode.class);
-        List<StmtNode> mainBody = program.getBody();
-        
-        // PASO 1: Primera pasada - Recopilar declaraciones de procedimientos
-        for (ProcDeclNode proc : procs) {
+        // Primero, registrar todos los procedimientos
+        for (ProcDeclNode proc : program.getDecls()) {
             registerProcedure(proc);
         }
         
-        // PASO 2: Generar código de procedimientos
-        for (ProcDeclNode proc : procs) {
+        // Generar código para procedimientos
+        for (ProcDeclNode proc : program.getDecls()) {
             generateProcedure(proc);
         }
         
-        // PASO 3: Generar código del programa principal
-        builder.comment("");
-        builder.comment("========== MAIN PROGRAM ==========");
-        builder.label("main");
+        // Etiqueta main
+        emit(ThreeAddressInstruction.label("main"));
         
-        for (StmtNode stmt : mainBody) {
-            if (stmt != null) {
+        // Generar código para el cuerpo principal
+        for (StmtNode stmt : program.getMainBody()) {
+            generateStmt(stmt);
+        }
+        
+        // DEBUG: Imprimir IR generado
+        System.out.println("\n=== IR GENERADO ===");
+        int addr = 0;
+        for (ThreeAddressInstruction instr : instructions) {
+            System.out.printf("%4d: %s%n", addr++, instr);
+        }
+        System.out.println("===================\n");
+        
+        return new Result(new ArrayList<>(instructions), procedures);
+    }
+    
+    private void registerProcedure(ProcDeclNode proc) {
+        ProcedureInfo info = new ProcedureInfo(proc.getName(), proc.getParams().size());
+        procedures.put(proc.getName(), info);
+    }
+    
+    private void generateProcedure(ProcDeclNode proc) {
+        String procLabel = "proc_" + proc.getName();
+        
+        // Etiqueta del procedimiento
+        emit(ThreeAddressInstruction.label(procLabel));
+        emit(ThreeAddressInstruction.comment("Procedimiento: " + proc.getName()));
+        emit(new ThreeAddressInstruction(IROpcode.PROC_BEGIN, Operand.label(proc.getName())));
+        
+        // Obtener argumentos
+        List<String> params = proc.getParams();
+        for (int i = 0; i < params.size(); i++) {
+            String paramName = params.get(i);
+            Operand dest = Operand.variable(paramName);
+            emit(new ThreeAddressInstruction(IROpcode.GET_ARG, dest, Operand.constant(i)));
+        }
+        
+        // Generar cuerpo
+        for (StmtNode stmt : proc.getBody()) {
+            generateStmt(stmt);
+        }
+        
+        // Retorno implícito
+        emit(new ThreeAddressInstruction(IROpcode.RETURN));
+        emit(new ThreeAddressInstruction(IROpcode.PROC_END, Operand.label(proc.getName())));
+        emit(ThreeAddressInstruction.comment("Fin procedimiento: " + proc.getName()));
+    }
+    
+    private void generateStmt(StmtNode stmt) {
+        if (stmt == null) return;
+        
+        if (stmt instanceof VarDeclNode) {
+            generateVarDecl((VarDeclNode) stmt);
+        } else if (stmt instanceof VarAssignNode) {
+            generateVarAssign((VarAssignNode) stmt);
+        } else if (stmt instanceof ForwardNode) {
+            generateForward((ForwardNode) stmt);
+        } else if (stmt instanceof BackwardNode) {
+            generateBackward((BackwardNode) stmt);
+        } else if (stmt instanceof TurnRightNode) {
+            generateTurnRight((TurnRightNode) stmt);
+        } else if (stmt instanceof TurnLeftNode) {
+            generateTurnLeft((TurnLeftNode) stmt);
+        } else if (stmt instanceof PenUpNode) {
+            emit(new ThreeAddressInstruction(IROpcode.PEN_UP));
+        } else if (stmt instanceof PenDownNode) {
+            emit(new ThreeAddressInstruction(IROpcode.PEN_DOWN));
+        } else if (stmt instanceof CenterNode) {
+            emit(new ThreeAddressInstruction(IROpcode.CENTER));
+        } else if (stmt instanceof RepeatNode) {
+            generateRepeat((RepeatNode) stmt);
+        } else if (stmt instanceof IfNode) {
+            generateIf((IfNode) stmt);
+        } else if (stmt instanceof WhileNode) {
+            generateWhile((WhileNode) stmt);
+        } else if (stmt instanceof UntilNode) {
+            generateUntil((UntilNode) stmt);
+        } else if (stmt instanceof DoWhileNode) {
+            generateDoWhile((DoWhileNode) stmt);
+        } else if (stmt instanceof DoUntilNode) {
+            generateDoUntil((DoUntilNode) stmt);
+        } else if (stmt instanceof ProcCallNode) {
+            generateProcCall((ProcCallNode) stmt);
+        } else if (stmt instanceof ExecBlockNode) {
+            for (StmtNode s : ((ExecBlockNode) stmt).getBody()) {
+                generateStmt(s);
+            }
+        } else if (stmt instanceof SetPosNode) {
+            generateSetPos((SetPosNode) stmt);
+        } else if (stmt instanceof SetHeadingNode) {
+            generateSetHeading((SetHeadingNode) stmt);
+        } else if (stmt instanceof SetColorNode) {
+            generateSetColor((SetColorNode) stmt);
+        } else if (stmt instanceof SetPenColorNode) {
+            generateSetPenColor((SetPenColorNode) stmt);
+        } else if (stmt instanceof SetXNode) {
+            generateSetX((SetXNode) stmt);
+        } else if (stmt instanceof SetYNode) {
+            generateSetY((SetYNode) stmt);
+        } else if (stmt instanceof HideTurtleNode) {
+            emit(new ThreeAddressInstruction(IROpcode.HIDE_TURTLE));
+        } else if (stmt instanceof ShowTurtleNode) {
+            emit(new ThreeAddressInstruction(IROpcode.SHOW_TURTLE));
+        } else if (stmt instanceof WaitNode) {
+            generateWait((WaitNode) stmt);
+        } else if (stmt instanceof IncNode) {
+            generateInc((IncNode) stmt);
+        } else {
+            emit(ThreeAddressInstruction.comment("Stmt no soportado: " + stmt.getClass().getSimpleName()));
+        }
+    }
+    
+    /**
+     * Genera IR para RepeatNode (REPITE n [...])
+     */
+    private void generateRepeat(RepeatNode node) {
+        emit(ThreeAddressInstruction.comment("Repite"));
+        
+        // Generar etiquetas únicas
+        String labelStart = labelGen.next("loop_start");
+        String labelEnd = labelGen.next("loop_end");
+        
+        // Evaluar el límite (número de repeticiones)
+        // IMPORTANTE: Esto genera código para cargar el valor de 'n' si es variable
+        Operand limitOp = generateExpr(node.getTimes());
+        
+        // Copiar el límite a un temporal (para no perderlo si la variable cambia)
+        Operand limitTemp = tempGen.nextOperand();
+        emit(new ThreeAddressInstruction(IROpcode.MOVE, limitTemp, limitOp));
+        
+        // Inicializar contador a 0
+        Operand counterOp = tempGen.nextOperand();
+        emit(new ThreeAddressInstruction(IROpcode.LOAD_CONST, counterOp, Operand.constant(0)));
+        
+        // Etiqueta de inicio del ciclo
+        emit(ThreeAddressInstruction.label(labelStart));
+        
+        // Condición: counter < limit
+        Operand condOp = tempGen.nextOperand();
+        emit(new ThreeAddressInstruction(IROpcode.LT, condOp, counterOp, limitTemp));
+        
+        // Si la condición es falsa (counter >= limit), saltar al final
+        emit(new ThreeAddressInstruction(IROpcode.JUMP_IF_FALSE, Operand.label(labelEnd), condOp));
+        
+        // Generar cuerpo del ciclo
+        for (StmtNode stmt : node.getBody()) {
+            generateStmt(stmt);
+        }
+        
+        // Incrementar contador: counter = counter + 1
+        Operand newCounterOp = tempGen.nextOperand();
+        emit(new ThreeAddressInstruction(IROpcode.ADD, newCounterOp, counterOp, Operand.constant(1)));
+        
+        // IMPORTANTE: Actualizar el contador original
+        emit(new ThreeAddressInstruction(IROpcode.MOVE, counterOp, newCounterOp));
+        
+        // Saltar al inicio del ciclo
+        emit(new ThreeAddressInstruction(IROpcode.JUMP, Operand.label(labelStart)));
+        
+        // Etiqueta de fin del ciclo
+        emit(ThreeAddressInstruction.label(labelEnd));
+        
+        emit(ThreeAddressInstruction.comment("Fin Repite"));
+    }
+    
+    private void generateVarDecl(VarDeclNode node) {
+        emit(ThreeAddressInstruction.comment("haz " + node.getName() + " = <expr>"));
+        Operand value = generateExpr(node.getValue());
+        emit(new ThreeAddressInstruction(IROpcode.STORE, Operand.variable(node.getName()), value));
+    }
+    
+    private void generateVarAssign(VarAssignNode node) {
+        emit(ThreeAddressInstruction.comment("asignar " + node.getName() + " = <expr>"));
+        Operand value = generateExpr(node.getExpression());
+        emit(new ThreeAddressInstruction(IROpcode.STORE, Operand.variable(node.getName()), value));
+    }
+    
+    private void generateForward(ForwardNode node) {
+        emit(ThreeAddressInstruction.comment("avanza <expr>"));
+        Operand dist = generateExpr(node.getExpr());
+        emit(new ThreeAddressInstruction(IROpcode.FORWARD, dist));
+    }
+    
+    private void generateBackward(BackwardNode node) {
+        emit(ThreeAddressInstruction.comment("retrocede <expr>"));
+        Operand dist = generateExpr(node.getExpr());
+        emit(new ThreeAddressInstruction(IROpcode.BACKWARD, dist));
+    }
+    
+    private void generateTurnRight(TurnRightNode node) {
+        emit(ThreeAddressInstruction.comment("giraderecha <expr>"));
+        Operand angle = generateExpr(node.getExpr());
+        emit(new ThreeAddressInstruction(IROpcode.TURN_RIGHT, angle));
+    }
+    
+    private void generateTurnLeft(TurnLeftNode node) {
+        emit(ThreeAddressInstruction.comment("giraizquierda <expr>"));
+        Operand angle = generateExpr(node.getExpr());
+        emit(new ThreeAddressInstruction(IROpcode.TURN_LEFT, angle));
+    }
+    
+    private void generateIf(IfNode node) {
+        emit(ThreeAddressInstruction.comment("SI <cond>"));
+        
+        String labelElse = labelGen.next("else");
+        String labelEnd = labelGen.next("endif");
+        
+        // Evaluar condición
+        Operand cond = generateExpr(node.getCond());
+        
+        // Si es falso, saltar a else
+        emit(new ThreeAddressInstruction(IROpcode.JUMP_IF_FALSE, Operand.label(labelElse), cond));
+        
+        // Bloque then
+        for (StmtNode stmt : node.getThenBody()) {
+            generateStmt(stmt);
+        }
+        
+        // Saltar al final (evitar else)
+        emit(new ThreeAddressInstruction(IROpcode.JUMP, Operand.label(labelEnd)));
+        
+        // Etiqueta else
+        emit(ThreeAddressInstruction.label(labelElse));
+        
+        // Bloque else (si existe)
+        if (node.getElseBody() != null) {
+            for (StmtNode stmt : node.getElseBody()) {
                 generateStmt(stmt);
             }
         }
         
-        builder.comment("Fin del programa");
-        
-        return new Result(builder.getInstructions(), declaredVars);
+        // Etiqueta fin
+        emit(ThreeAddressInstruction.label(labelEnd));
     }
+    
+    private void generateWhile(WhileNode node) {
+        emit(ThreeAddressInstruction.comment("MIENTRAS <cond>"));
+        
+        String labelStart = labelGen.next("while_start");
+        String labelEnd = labelGen.next("while_end");
+        
+        // Etiqueta inicio
+        emit(ThreeAddressInstruction.label(labelStart));
+        
+        // Evaluar condición
+        Operand cond = generateExpr(node.getCond());
+        
+        // Si es falso, saltar al final
+        emit(new ThreeAddressInstruction(IROpcode.JUMP_IF_FALSE, Operand.label(labelEnd), cond));
+        
+        // Cuerpo
+        for (StmtNode stmt : node.getBody()) {
+            generateStmt(stmt);
+        }
+        
+        // Volver al inicio
+        emit(new ThreeAddressInstruction(IROpcode.JUMP, Operand.label(labelStart)));
+        
+        // Etiqueta fin
+        emit(ThreeAddressInstruction.label(labelEnd));
+    }
+    
+    private void generateUntil(UntilNode node) {
+        emit(ThreeAddressInstruction.comment("HASTA <cond>"));
+        
+        String labelStart = labelGen.next("until_start");
+        String labelEnd = labelGen.next("until_end");
+        
+        emit(ThreeAddressInstruction.label(labelStart));
+        
+        Operand cond = generateExpr(node.getCondition());
+        
+        // HASTA: se ejecuta mientras la condición sea FALSA
+        emit(new ThreeAddressInstruction(IROpcode.JUMP_IF_TRUE, Operand.label(labelEnd), cond));
+        
+        for (StmtNode stmt : node.getBody()) {
+            generateStmt(stmt);
+        }
+        
+        emit(new ThreeAddressInstruction(IROpcode.JUMP, Operand.label(labelStart)));
+        emit(ThreeAddressInstruction.label(labelEnd));
+    }
+    
+    private void generateDoWhile(DoWhileNode node) {
+        emit(ThreeAddressInstruction.comment("HAZ.MIENTRAS"));
+        
+        String labelStart = labelGen.next("dowhile_start");
+        
+        emit(ThreeAddressInstruction.label(labelStart));
+        
+        // Ejecutar cuerpo primero
+        for (StmtNode stmt : node.getBody()) {
+            generateStmt(stmt);
+        }
+        
+        // Evaluar condición al final
+        Operand cond = generateExpr(node.getCond());
+        
+        // Si es verdadero, volver al inicio
+        emit(new ThreeAddressInstruction(IROpcode.JUMP_IF_TRUE, Operand.label(labelStart), cond));
+    }
+    
+    private void generateDoUntil(DoUntilNode node) {
+        emit(ThreeAddressInstruction.comment("HAZ.HASTA"));
+        
+        String labelStart = labelGen.next("dountil_start");
+        
+        emit(ThreeAddressInstruction.label(labelStart));
+        
+        // Ejecutar cuerpo primero
+        for (StmtNode stmt : node.getBody()) {
+            generateStmt(stmt);
+        }
+        
+        // Evaluar condición al final
+        Operand cond = generateExpr(node.getCond());
+        
+        // Si es FALSO, volver al inicio (se ejecuta HASTA que sea verdadero)
+        emit(new ThreeAddressInstruction(IROpcode.JUMP_IF_FALSE, Operand.label(labelStart), cond));
+    }
+    
+    private void generateProcCall(ProcCallNode node) {
+        emit(ThreeAddressInstruction.comment("llamar " + node.getName()));
+        
+        // Pasar parámetros
+        List<ExprNode> args = node.getArgs();
+        for (int i = 0; i < args.size(); i++) {
+            Operand argValue = generateExpr(args.get(i));
+            emit(new ThreeAddressInstruction(IROpcode.PARAM, Operand.constant(i), argValue));
+        }
+        
+        // Llamar al procedimiento
+        String procLabel = "proc_" + node.getName();
+        emit(new ThreeAddressInstruction(IROpcode.CALL, null, Operand.label(procLabel), Operand.constant(args.size())));
+    }
+    
+    private void generateSetPos(SetPosNode node) {
+        Operand x = generateExpr(node.getX());
+        Operand y = generateExpr(node.getY());
+        emit(new ThreeAddressInstruction(IROpcode.SET_POS, x, y));
+    }
+    
+    private void generateSetHeading(SetHeadingNode node) {
+        Operand angle = generateExpr(node.getExpr());
+        emit(new ThreeAddressInstruction(IROpcode.SET_HEADING, angle));
+    }
+    
+    private void generateSetColor(SetColorNode node) {
+        Operand r = generateExpr(node.getR());
+        Operand g = generateExpr(node.getG());
+        Operand b = generateExpr(node.getB());
+        emit(new ThreeAddressInstruction(IROpcode.SET_COLOR, r, g, b));
+    }
+    
+    private void generateSetPenColor(SetPenColorNode node) {
+        String color = node.getColor();
+        int r, g, b;
+        switch (color) {
+            case "negro": r = 0; g = 0; b = 0; break;
+            case "azul":  r = 0; g = 0; b = 255; break;
+            case "rojo":  r = 255; g = 0; b = 0; break;
+            default:
+                throw new IllegalArgumentException("Color no soportado en IR: " + color);
+        }
 
-    /**
-     * Genera código IR para un statement.
-     */
-    private void generateStmt(StmtNode stmt) {
-        if (stmt == null) return;
-        
-        // Declaración de variable
-        if (stmt instanceof VarDeclNode) {
-            VarDeclNode node = (VarDeclNode) stmt;
-            String name = getField(node, "name", String.class);
-            ExprNode value = getField(node, "value", ExprNode.class);
-            
-            declaredVars.add(name);
-            builder.comment("haz " + name + " = <expr>");
-            Operand result = generateExpr(value);
-            builder.store(name, result);
-            return;
-        }
-        
-        // Asignación de variable
-        if (stmt instanceof VarAssignNode) {
-            VarAssignNode node = (VarAssignNode) stmt;
-            String name = getField(node, "name", String.class);
-            ExprNode value = getField(node, "value", ExprNode.class);
-            
-            declaredVars.add(name);
-            builder.comment(name + " = <expr>");
-            Operand result = generateExpr(value);
-            builder.store(name, result);
-            return;
-        }
-        
-        // Repite N [...]
-        if (stmt instanceof RepeatNode) {
-            RepeatNode node = (RepeatNode) stmt;
-            ExprNode timesExpr = getField(node, "timesExpr", ExprNode.class);
-            List<StmtNode> body = getFieldList(node, "body", StmtNode.class);
-            
-            builder.comment("Repite <n> [...]");
-            
-            // Contador del loop (FIX: generar temporal único por bucle)
-            // Antes: Operand counter = Operand.temp("loop_counter");
-            Operand counter = builder.getTempGen().nextOperand();
-            builder.loadConst(counter, 0);
-            
-            // Evaluar límite
-            Operand limit = generateExpr(timesExpr);
-            
-            // Etiquetas
-            Operand loopStart = builder.getLabelGen().nextOperand("loop_start");
-            Operand loopEnd = builder.getLabelGen().nextOperand("loop_end");
-            
-            // Inicio del loop
-            builder.label(loopStart);
-            
-            // Condición: counter < limit
-            Operand condition = builder.getTempGen().nextOperand();
-            builder.lt(condition, counter, limit);
-            builder.jumpIfFalse(loopEnd, condition);
-            
-            // Cuerpo del loop
-            for (StmtNode s : body) {
-                generateStmt(s);
-            }
-            
-            // Incrementar contador
-            Operand one = builder.getTempGen().nextOperand();
-            builder.loadConst(one, 1);
-            Operand newCounter = builder.getTempGen().nextOperand();
-            builder.add(newCounter, counter, one);
-            builder.move(counter, newCounter);
-            
-            // Volver al inicio
-            builder.jump(loopStart);
-            
-            // Fin del loop
-            builder.label(loopEnd);
-            return;
-        }
-        
-        // DoWhile [cuerpo] [condicion]
-        if (stmt instanceof DoWhileNode) {
-            DoWhileNode node = (DoWhileNode) stmt;
-            List<StmtNode> body = getFieldList(node, "body", StmtNode.class);
-            ExprNode condition = getField(node, "condition", ExprNode.class);
-            
-            builder.comment("HazMientras [...]");
-            
-            Operand loopStart = builder.getLabelGen().nextOperand("dowhile_start");
-            
-            builder.label(loopStart);
-            
-            // Ejecutar cuerpo
-            for (StmtNode s : body) {
-                generateStmt(s);
-            }
-            
-            // Evaluar condición y saltar si es verdadera
-            Operand cond = generateExpr(condition);
-            builder.jumpIfTrue(loopStart, cond);
-            
-            return;
-        }
-        
-        // DoUntil [cuerpo] [condicion]
-        if (stmt instanceof DoUntilNode) {
-            DoUntilNode node = (DoUntilNode) stmt;
-            List<StmtNode> body = getFieldList(node, "body", StmtNode.class);
-            ExprNode condition = getField(node, "condition", ExprNode.class);
-            
-            builder.comment("HazHasta [...]");
-            
-            Operand loopStart = builder.getLabelGen().nextOperand("dountil_start");
-            
-            builder.label(loopStart);
-            
-            // Ejecutar cuerpo
-            for (StmtNode s : body) {
-                generateStmt(s);
-            }
-            
-            // Evaluar condición y saltar si es FALSA
-            Operand cond = generateExpr(condition);
-            builder.jumpIfFalse(loopStart, cond);
-            
-            return;
-        }
-        
-        // If
-        if (stmt instanceof IfNode) {
-            IfNode node = (IfNode) stmt;
-            ASTNode condition = getField(node, "condition", ASTNode.class);
-            List<ASTNode> thenBody = getFieldList(node, "thenBody", ASTNode.class);
-            List<ASTNode> elseBody = getFieldList(node, "elseBody", ASTNode.class);
-            
-            builder.comment("Si [condición] [entonces] [sino]");
-            
-            // Evaluar condición
-            Operand cond = generateExpr((ExprNode) condition);
-            
-            // Etiquetas
-            Operand elseBranch = builder.getLabelGen().nextOperand("else");
-            Operand endIf = builder.getLabelGen().nextOperand("endif");
-            
-            // Saltar a else si falso
-            builder.jumpIfFalse(elseBranch, cond);
-            
-            // Then branch
-            for (ASTNode s : thenBody) {
-                if (s instanceof StmtNode) {
-                    generateStmt((StmtNode) s);
-                }
-            }
-            builder.jump(endIf);
-            
-            // Else branch
-            builder.label(elseBranch);
-            if (elseBody != null) {
-                for (ASTNode s : elseBody) {
-                    if (s instanceof StmtNode) {
-                        generateStmt((StmtNode) s);
-                    }
-                }
-            }
-            
-            // Fin del if
-            builder.label(endIf);
-            return;
-        }
-        
-        // Comandos de tortuga
-        if (stmt instanceof ForwardNode) {
-            ForwardNode node = (ForwardNode) stmt;
-            builder.comment("avanza <expr>");
-            Operand distance = generateExpr(node.getExpr());
-            builder.forward(distance);
-            return;
-        }
-        
-        if (stmt instanceof BackwardNode) {
-            BackwardNode node = (BackwardNode) stmt;
-            ExprNode expr = getField(node, "distance", ExprNode.class);
-            builder.comment("retrocede <expr>");
-            Operand distance = generateExpr(expr);
-            builder.backward(distance);
-            return;
-        }
-        
-        if (stmt instanceof TurnRightNode) {
-            TurnRightNode node = (TurnRightNode) stmt;
-            builder.comment("giraderecha <expr>");
-            Operand degrees = generateExpr(node.getExpr());
-            builder.turnRight(degrees);
-            return;
-        }
-        
-        if (stmt instanceof TurnLeftNode) {
-            TurnLeftNode node = (TurnLeftNode) stmt;
-            ExprNode expr = getField(node, "degrees", ExprNode.class);
-            builder.comment("giraizquierda <expr>");
-            Operand degrees = generateExpr(expr);
-            builder.turnLeft(degrees);
-            return;
-        }
-        
-        if (stmt instanceof PenUpNode) {
-            builder.comment("subelapiz");
-            builder.penUp();
-            return;
-        }
-        
-        if (stmt instanceof PenDownNode) {
-            builder.comment("bajalapiz");
-            builder.penDown();
-            return;
-        }
-        
-        if (stmt instanceof CenterNode) {
-            builder.comment("centro");
-            builder.center();
-            return;
-        }
-        
-        if (stmt instanceof SetPosNode) {
-            SetPosNode node = (SetPosNode) stmt;
-            ExprNode xExpr = getField(node, "x", ExprNode.class);
-            ExprNode yExpr = getField(node, "y", ExprNode.class);
-            builder.comment("ponpos [<x>, <y>]");
-            Operand x = generateExpr(xExpr);
-            Operand y = generateExpr(yExpr);
-            builder.setPos(x, y);
-            return;
-        }
-        
-        if (stmt instanceof SetHeadingNode) {
-            SetHeadingNode node = (SetHeadingNode) stmt;
-            ExprNode expr = getField(node, "heading", ExprNode.class);
-            builder.comment("ponrumbo <expr>");
-            Operand heading = generateExpr(expr);
-            builder.add(new ThreeAddressInstruction(IROpcode.SET_HEADING, heading));
-            return;
-        }
-        
-        if (stmt instanceof HideTurtleNode) {
-            builder.comment("ocultatoruga");
-            builder.add(new ThreeAddressInstruction(IROpcode.HIDE_TURTLE));
-            return;
-        }
-        
-        if (stmt instanceof ExecBlockNode) {
-            ExecBlockNode node = (ExecBlockNode) stmt;
-            List<StmtNode> body = getFieldList(node, "body", StmtNode.class);
-            for (StmtNode s : body) {
-                generateStmt(s);
-            }
-            return;
-        }
-        
-        // Llamada a procedimiento
-        if (stmt instanceof ProcCallNode) {
-            ProcCallNode node = (ProcCallNode) stmt;
-            String procName = getField(node, "name", String.class);
-            List<ExprNode> args = getFieldList(node, "args", ExprNode.class);
-            
-            builder.comment("call " + procName + "(" + args.size() + " args)");
-            
-            // Evaluar argumentos y pasarlos como parámetros
-            for (int i = 0; i < args.size(); i++) {
-                Operand argValue = generateExpr(args.get(i));
-                builder.param(i, argValue);
-            }
-            
-            // Llamar al procedimiento
-            builder.call(null, "proc_" + procName, args.size());
-            return;
-        }
-        
-        // No reconocido
-        builder.add(new ThreeAddressInstruction(
-            IROpcode.NOP, null, "stmt: " + stmt.getClass().getSimpleName()
+        emit(ThreeAddressInstruction.comment("poncolorlapiz " + color));
+        emit(new ThreeAddressInstruction(
+            IROpcode.SET_COLOR,
+            Operand.constant(r),
+            Operand.constant(g),
+            Operand.constant(b)
         ));
     }
-
+    
+    private void generateSetX(SetXNode node) {
+        Operand x = generateExpr(node.getExpr());
+        emit(new ThreeAddressInstruction(IROpcode.SET_X, x));
+    }
+    
+    private void generateSetY(SetYNode node) {
+        Operand y = generateExpr(node.getExpr());
+        emit(new ThreeAddressInstruction(IROpcode.SET_Y, y));
+    }
+    
+    private void generateWait(WaitNode node) {
+        Operand time = generateExpr(node.getExpr());
+        emit(new ThreeAddressInstruction(IROpcode.WAIT, time));
+    }
+    
+    private void generateInc(IncNode node) {
+        String varName = node.getVar().getName();
+        Operand delta = generateExpr(node.getDelta());
+        Operand varOp = Operand.variable(varName);
+        
+        // Cargar valor actual
+        Operand currentVal = tempGen.nextOperand();
+        emit(new ThreeAddressInstruction(IROpcode.LOAD_VAR, currentVal, varOp));
+        
+        // Sumar delta
+        Operand newVal = tempGen.nextOperand();
+        emit(new ThreeAddressInstruction(IROpcode.ADD, newVal, currentVal, delta));
+        
+        // Guardar nuevo valor
+        emit(new ThreeAddressInstruction(IROpcode.STORE, varOp, newVal));
+    }
+    
     /**
-     * Genera código IR para una expresión.
-     * @return Operando que contiene el resultado de la expresión
+     * Genera IR para una expresión y retorna el operando donde queda el resultado.
      */
     private Operand generateExpr(ExprNode expr) {
-        if (expr == null) {
-            Operand t = builder.getTempGen().nextOperand();
-            builder.loadConst(t, 0);
-            return t;
-        }
-        
-        // Constante
         if (expr instanceof ConstNode) {
-            ConstNode node = (ConstNode) expr;
-            Object value = getField(node, "value", Object.class);
-            
-            Operand temp = builder.getTempGen().nextOperand();
-            
-            if (value instanceof Boolean) {
-                builder.loadConst(temp, (Boolean) value ? 1 : 0);
-            } else if (value instanceof Number) {
-                builder.loadConst(temp, ((Number) value).doubleValue());
+            Object val = ((ConstNode) expr).getValue();
+            Operand temp = tempGen.nextOperand();
+            if (val instanceof Number) {
+                emit(new ThreeAddressInstruction(IROpcode.LOAD_CONST, temp, Operand.constant(((Number) val).doubleValue())));
+            } else if (val instanceof Boolean) {
+                emit(new ThreeAddressInstruction(IROpcode.LOAD_CONST, temp, Operand.constant((Boolean) val ? 1 : 0)));
             } else {
-                builder.loadConst(temp, 0);
+                emit(new ThreeAddressInstruction(IROpcode.LOAD_CONST, temp, Operand.constant(0)));
             }
-            
             return temp;
         }
         
-        // Referencia a variable
         if (expr instanceof VarRefNode) {
-            VarRefNode node = (VarRefNode) expr;
-            String name = node.getName();
-            declaredVars.add(name);
-            
-            Operand temp = builder.getTempGen().nextOperand();
-            builder.loadVar(temp, name);
+            String varName = ((VarRefNode) expr).getName();
+            Operand temp = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.LOAD_VAR, temp, Operand.variable(varName)));
             return temp;
         }
         
-        // Suma
         if (expr instanceof AdditionNode) {
-            AdditionNode node = (AdditionNode) expr;
-            ExprNode left = getField(node, "left", ExprNode.class);
-            ExprNode right = getField(node, "right", ExprNode.class);
-            
-            Operand opLeft = generateExpr(left);
-            Operand opRight = generateExpr(right);
-            Operand result = builder.getTempGen().nextOperand();
-            builder.add(result, opLeft, opRight);
+            AdditionNode add = (AdditionNode) expr;
+            Operand left = generateExpr(add.getLeft());
+            Operand right = generateExpr(add.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.ADD, result, left, right));
             return result;
         }
         
-        // Resta (DifferenceNode - lista)
-        if (expr instanceof DifferenceNode) {
-            DifferenceNode node = (DifferenceNode) expr;
-            ExprNode first = getField(node, "first", ExprNode.class);
-            List<ExprNode> rest = getFieldList(node, "rest", ExprNode.class);
-            
-            Operand result = generateExpr(first);
-            
-            for (ExprNode e : rest) {
-                Operand right = generateExpr(e);
-                Operand newResult = builder.getTempGen().nextOperand();
-                builder.sub(newResult, result, right);
-                result = newResult;
-            }
-            
-            return result;
-        }
-        
-        // Resta binaria
         if (expr instanceof SubtractionNode) {
-            SubtractionNode node = (SubtractionNode) expr;
-            ExprNode left = getField(node, "left", ExprNode.class);
-            ExprNode right = getField(node, "right", ExprNode.class);
-            
-            Operand opLeft = generateExpr(left);
-            Operand opRight = generateExpr(right);
-            Operand result = builder.getTempGen().nextOperand();
-            builder.sub(result, opLeft, opRight);
+            SubtractionNode sub = (SubtractionNode) expr;
+            Operand left = generateExpr(sub.getLeft());
+            Operand right = generateExpr(sub.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.SUB, result, left, right));
             return result;
         }
         
-        // Multiplicación
         if (expr instanceof MultiplicationNode) {
-            MultiplicationNode node = (MultiplicationNode) expr;
-            ExprNode left = getField(node, "left", ExprNode.class);
-            ExprNode right = getField(node, "right", ExprNode.class);
-            
-            Operand opLeft = generateExpr(left);
-            Operand opRight = generateExpr(right);
-            Operand result = builder.getTempGen().nextOperand();
-            builder.mul(result, opLeft, opRight);
+            MultiplicationNode mul = (MultiplicationNode) expr;
+            Operand left = generateExpr(mul.getLeft());
+            Operand right = generateExpr(mul.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.MUL, result, left, right));
             return result;
         }
         
-        // División
         if (expr instanceof DivisionNode) {
-            DivisionNode node = (DivisionNode) expr;
-            ExprNode left = getField(node, "left", ExprNode.class);
-            ExprNode right = getField(node, "right", ExprNode.class);
-            
-            Operand opLeft = generateExpr(left);
-            Operand opRight = generateExpr(right);
-            Operand result = builder.getTempGen().nextOperand();
-            builder.div(result, opLeft, opRight);
+            DivisionNode div = (DivisionNode) expr;
+            Operand left = generateExpr(div.getLeft());
+            Operand right = generateExpr(div.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.DIV, result, left, right));
             return result;
         }
         
-        // Potencia
         if (expr instanceof ExponentiationNode) {
-            ExponentiationNode node = (ExponentiationNode) expr;
-            ExprNode left = getField(node, "left", ExprNode.class);
-            ExprNode right = getField(node, "right", ExprNode.class);
-            
-            Operand base = generateExpr(left);
-            Operand exponent = generateExpr(right);
-            Operand result = builder.getTempGen().nextOperand();
-            builder.pow(result, base, exponent);
+            ExponentiationNode pow = (ExponentiationNode) expr;
+            Operand left = generateExpr(pow.getLeft());
+            Operand right = generateExpr(pow.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.POW, result, left, right));
             return result;
         }
         
         // Comparaciones
-        if (expr instanceof EqualsNode) {
-            return generateComparison(expr, IROpcode.EQ);
-        }
-        if (expr instanceof NotEqualsNode) {
-            return generateComparison(expr, IROpcode.NEQ);
-        }
         if (expr instanceof LessThanNode) {
-            return generateComparison(expr, IROpcode.LT);
-        }
-        if (expr instanceof GreaterThanNode) {
-            return generateComparison(expr, IROpcode.GT);
-        }
-        if (expr instanceof LessEqualNode) {
-            return generateComparison(expr, IROpcode.LTE);
-        }
-        if (expr instanceof GreaterEqualNode) {
-            return generateComparison(expr, IROpcode.GTE);
-        }
-        
-        // Lógicas
-        if (expr instanceof LogicalAndNode) {
-            return generateComparison(expr, IROpcode.AND);
-        }
-        if (expr instanceof LogicalOrNode) {
-            return generateComparison(expr, IROpcode.OR);
-        }
-        if (expr instanceof LogicalNotNode) {
-            LogicalNotNode node = (LogicalNotNode) expr;
-            ExprNode operand = getField(node, "expr", ExprNode.class);
-            Operand op = generateExpr(operand);
-            Operand result = builder.getTempGen().nextOperand();
-            builder.add(new ThreeAddressInstruction(IROpcode.NOT, result, op));
+            LessThanNode lt = (LessThanNode) expr;
+            Operand left = generateExpr(lt.getLeft());
+            Operand right = generateExpr(lt.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.LT, result, left, right));
             return result;
         }
         
-        // No reconocido - retornar temporal con 0
-        Operand temp = builder.getTempGen().nextOperand();
-        builder.loadConst(temp, 0);
-        builder.comment("expr no reconocida: " + expr.getClass().getSimpleName());
+        if (expr instanceof GreaterThanNode) {
+            GreaterThanNode gt = (GreaterThanNode) expr;
+            Operand left = generateExpr(gt.getLeft());
+            Operand right = generateExpr(gt.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.GT, result, left, right));
+            return result;
+        }
+        
+        if (expr instanceof LessEqualNode) {
+            LessEqualNode le = (LessEqualNode) expr;
+            Operand left = generateExpr(le.getLeft());
+            Operand right = generateExpr(le.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.LTE, result, left, right));
+            return result;
+        }
+        
+        if (expr instanceof GreaterEqualNode) {
+            GreaterEqualNode ge = (GreaterEqualNode) expr;
+            Operand left = generateExpr(ge.getLeft());
+            Operand right = generateExpr(ge.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.GTE, result, left, right));
+            return result;
+        }
+        
+        if (expr instanceof EqualsNode) {
+            EqualsNode eq = (EqualsNode) expr;
+            Operand left = generateExpr(eq.getLeft());
+            Operand right = generateExpr(eq.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.EQ, result, left, right));
+            return result;
+        }
+        
+        if (expr instanceof NotEqualsNode) {
+            NotEqualsNode ne = (NotEqualsNode) expr;
+            Operand left = generateExpr(ne.getLeft());
+            Operand right = generateExpr(ne.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.NEQ, result, left, right));
+            return result;
+        }
+        
+        if (expr instanceof EqualsFuncNode) {
+            EqualsFuncNode eq = (EqualsFuncNode) expr;
+            Operand left = generateExpr(eq.getLeft());
+            Operand right = generateExpr(eq.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.EQ, result, left, right));
+            return result;
+        }
+        
+        if (expr instanceof LogicalAndNode) {
+            LogicalAndNode and = (LogicalAndNode) expr;
+            Operand left = generateExpr(and.getLeft());
+            Operand right = generateExpr(and.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.AND, result, left, right));
+            return result;
+        }
+        
+        if (expr instanceof LogicalOrNode) {
+            LogicalOrNode or = (LogicalOrNode) expr;
+            Operand left = generateExpr(or.getLeft());
+            Operand right = generateExpr(or.getRight());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.OR, result, left, right));
+            return result;
+        }
+        
+        if (expr instanceof LogicalNotNode) {
+            LogicalNotNode not = (LogicalNotNode) expr;
+            Operand operand = generateExpr(not.getExpr());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.NOT, result, operand));
+            return result;
+        }
+        
+        if (expr instanceof RandomNode) {
+            RandomNode rand = (RandomNode) expr;
+            Operand max = generateExpr(rand.getExpr());
+            Operand result = tempGen.nextOperand();
+            emit(new ThreeAddressInstruction(IROpcode.RANDOM, result, max));
+            return result;
+        }
+        
+        // Default: retornar constante 0
+        Operand temp = tempGen.nextOperand();
+        emit(new ThreeAddressInstruction(IROpcode.LOAD_CONST, temp, Operand.constant(0)));
         return temp;
     }
-
-    /**
-     * Helper para generar comparaciones binarias.
-     */
-    private Operand generateComparison(ExprNode expr, IROpcode opcode) {
-        ExprNode left = getField(expr, "left", ExprNode.class);
-        ExprNode right = getField(expr, "right", ExprNode.class);
-        
-        Operand opLeft = generateExpr(left);
-        Operand opRight = generateExpr(right);
-        Operand result = builder.getTempGen().nextOperand();
-        
-        builder.add(new ThreeAddressInstruction(opcode, result, opLeft, opRight));
-        return result;
-    }
-
-    /**
-     * Reflexión: Obtiene un campo privado de un objeto.
-     */
-    @SuppressWarnings("unchecked")
-    private <T> T getField(Object obj, String fieldName, Class<T> type) {
-        try {
-            Field field = obj.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return (T) field.get(obj);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     * Reflexión: Obtiene una lista de un campo privado.
-     */
-    @SuppressWarnings("unchecked")
-    private <T> List<T> getFieldList(Object obj, String fieldName, Class<T> elementType) {
-        try {
-            Field field = obj.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return (List<T>) field.get(obj);
-        } catch (Exception e) {
-            return Collections.emptyList();
-        }
-    }
     
-    // ==================== MANEJO DE PROCEDIMIENTOS ====================
-    
-    /**
-     * Registra un procedimiento en la tabla de procedimientos.
-     * Primera pasada: solo recopilamos información.
-     */
-    private void registerProcedure(ProcDeclNode node) {
-        String name = getField(node, "name", String.class);
-        List<String> params = getFieldList(node, "params", String.class);
-        
-        String label = "proc_" + name;
-        ProcedureInfo info = new ProcedureInfo(name, params, label);
-        procedures.put(name, info);
-        
-        builder.comment("Procedure declared: " + name + "(" + String.join(", ", params) + ")");
+    private void emit(ThreeAddressInstruction instr) {
+        instructions.add(instr);
     }
     
     /**
-     * Genera código IR para un procedimiento completo.
+     * Resultado de la generación de IR
      */
-    private void generateProcedure(ProcDeclNode node) {
-        String name = getField(node, "name", String.class);
-        List<String> params = getFieldList(node, "params", String.class);
-        List<StmtNode> body = getFieldList(node, "body", StmtNode.class);
+    public static class Result {
+        public final List<ThreeAddressInstruction> instructions;
+        public final Map<String, ProcedureInfo> procedures;
         
-        String label = "proc_" + name;
-        ProcedureInfo info = procedures.get(name);
-        
-        builder.comment("");
-        builder.comment("========== PROCEDURE: " + name + " ==========");
-        builder.label(label);
-        builder.procBegin(name);
-        
-        // Marcar que estamos dentro de un procedimiento
-        insideProcedure = true;
-        currentProcParams.clear();
-        currentProcParams.addAll(params);
-        
-        // Obtener argumentos y almacenarlos en variables locales
-        for (int i = 0; i < params.size(); i++) {
-            String paramName = params.get(i);
-            Operand temp = builder.getTempGen().nextOperand();
-            builder.getArg(temp, i);
-            builder.store(paramName, temp);
-            builder.comment("  param " + paramName + " = arg[" + i + "]");
+        public Result(List<ThreeAddressInstruction> instructions, Map<String, ProcedureInfo> procedures) {
+            this.instructions = instructions;
+            this.procedures = procedures;
         }
-        
-        // Generar código del cuerpo
-        builder.comment("  --- body ---");
-        for (StmtNode stmt : body) {
-            generateStmt(stmt);
-        }
-        
-        // Retorno implícito si no hay return explícito
-        builder.comment("  --- end body ---");
-        builder.returnStmt(null);
-        builder.procEnd(name);
-        
-        // Salir del contexto del procedimiento
-        insideProcedure = false;
-        currentProcParams.clear();
     }
 }

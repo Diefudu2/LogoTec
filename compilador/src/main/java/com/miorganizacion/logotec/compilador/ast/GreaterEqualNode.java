@@ -25,4 +25,7 @@ public class GreaterEqualNode implements ExprNode {
     public String toString() {
         return "(" + left + " >= " + right + ")";
     }
+
+    public ExprNode getLeft() { return left; }
+    public ExprNode getRight() { return right; }
 }

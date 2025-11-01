@@ -1,11 +1,19 @@
-//hexagono
+// Programa de prueba básico
 
-Haz pasos 12
-haz lado 50
-Para poligono [n l] [Repite n [avanza l giraderecha 360 / n]] fin
-Para roseta [cont l] [Repite cont [poligono 6 l giraderecha 360 / cont]] fin
+Haz lado 100
 
 centro
 bajalapiz
-roseta pasos lado
+
+avanza lado
+giraderecha 90
+poncolorlapiz Rojo
+avanza lado
+giraderecha 90
+poncolorlapiz Negro
+avanza lado
+giraderecha 90
+poncolorlapiz Azul
+avanza lado
+
 subelapiz

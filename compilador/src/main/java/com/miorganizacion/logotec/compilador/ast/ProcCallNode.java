@@ -16,19 +16,31 @@ public class ProcCallNode implements StmtNode {
 
     @Override
     public Object execute(Map<String, Object> symbolTable) {
+        System.out.println("[ProcCallNode] Llamando a procedimiento: " + name);
+        
         // Recuperar la declaración del procedimiento
-        ProcDeclNode proc = (ProcDeclNode) symbolTable.get(name);
-        if (proc == null) {
+        Object procObj = symbolTable.get(name);
+        if (procObj == null) {
             throw new RuntimeException("Procedimiento no definido: " + name);
         }
+        
+        if (!(procObj instanceof ProcDeclNode)) {
+            throw new RuntimeException("'" + name + "' no es un procedimiento, es: " + procObj.getClass().getSimpleName());
+        }
+        
+        ProcDeclNode proc = (ProcDeclNode) procObj;
 
-        // Evaluar argumentos
+        // Evaluar argumentos ANTES de llamar al procedimiento
         List<Object> values = new java.util.ArrayList<>();
-        for (ExprNode a : args) {
-            values.add(a.execute(symbolTable));
+        System.out.println("[ProcCallNode] Evaluando " + args.size() + " argumentos:");
+        for (int i = 0; i < args.size(); i++) {
+            ExprNode argExpr = args.get(i);
+            Object val = argExpr.execute(symbolTable);
+            System.out.println("  Arg[" + i + "]: " + argExpr + " = " + val);
+            values.add(val);
         }
 
-        // Llamar al procedimiento
+        // Llamar al procedimiento con los valores evaluados
         return proc.call(symbolTable, values);
     }
 

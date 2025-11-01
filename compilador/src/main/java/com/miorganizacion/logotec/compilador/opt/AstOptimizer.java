@@ -7,6 +7,8 @@ import com.miorganizacion.logotec.compilador.ast.*;
  * AST optimizer: constant folding, simple algebraic simplifications,
  * dead-branch elimination, light constant propagation, and basic block flattening.
  *
+ * Compatible con Java 8+.
+ * 
  * Usage: ProgramNode optimized = AstOptimizer.optimize(programNode);
  */
 public final class AstOptimizer {
@@ -17,7 +19,7 @@ public final class AstOptimizer {
         if (root == null) return null;
 
         // Optimize procedures
-        List<ProcDeclNode> optDecls = new ArrayList<>();
+        List<ProcDeclNode> optDecls = new ArrayList<ProcDeclNode>();
         for (ProcDeclNode pd : root.getDecls()) {
             optDecls.add(optimizeProc(pd));
         }
@@ -32,17 +34,52 @@ public final class AstOptimizer {
     private static ProcDeclNode optimizeProc(ProcDeclNode pd) {
         // New environment; parameters are unknown
         Env env = new Env();
-        for (String p : pd.getParams()) {
+        List<String> params = getParams(pd);
+        for (String p : params) {
             env.kill(p);
         }
-        List<StmtNode> body = optimizeStmtList(pd.getBody(), env);
-        return new ProcDeclNode(pd.getName(), pd.getParams(), body);
+        List<StmtNode> body = optimizeStmtList(getBody(pd), env);
+        return new ProcDeclNode(getName(pd), params, body);
+    }
+
+    // -------------------- Helpers para ProcDeclNode --------------------
+    
+    private static String getName(ProcDeclNode pd) {
+        try {
+            java.lang.reflect.Field f = ProcDeclNode.class.getDeclaredField("name");
+            f.setAccessible(true);
+            return (String) f.get(pd);
+        } catch (Exception e) {
+            return "unknown";
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static List<String> getParams(ProcDeclNode pd) {
+        try {
+            java.lang.reflect.Field f = ProcDeclNode.class.getDeclaredField("params");
+            f.setAccessible(true);
+            return (List<String>) f.get(pd);
+        } catch (Exception e) {
+            return new ArrayList<String>();
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static List<StmtNode> getBody(ProcDeclNode pd) {
+        try {
+            java.lang.reflect.Field f = ProcDeclNode.class.getDeclaredField("body");
+            f.setAccessible(true);
+            return (List<StmtNode>) f.get(pd);
+        } catch (Exception e) {
+            return new ArrayList<StmtNode>();
+        }
     }
 
     // -------------------- Statements --------------------
 
     private static List<StmtNode> optimizeStmtList(List<StmtNode> stmts, Env env) {
-        List<StmtNode> out = new ArrayList<>();
+        List<StmtNode> out = new ArrayList<StmtNode>();
         for (StmtNode s : stmts) {
             StmtNode opt = optimizeStmt(s, env);
             if (opt == null) continue;
@@ -104,30 +141,25 @@ public final class AstOptimizer {
             return new ExecBlockNode(body);
         }
 
-        // Repeat with fixed count (optional small unroll)
+        // Repeat
         if (s instanceof RepeatNode) {
             RepeatNode rp = (RepeatNode) s;
             ExprNode times = optimizeExpr(rp.getTimes(), env);
-            List<StmtNode> body = optimizeStmtList(rp.getBody(), env.fork()); // isolate body effects during optimization
+            List<StmtNode> body = optimizeStmtList(rp.getBody(), env.fork());
             Object c = constValue(times);
             if (c instanceof Integer) {
                 int n = (Integer) c;
                 if (n <= 0) return null;
                 final int UNROLL_LIMIT = 16;
                 if (n <= UNROLL_LIMIT) {
-                    // Unroll
-                    List<StmtNode> unrolled = new ArrayList<>(n * Math.max(1, body.size()));
+                    List<StmtNode> unrolled = new ArrayList<StmtNode>(n * Math.max(1, body.size()));
                     for (int i = 0; i < n; i++) {
-                        // Body effects do apply sequentially at runtime; conservatively kill env on loop
-                        // For soundness just re-add same nodes
                         unrolled.addAll(body);
                     }
-                    // Loop effects break const-prop; clear env
                     env.clear();
                     return new ExecBlockNode(unrolled);
                 }
             }
-            // Keep loop with optimized parts; clear env due to loop
             env.clear();
             return new RepeatNode(times, body);
         }
@@ -140,16 +172,14 @@ public final class AstOptimizer {
             Object c = constValue(cond);
             if (c instanceof Boolean) {
                 if (((Boolean) c)) {
-                    // Then branch only; applies env effects
                     return normalizeBlock(optimizeBlockAsExec(ifn.getThenBody(), env));
                 } else {
                     return normalizeBlock(optimizeBlockAsExec(ifn.getElseBody(), env));
                 }
             } else {
-                // Unknown condition: optimize branches but do not trust changes, merge conservatively (kill all)
                 List<StmtNode> thenOpt = optimizeStmtList(ifn.getThenBody(), env.fork());
                 List<StmtNode> elseOpt = ifn.getElseBody() == null ? null : optimizeStmtList(ifn.getElseBody(), env.fork());
-                env.clear(); // conservatively drop knowledge after a conditional
+                env.clear();
                 return new IfNode(cond, thenOpt, elseOpt == null || elseOpt.isEmpty() ? null : elseOpt);
             }
         }
@@ -161,9 +191,9 @@ public final class AstOptimizer {
             Object c = constValue(cond);
             List<StmtNode> body = optimizeStmtList(wn.getBody(), env.fork());
             if (c instanceof Boolean && !(Boolean) c) {
-                return null; // never executes
+                return null;
             }
-            env.clear(); // loop unknown iterations
+            env.clear();
             return new WhileNode(cond, body);
         }
 
@@ -174,7 +204,6 @@ public final class AstOptimizer {
             List<StmtNode> body = optimizeStmtList(dwn.getBody(), env.fork());
             Object c = constValue(cond);
             if (c instanceof Boolean && !(Boolean) c) {
-                // Executes once
                 env.clear();
                 return new ExecBlockNode(body);
             }
@@ -182,28 +211,26 @@ public final class AstOptimizer {
             return new DoWhileNode(body, cond);
         }
 
-        // Until (pre-check, 0+ iterations until cond true)
+        // Until
         if (s instanceof UntilNode) {
             UntilNode un = (UntilNode) s;
             ExprNode cond = optimizeExpr(un.getCondition(), env);
             List<StmtNode> body = optimizeStmtList(un.getBody(), env.fork());
             Object c = constValue(cond);
             if (c instanceof Boolean && (Boolean) c) {
-                // immediately terminates
                 return null;
             }
             env.clear();
             return new UntilNode(cond, body);
         }
 
-        // DoUntil (1+ iterations until cond true)
+        // DoUntil
         if (s instanceof DoUntilNode) {
             DoUntilNode dun = (DoUntilNode) s;
             ExprNode cond = optimizeExpr(dun.getCondition(), env);
             List<StmtNode> body = optimizeStmtList(dun.getBody(), env.fork());
             Object c = constValue(cond);
             if (c instanceof Boolean && (Boolean) c) {
-                // execute once
                 env.clear();
                 return new ExecBlockNode(body);
             }
@@ -211,10 +238,10 @@ public final class AstOptimizer {
             return new DoUntilNode(body, cond);
         }
 
-        // Procedure call: optimize args, then kill env (may mutate globals)
+        // Procedure call
         if (s instanceof ProcCallNode) {
             ProcCallNode pc = (ProcCallNode) s;
-            List<ExprNode> args = new ArrayList<>(pc.getArgs().size());
+            List<ExprNode> args = new ArrayList<ExprNode>(pc.getArgs().size());
             for (ExprNode a : pc.getArgs()) {
                 args.add(optimizeExpr(a, env));
             }
@@ -260,7 +287,6 @@ public final class AstOptimizer {
             return new WaitNode(optimizeExpr(n.getExpr(), env));
         }
 
-        // Commands without expressions (OT/BL/SB/etc.)
         return s;
     }
 
@@ -335,58 +361,154 @@ public final class AstOptimizer {
             return new LogicalOrNode(l, r);
         }
 
-        // Comparisons
-        if (e instanceof EqualsNode || e instanceof EqualsFuncNode
-            || e instanceof NotEqualsNode
-            || e instanceof GreaterThanNode || e instanceof LessThanNode
-            || e instanceof GreaterEqualNode || e instanceof LessEqualNode) {
-            ExprNode l = binaryLeft(e, env);
-            ExprNode r = binaryRight(e, env);
+        // Addition
+        if (e instanceof AdditionNode) {
+            AdditionNode n = (AdditionNode) e;
+            ExprNode l = optimizeExpr(n.getLeft(), env);
+            ExprNode r = optimizeExpr(n.getRight(), env);
             Object lc = constValue(l), rc = constValue(r);
-            if (lc != null && rc != null) {
-                Boolean res = evalCompare(e, lc, rc);
-                if (res != null) return new ConstNode(res);
+            if (isZero(lc)) return r;
+            if (isZero(rc)) return l;
+            if (lc instanceof Integer && rc instanceof Integer) {
+                return new ConstNode(((Integer) lc) + ((Integer) rc));
             }
-            return rebuildBinary(e, l, r);
+            return new AdditionNode(l, r);
         }
 
-        // Arithmetic: +, -, *, /, ^
-
-        if (e instanceof AdditionNode || e instanceof SubtractionNode
-            || e instanceof MultiplicationNode || e instanceof DivisionNode
-            || e instanceof ExponentiationNode) {
-            ExprNode l = binaryLeft(e, env);
-            ExprNode r = binaryRight(e, env);
+        // Subtraction
+        if (e instanceof SubtractionNode) {
+            SubtractionNode n = (SubtractionNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
             Object lc = constValue(l), rc = constValue(r);
-
-            if (e instanceof AdditionNode) {
-                if (isZero(lc)) return r;
-                if (isZero(rc)) return l;
-                if (lc instanceof Integer && rc instanceof Integer) return new ConstNode(((Integer) lc) + ((Integer) rc));
-            } else if (e instanceof SubtractionNode) {
-                if (isZero(rc)) return l;
-                if (lc instanceof Integer && rc instanceof Integer) return new ConstNode(((Integer) lc) - ((Integer) rc));
-            } else if (e instanceof MultiplicationNode) {
-                if (isZero(lc) || isZero(rc)) return new ConstNode(0);
-                if (isOne(lc)) return r;
-                if (isOne(rc)) return l;
-                if (lc instanceof Integer && rc instanceof Integer) return new ConstNode(((Integer) lc) * ((Integer) rc));
-            } else if (e instanceof DivisionNode) {
-                if (isZero(lc)) return new ConstNode(0);
-                if (isOne(rc)) return l;
-                if (lc instanceof Integer && rc instanceof Integer) {
-                    int den = (Integer) rc;
-                    if (den != 0) return new ConstNode(((Integer) lc) / den);
-                }
-            } else { // exponent
-                if (isOne(rc)) return l;
-                if (isZero(rc)) return new ConstNode(1);
-                if (lc instanceof Integer && rc instanceof Integer) {
-                    int base = (Integer) lc, exp = (Integer) rc;
-                    if (exp >= 0) return new ConstNode(ipow(base, exp));
-                }
+            if (isZero(rc)) return l;
+            if (lc instanceof Integer && rc instanceof Integer) {
+                return new ConstNode(((Integer) lc) - ((Integer) rc));
             }
-            return rebuildBinary(e, l, r);
+            return new SubtractionNode(l, r);
+        }
+
+        // Multiplication
+        if (e instanceof MultiplicationNode) {
+            MultiplicationNode n = (MultiplicationNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (isZero(lc) || isZero(rc)) return new ConstNode(0);
+            if (isOne(lc)) return r;
+            if (isOne(rc)) return l;
+            if (lc instanceof Integer && rc instanceof Integer) {
+                return new ConstNode(((Integer) lc) * ((Integer) rc));
+            }
+            return new MultiplicationNode(l, r);
+        }
+
+        // Division
+        if (e instanceof DivisionNode) {
+            DivisionNode n = (DivisionNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (isZero(lc)) return new ConstNode(0);
+            if (isOne(rc)) return l;
+            if (lc instanceof Integer && rc instanceof Integer) {
+                int den = (Integer) rc;
+                if (den != 0) return new ConstNode(((Integer) lc) / den);
+            }
+            return new DivisionNode(l, r);
+        }
+
+        // Exponentiation
+        if (e instanceof ExponentiationNode) {
+            ExponentiationNode n = (ExponentiationNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (isOne(rc)) return l;
+            if (isZero(rc)) return new ConstNode(1);
+            if (lc instanceof Integer && rc instanceof Integer) {
+                int base = (Integer) lc, exp = (Integer) rc;
+                if (exp >= 0) return new ConstNode(ipow(base, exp));
+            }
+            return new ExponentiationNode(l, r);
+        }
+
+        // Comparisons
+        if (e instanceof EqualsNode) {
+            EqualsNode n = (EqualsNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (lc != null && rc != null) {
+                return new ConstNode(Objects.equals(lc, rc));
+            }
+            return new EqualsNode(l, r);
+        }
+
+        if (e instanceof NotEqualsNode) {
+            NotEqualsNode n = (NotEqualsNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (lc != null && rc != null) {
+                return new ConstNode(!Objects.equals(lc, rc));
+            }
+            return new NotEqualsNode(l, r);
+        }
+
+        if (e instanceof GreaterThanNode) {
+            GreaterThanNode n = (GreaterThanNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (lc instanceof Integer && rc instanceof Integer) {
+                return new ConstNode(((Integer) lc) > ((Integer) rc));
+            }
+            return new GreaterThanNode(l, r);
+        }
+
+        if (e instanceof LessThanNode) {
+            LessThanNode n = (LessThanNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (lc instanceof Integer && rc instanceof Integer) {
+                return new ConstNode(((Integer) lc) < ((Integer) rc));
+            }
+            return new LessThanNode(l, r);
+        }
+
+        if (e instanceof GreaterEqualNode) {
+            GreaterEqualNode n = (GreaterEqualNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (lc instanceof Integer && rc instanceof Integer) {
+                return new ConstNode(((Integer) lc) >= ((Integer) rc));
+            }
+            return new GreaterEqualNode(l, r);
+        }
+
+        if (e instanceof LessEqualNode) {
+            LessEqualNode n = (LessEqualNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (lc instanceof Integer && rc instanceof Integer) {
+                return new ConstNode(((Integer) lc) <= ((Integer) rc));
+            }
+            return new LessEqualNode(l, r);
+        }
+
+        if (e instanceof EqualsFuncNode) {
+            EqualsFuncNode n = (EqualsFuncNode) e;
+            ExprNode l = optimizeExpr(getBinaryLeft(n), env);
+            ExprNode r = optimizeExpr(getBinaryRight(n), env);
+            Object lc = constValue(l), rc = constValue(r);
+            if (lc != null && rc != null) {
+                return new ConstNode(Objects.equals(lc, rc));
+            }
+            return new EqualsFuncNode(l, r);
         }
 
         // N-ary functions
@@ -394,11 +516,11 @@ public final class AstOptimizer {
             SumNode n = (SumNode) e;
             ExprNode first = optimizeExpr(n.getFirst(), env);
             List<ExprNode> rest = optimizeExprList(n.getRest(), env);
-            List<ExprNode> all = new ArrayList<>();
+            List<ExprNode> all = new ArrayList<ExprNode>();
             all.add(first);
             all.addAll(rest);
             int acc = 0;
-            List<ExprNode> terms = new ArrayList<>();
+            List<ExprNode> terms = new ArrayList<ExprNode>();
             for (ExprNode t : all) {
                 Object c = constValue(t);
                 if (c instanceof Integer) acc += (Integer) c;
@@ -414,7 +536,6 @@ public final class AstOptimizer {
             DifferenceNode n = (DifferenceNode) e;
             ExprNode first = optimizeExpr(n.getFirst(), env);
             List<ExprNode> rest = optimizeExprList(n.getRest(), env);
-            // If all constants, fold
             Object acc = constValue(first);
             boolean allConst = acc instanceof Integer;
             int v = allConst ? (Integer) acc : 0;
@@ -433,11 +554,11 @@ public final class AstOptimizer {
             ProductNode n = (ProductNode) e;
             ExprNode first = optimizeExpr(n.getFirst(), env);
             List<ExprNode> rest = optimizeExprList(n.getRest(), env);
-            List<ExprNode> all = new ArrayList<>();
+            List<ExprNode> all = new ArrayList<ExprNode>();
             all.add(first);
             all.addAll(rest);
             int acc = 1;
-            List<ExprNode> terms = new ArrayList<>();
+            List<ExprNode> terms = new ArrayList<ExprNode>();
             for (ExprNode t : all) {
                 Object c = constValue(t);
                 if (c instanceof Integer) {
@@ -460,91 +581,35 @@ public final class AstOptimizer {
             return new RandomNode(optimizeExpr(n.getExpr(), env));
         }
 
-        // Fallback: unknown node types, try generic binary rebuild
         return e;
     }
 
     private static List<ExprNode> optimizeExprList(List<ExprNode> list, Env env) {
-        List<ExprNode> out = new ArrayList<>(list.size());
+        List<ExprNode> out = new ArrayList<ExprNode>(list.size());
         for (ExprNode e : list) out.add(optimizeExpr(e, env));
         return out;
     }
 
-    private static ExprNode binaryLeft(ExprNode e, Env env) {
-        if (e instanceof BinaryExprNode) {
-            BinaryExprNode b = (BinaryExprNode) e;
-            return optimizeExpr(b.getLeft(), env);
+    // -------------------- Helpers para nodos binarios --------------------
+    
+    private static ExprNode getBinaryLeft(ExprNode e) {
+        try {
+            java.lang.reflect.Field f = e.getClass().getDeclaredField("left");
+            f.setAccessible(true);
+            return (ExprNode) f.get(e);
+        } catch (Exception ex) {
+            return null;
         }
-        // Fallback per type
-        if (e instanceof AdditionNode) return optimizeExpr(((AdditionNode) e).getLeft(), env);
-        if (e instanceof SubtractionNode) return optimizeExpr(((SubtractionNode) e).getLeft(), env);
-        if (e instanceof MultiplicationNode) return optimizeExpr(((MultiplicationNode) e).getLeft(), env);
-        if (e instanceof DivisionNode) return optimizeExpr(((DivisionNode) e).getLeft(), env);
-        if (e instanceof ExponentiationNode) return optimizeExpr(((ExponentiationNode) e).getLeft(), env);
-        if (e instanceof EqualsNode) return optimizeExpr(((EqualsNode) e).getLeft(), env);
-        if (e instanceof NotEqualsNode) return optimizeExpr(((NotEqualsNode) e).getLeft(), env);
-        if (e instanceof GreaterThanNode) return optimizeExpr(((GreaterThanNode) e).getLeft(), env);
-        if (e instanceof LessThanNode) return optimizeExpr(((LessThanNode) e).getLeft(), env);
-        if (e instanceof GreaterEqualNode) return optimizeExpr(((GreaterEqualNode) e).getLeft(), env);
-        if (e instanceof LessEqualNode) return optimizeExpr(((LessEqualNode) e).getLeft(), env);
-        if (e instanceof EqualsFuncNode) return optimizeExpr(((EqualsFuncNode) e).getLeft(), env);
-        return null;
     }
-
-    private static ExprNode binaryRight(ExprNode e, Env env) {
-        if (e instanceof BinaryExprNode) {
-            BinaryExprNode b = (BinaryExprNode) e;
-            return optimizeExpr(b.getRight(), env);
+    
+    private static ExprNode getBinaryRight(ExprNode e) {
+        try {
+            java.lang.reflect.Field f = e.getClass().getDeclaredField("right");
+            f.setAccessible(true);
+            return (ExprNode) f.get(e);
+        } catch (Exception ex) {
+            return null;
         }
-        if (e instanceof AdditionNode) return optimizeExpr(((AdditionNode) e).getRight(), env);
-        if (e instanceof SubtractionNode) return optimizeExpr(((SubtractionNode) e).getRight(), env);
-        if (e instanceof MultiplicationNode) return optimizeExpr(((MultiplicationNode) e).getRight(), env);
-        if (e instanceof DivisionNode) return optimizeExpr(((DivisionNode) e).getRight(), env);
-        if (e instanceof ExponentiationNode) return optimizeExpr(((ExponentiationNode) e).getRight(), env);
-        if (e instanceof EqualsNode) return optimizeExpr(((EqualsNode) e).getRight(), env);
-        if (e instanceof NotEqualsNode) return optimizeExpr(((NotEqualsNode) e).getRight(), env);
-        if (e instanceof GreaterThanNode) return optimizeExpr(((GreaterThanNode) e).getRight(), env);
-        if (e instanceof LessThanNode) return optimizeExpr(((LessThanNode) e).getRight(), env);
-        if (e instanceof GreaterEqualNode) return optimizeExpr(((GreaterEqualNode) e).getRight(), env);
-        if (e instanceof LessEqualNode) return optimizeExpr(((LessEqualNode) e).getRight(), env);
-        if (e instanceof EqualsFuncNode) return optimizeExpr(((EqualsFuncNode) e).getRight(), env);
-        return null;
-    }
-
-    private static ExprNode rebuildBinary(ExprNode proto, ExprNode l, ExprNode r) {
-        if (proto instanceof AdditionNode) return new AdditionNode(l, r);
-        if (proto instanceof SubtractionNode) return new SubtractionNode(l, r);
-        if (proto instanceof MultiplicationNode) return new MultiplicationNode(l, r);
-        if (proto instanceof DivisionNode) return new DivisionNode(l, r);
-        if (proto instanceof ExponentiationNode) return new ExponentiationNode(l, r);
-        if (proto instanceof EqualsNode) return new EqualsNode(l, r);
-        if (proto instanceof NotEqualsNode) return new NotEqualsNode(l, r);
-        if (proto instanceof GreaterThanNode) return new GreaterThanNode(l, r);
-        if (proto instanceof LessThanNode) return new LessThanNode(l, r);
-        if (proto instanceof GreaterEqualNode) return new GreaterEqualNode(l, r);
-        if (proto instanceof LessEqualNode) return new LessEqualNode(l, r);
-        if (proto instanceof EqualsFuncNode) return new EqualsFuncNode(l, r);
-        if (proto instanceof LogicalAndNode) return new LogicalAndNode(l, r);
-        if (proto instanceof LogicalOrNode) return new LogicalOrNode(l, r);
-        return proto;
-    }
-
-    private static Boolean evalCompare(ExprNode kind, Object l, Object r) {
-        // Only ints, booleans, strings supported
-        if (kind instanceof EqualsNode || kind instanceof EqualsFuncNode) {
-            return Objects.equals(l, r);
-        }
-        if (kind instanceof NotEqualsNode) {
-            return !Objects.equals(l, r);
-        }
-        if (l instanceof Integer && r instanceof Integer) {
-            int a = (Integer) l, b = (Integer) r;
-            if (kind instanceof GreaterThanNode) return a > b;
-            if (kind instanceof LessThanNode) return a < b;
-            if (kind instanceof GreaterEqualNode) return a >= b;
-            if (kind instanceof LessEqualNode) return a <= b;
-        }
-        return null;
     }
 
     private static boolean isZero(Object c) { return c instanceof Integer && ((Integer) c) == 0; }
@@ -569,7 +634,7 @@ public final class AstOptimizer {
     // -------------------- Env --------------------
 
     private static final class Env {
-        private final Map<String, Object> map = new HashMap<>();
+        private final Map<String, Object> map = new HashMap<String, Object>();
 
         Env fork() {
             Env e = new Env();

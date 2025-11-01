@@ -1,12 +1,15 @@
-// Test procedimiento simple con parámetros
-haz dummy 0
+// Test simple de Repite
+// Dibuja un cuadrado básico
 
-Para cuadrado [lado] [
-    Repite 4 [
-        avanza lado
-        giraderecha 90
-    ]
-] fin
+Haz lado 100
 
 centro
-cuadrado 80
+bajalapiz
+
+// Un solo ciclo Repite
+Repite 4 [
+  avanza lado
+  giraderecha 90
+]
+
+subelapiz

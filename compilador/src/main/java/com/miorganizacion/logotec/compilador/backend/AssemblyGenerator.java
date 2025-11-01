@@ -344,10 +344,16 @@ public class AssemblyGenerator {
         Operand dest = ir.getDest();
         Operand source = ir.getOp1();
         
-        Register destReg = regAlloc.getRegister(dest.getValue());
-        Register srcReg = regAlloc.getRegister(source.getValue());
-        
-        emit(AssemblyInstruction.move(destReg, srcReg));
+        // Si source es constante, necesitamos cargarla primero
+        if (source.isConstant()) {
+            Register destReg = regAlloc.getRegister(dest.getValue());
+            double value = source.getNumericValue();
+            emit(AssemblyInstruction.li(destReg, (int) value));
+        } else {
+            Register destReg = regAlloc.getRegister(dest.getValue());
+            Register srcReg = regAlloc.getRegister(source.getValue());
+            emit(AssemblyInstruction.move(destReg, srcReg));
+        }
     }
     
     private void translateBinaryOp(ThreeAddressInstruction ir, AssemblyOpcode asmOp) {
@@ -356,8 +362,23 @@ public class AssemblyGenerator {
         Operand op2 = ir.getOp2();
         
         Register destReg = regAlloc.getRegister(dest.getValue());
-        Register src1Reg = regAlloc.getRegister(op1.getValue());
-        Register src2Reg = regAlloc.getRegister(op2.getValue());
+        
+        // Manejar caso donde op1 o op2 son constantes
+        Register src1Reg;
+        if (op1.isConstant()) {
+            src1Reg = Register.T8; // Usar temporal
+            emit(AssemblyInstruction.li(src1Reg, (int) op1.getNumericValue()));
+        } else {
+            src1Reg = regAlloc.getRegister(op1.getValue());
+        }
+        
+        Register src2Reg;
+        if (op2.isConstant()) {
+            src2Reg = Register.T9; // Usar otro temporal
+            emit(AssemblyInstruction.li(src2Reg, (int) op2.getNumericValue()));
+        } else {
+            src2Reg = regAlloc.getRegister(op2.getValue());
+        }
         
         emit(new AssemblyInstruction(asmOp, 
             Arrays.asList(destReg.getName(), src1Reg.getName(), src2Reg.getName())));
@@ -445,18 +466,15 @@ public class AssemblyGenerator {
     
     private void translateSetColor(ThreeAddressInstruction ir) {
         emit(AssemblyInstruction.comment("SET_COLOR(r, g, b)"));
-        
+
         Operand r = ir.getDest();
         Operand g = ir.getOp1();
         Operand b = ir.getOp2();
-        
-        Register rReg = regAlloc.getRegister(r.getValue());
-        Register gReg = regAlloc.getRegister(g.getValue());
-        Register bReg = regAlloc.getRegister(b.getValue());
-        
-        emit(AssemblyInstruction.move(Register.A0, rReg));
-        emit(AssemblyInstruction.move(Register.A1, gReg));
-        emit(AssemblyInstruction.move(Register.A2, bReg));
+
+        moveOperandToArg(Register.A0, r);
+        moveOperandToArg(Register.A1, g);
+        moveOperandToArg(Register.A2, b);
+
         emit(AssemblyInstruction.li(Register.V0, 9));
         emit(AssemblyInstruction.syscall(9));
     }
@@ -598,5 +616,19 @@ public class AssemblyGenerator {
      */
     public RegisterAllocator getRegisterAllocator() {
         return regAlloc;
+    }
+    
+    private void moveOperandToArg(Register target, Operand value) {
+        if (value == null) {
+            emit(AssemblyInstruction.li(target, 0));
+            return;
+        }
+
+        if (value.isConstant()) {
+            emit(AssemblyInstruction.li(target, (int) value.getNumericValue()));
+        } else {
+            Register valueReg = regAlloc.getRegister(value.getValue());
+            emit(AssemblyInstruction.move(target, valueReg));
+        }
     }
 }

@@ -22,6 +22,9 @@ public class SubtractionNode implements ExprNode {
         return ((Number) l).doubleValue() - ((Number) r).doubleValue();
     }
 
+    public ExprNode getLeft() { return left; }
+    public ExprNode getRight() { return right; }
+
     @Override
     public String toString() {
         return "(" + left + " - " + right + ")";

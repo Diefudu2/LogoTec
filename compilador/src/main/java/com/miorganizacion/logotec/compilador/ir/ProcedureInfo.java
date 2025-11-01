@@ -1,44 +1,37 @@
 package com.miorganizacion.logotec.compilador.ir;
 
-import java.util.List;
-
 /**
- * Información sobre un procedimiento declarado en el programa.
- * Utilizado por ASTtoIRTranslator para gestionar declaraciones y llamadas.
+ * Información sobre un procedimiento para la generación de IR.
  */
 public class ProcedureInfo {
     private final String name;
-    private final List<String> parameters;
-    private final String label;
+    private final int paramCount;
+    private String label;
     
-    public ProcedureInfo(String name, List<String> parameters, String label) {
+    public ProcedureInfo(String name, int paramCount) {
         this.name = name;
-        this.parameters = parameters;
-        this.label = label;
+        this.paramCount = paramCount;
+        this.label = "proc_" + name;
     }
     
     public String getName() {
         return name;
     }
     
-    public List<String> getParameters() {
-        return parameters;
+    public int getParamCount() {
+        return paramCount;
     }
     
     public String getLabel() {
         return label;
     }
     
-    public int getParameterCount() {
-        return parameters.size();
-    }
-    
-    public int getParameterIndex(String paramName) {
-        return parameters.indexOf(paramName);
+    public void setLabel(String label) {
+        this.label = label;
     }
     
     @Override
     public String toString() {
-        return "Procedure{" + name + "(" + String.join(", ", parameters) + ") @ " + label + "}";
+        return "ProcedureInfo{name='" + name + "', params=" + paramCount + ", label='" + label + "'}";
     }
 }

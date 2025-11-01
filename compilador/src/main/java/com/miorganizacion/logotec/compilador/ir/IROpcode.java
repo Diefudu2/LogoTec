@@ -1,151 +1,72 @@
 package com.miorganizacion.logotec.compilador.ir;
 
 /**
- * Enum que define todos los opcodes (códigos de operación) soportados
- * en la Representación Intermedia (IR) de tres direcciones.
+ * Códigos de operación para la Representación Intermedia (IR).
  */
 public enum IROpcode {
-    // ==================== OPERACIONES DE MOVIMIENTO ====================
-    /** Cargar un valor constante: LOAD_CONST dest, #valor */
-    LOAD_CONST,
+    // Movimiento de datos
+    LOAD_CONST,     // dest = #const
+    LOAD_VAR,       // dest = [var]
+    STORE,          // [var] = src
+    MOVE,           // dest = src
     
-    /** Cargar desde una variable: LOAD_VAR dest, [variable] */
-    LOAD_VAR,
+    // Aritméticas
+    ADD,            // dest = src1 + src2
+    SUB,            // dest = src1 - src2
+    MUL,            // dest = src1 * src2
+    DIV,            // dest = src1 / src2
+    MOD,            // dest = src1 % src2
+    POW,            // dest = src1 ^ src2
+    NEG,            // dest = -src
     
-    /** Almacenar en una variable: STORE [variable], source */
-    STORE,
+    // Comparaciones
+    LT,             // dest = src1 < src2
+    GT,             // dest = src1 > src2
+    LTE,            // dest = src1 <= src2
+    GTE,            // dest = src1 >= src2
+    EQ,             // dest = src1 == src2
+    NEQ,            // dest = src1 != src2
     
-    /** Mover entre temporales: MOVE dest, source */
-    MOVE,
+    // Lógicas
+    AND,            // dest = src1 && src2
+    OR,             // dest = src1 || src2
+    NOT,            // dest = !src
     
-    // ==================== OPERACIONES ARITMÉTICAS ====================
-    /** Suma: ADD dest, op1, op2 */
-    ADD,
+    // Control de flujo
+    LABEL,          // label:
+    JUMP,           // goto label
+    JUMP_IF_TRUE,   // if (cond) goto label
+    JUMP_IF_FALSE,  // if (!cond) goto label
     
-    /** Resta: SUB dest, op1, op2 */
-    SUB,
+    // Procedimientos
+    PROC_BEGIN,     // inicio de procedimiento
+    PROC_END,       // fin de procedimiento
+    CALL,           // llamar procedimiento
+    RETURN,         // retornar de procedimiento
+    PARAM,          // pasar parámetro
+    GET_ARG,        // obtener argumento
     
-    /** Multiplicación: MUL dest, op1, op2 */
-    MUL,
+    // Comandos de tortuga
+    FORWARD,        // avanzar
+    BACKWARD,       // retroceder
+    TURN_RIGHT,     // girar derecha
+    TURN_LEFT,      // girar izquierda
+    PEN_UP,         // subir lápiz
+    PEN_DOWN,       // bajar lápiz
+    CENTER,         // centrar
+    SET_POS,        // establecer posición (x, y)
+    SET_X,          // establecer X
+    SET_Y,          // establecer Y
+    SET_HEADING,    // establecer rumbo
+    SET_COLOR,      // establecer color (r, g, b)
+    HIDE_TURTLE,    // ocultar tortuga
+    SHOW_TURTLE,    // mostrar tortuga
+    WAIT,           // esperar
     
-    /** División: DIV dest, op1, op2 */
-    DIV,
+    // Funciones
+    RANDOM,         // número aleatorio
     
-    /** Módulo: MOD dest, op1, op2 */
-    MOD,
-    
-    /** Potencia: POW dest, base, exponente */
-    POW,
-    
-    /** Negación unaria: NEG dest, op */
-    NEG,
-    
-    // ==================== OPERACIONES DE COMPARACIÓN ====================
-    /** Igual a: EQ dest, op1, op2 */
-    EQ,
-    
-    /** Diferente de: NEQ dest, op1, op2 */
-    NEQ,
-    
-    /** Menor que: LT dest, op1, op2 */
-    LT,
-    
-    /** Mayor que: GT dest, op1, op2 */
-    GT,
-    
-    /** Menor o igual que: LTE dest, op1, op2 */
-    LTE,
-    
-    /** Mayor o igual que: GTE dest, op1, op2 */
-    GTE,
-    
-    // ==================== OPERACIONES LÓGICAS ====================
-    /** AND lógico: AND dest, op1, op2 */
-    AND,
-    
-    /** OR lógico: OR dest, op1, op2 */
-    OR,
-    
-    /** NOT lógico: NOT dest, op */
-    NOT,
-    
-    // ==================== CONTROL DE FLUJO ====================
-    /** Etiqueta: LABEL nombre */
-    LABEL,
-    
-    /** Salto incondicional: JUMP etiqueta */
-    JUMP,
-    
-    /** Salto condicional si es falso: JUMP_IF_FALSE etiqueta, condicion */
-    JUMP_IF_FALSE,
-    
-    /** Salto condicional si es verdadero: JUMP_IF_TRUE etiqueta, condicion */
-    JUMP_IF_TRUE,
-    
-    // ==================== COMANDOS DE TORTUGA ====================
-    /** Avanzar: FORWARD distancia */
-    FORWARD,
-    
-    /** Retroceder: BACKWARD distancia */
-    BACKWARD,
-    
-    /** Girar a la derecha: TURN_RIGHT grados */
-    TURN_RIGHT,
-    
-    /** Girar a la izquierda: TURN_LEFT grados */
-    TURN_LEFT,
-    
-    /** Bajar el lápiz: PEN_DOWN */
-    PEN_DOWN,
-    
-    /** Levantar el lápiz: PEN_UP */
-    PEN_UP,
-    
-    /** Centrar la tortuga: CENTER */
-    CENTER,
-    
-    /** Establecer color: SET_COLOR r, g, b */
-    SET_COLOR,
-    
-    /** Establecer posición: SET_POS x, y */
-    SET_POS,
-    
-    /** Ocultar tortuga: HIDE_TURTLE */
-    HIDE_TURTLE,
-    
-    /** Mostrar tortuga: SHOW_TURTLE */
-    SHOW_TURTLE,
-    
-    /** Establecer rumbo: SET_HEADING grados */
-    SET_HEADING,
-    
-    // ==================== OPERACIONES DE I/O ====================
-    /** Imprimir valor: PRINT valor */
-    PRINT,
-    
-    // ==================== OPERACIONES ESPECIALES ====================
-    /** No operación (placeholder): NOP */
-    NOP,
-    
-    /** Comentario en el IR: COMMENT texto */
-    COMMENT,
-    
-    // ==================== PROCEDIMIENTOS Y FUNCIONES ====================
-    /** Inicio de definición de procedimiento: PROC_BEGIN nombre */
-    PROC_BEGIN,
-    
-    /** Fin de definición de procedimiento: PROC_END nombre */
-    PROC_END,
-    
-    /** Llamada a procedimiento: CALL dest, nombre, num_args */
-    CALL,
-    
-    /** Retorno de procedimiento: RETURN [valor_opcional] */
-    RETURN,
-    
-    /** Parámetro de procedimiento: PARAM index, valor */
-    PARAM,
-    
-    /** Obtener argumento: GET_ARG dest, index */
-    GET_ARG
+    // Especiales
+    NOP,            // no operación
+    COMMENT         // comentario
 }

@@ -7,4 +7,6 @@ public class NotEqualsNode implements ExprNode {
     @Override public Object execute(Map<String,Object> st) {
         return !new EqualsNode(left,right).execute(st).equals(true);
     }
+    public ExprNode getLeft() { return left; }
+    public ExprNode getRight() { return right; }
 }
