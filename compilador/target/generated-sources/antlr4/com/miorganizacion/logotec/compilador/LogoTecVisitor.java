@@ -200,4 +200,10 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCmtFirstLine(LogoTecParser.CmtFirstLineContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LogoTecParser#invalidComment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInvalidComment(LogoTecParser.InvalidCommentContext ctx);
 }

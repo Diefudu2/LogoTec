@@ -1,0 +1,176 @@
+// Archivo para validar restricciones SEMÁNTICAS
+// Sintaxis correcta, pero semántica incorrecta
+
+Para principal []
+
+// Declaraciones válidas
+Haz num1 10
+Haz texto1 "Hola"
+Haz booleano1 TRUE
+
+//Error6: INIC numérica con booleano
+INIC num1 = TRUE;
+
+//Error7: INIC numérica con string
+INIC num1 = "Hola";
+
+//Error8: INIC string con booleano
+INIC texto1 = FALSE;
+
+//Error10: INIC string con número
+INIC texto1 = 42;
+
+//Error11: INIC booleana con número
+INIC booleano1 = 5;
+
+//Error11b: INIC booleana con string
+INIC booleano1 = "Si";
+
+//Error12: INIC variable no declarada
+INIC varNoExiste = 100;
+
+//Error13: INC variable no declarada
+INC [varInexistente]
+
+//Error14: INC variable booleana
+INC [booleano1]
+
+//Error15: INC variable string
+INC [texto1]
+
+//Error16: INC con string
+INC [num1 "UNO"]
+
+//Error16.5: INC con booleano
+INC [num1 TRUE]
+
+//Error17: INC con variable string
+INC [num1 texto1]
+
+//Error18: INC con variable booleana
+INC [num1 booleano1]
+
+//Error19: AVANZA con string
+AVANZA "10"
+
+//Error20: AV con boolean
+AV TRUE
+
+//Error21: RETROCEDE con string
+RETROCEDE "10"
+
+//Error22: RE con booleano
+RE FALSE
+
+//Error23: GIRADERECHA con string
+GIRADERECHA "90"
+
+//Error24: GD con booleano
+GD FALSE
+
+//Error25: GIRAIZQUIERDA con string
+GIRAIZQUIERDA "90"
+
+//Error26: GI con booleano
+GI TRUE
+
+//Error27: PONPOS con string
+PONPOS [100 "0"]
+
+//Error28: PONXY con booleano
+PONXY TRUE 0
+
+//Error29: PONRUMBO con string
+PONRUMBO "90"
+
+//Error30: PONRUMBO con booleano
+PONRUMBO TRUE
+
+//Error31: PONX con string
+PONX "100"
+
+//Error32: PONY con booleano
+PONY TRUE
+
+//Error33: PONCOLORLAPIZ con string
+PONCOLORLAPIZ ["azul" "azul" "azul"]
+
+//Error34: PONCL con booleano
+PONCL [TRUE TRUE TRUE]
+
+// Variables para pruebas de control
+Haz condicion 0
+Haz contador 0
+
+//Error35: REPITE sin expresión
+// (esto es sintáctico, no va aquí)
+
+//Error36: SI con string
+SI ("hola") [AVANZA 10]
+
+//Error37: SI con número
+SI (10) [RETROCEDE 10]
+
+//Error38: SI con dos bloques ELSE
+SI (condicion == 1)
+[AVANZA 10]
+[RETROCEDE 5]
+[GIRADERECHA 90]
+
+//Error39: HAZ.HASTA bloque vacío
+HAZ.HASTA []
+HASTA (contador == 5)
+
+//Error40: HAZ.HASTA sin condición
+HAZ.HASTA [
+    AVANZA 10
+]
+
+//Error41: HAZ.MIENTRAS bloque vacío
+HAZ.MIENTRAS []
+MIENTRAS (contador == 5)
+
+//Error42: HAZ.MIENTRAS sin condición
+HAZ.MIENTRAS [
+    RETROCEDE 10
+]
+
+//Error43: MIENTRAS bloque vacío
+MIENTRAS (contador == 5) []
+
+//Error44: HASTA bloque vacío
+HASTA (contador == 5) []
+
+//Error45: Iguales? con 1 parámetro
+INIC booleano1 = IGUALESQ (10);
+
+//Error46: Iguales? retorna bool en variable numérica
+INIC num1 = IGUALESQ (10 10);
+
+//Error47: Iguales? retorna bool en variable string
+INIC texto1 = IGUALESQ (10 10);
+
+//Error48: Y con 1 parámetro
+INIC booleano1 = Y (10 > 2);
+
+//Error49: O retorna bool en variable numérica
+INIC num1 = O (10 > 2 2 > 5);
+
+//Error50: MayorQue? con string
+INIC num1 = MAYORQ (10 "5");
+
+//Error51: Diferencia con strings
+GIRADERECHA DIFERENCIA ("100" "45")
+
+//Error52: AZAR con booleano
+GIRAIZQUIERDA AZAR (TRUE)
+
+FIN
+
+//Error53: Procedimiento duplicado
+Para principal []
+    AVANZA 10
+FIN
+
+// Llamada al procedimiento
+principal

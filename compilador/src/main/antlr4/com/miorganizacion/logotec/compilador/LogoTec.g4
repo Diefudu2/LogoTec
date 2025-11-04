@@ -1,16 +1,24 @@
 grammar LogoTec;
 
+/* 1 ------------------- Encabezado del parser ------------------- */
 @parser::header{
     import java.util.*;
     import com.miorganizacion.logotec.compilador.ast.*;
 }
+
 @parser::members{
-    Map<String, Symbol> symbols = new HashMap<>(); 
+/* 2 ------------------- Variables de estado ------------------- */
+    Map<String, Symbol> symbols = new HashMap<>();
     List<String> errors = new ArrayList<>();
     boolean firstLineHasComment = false;
     boolean atLeastOneVariable = false;
 
-    // Nuevo: llamadas a procedimientos pendientes para validar al final
+/* 3 ------------------- Utilidad para línea actual ------------------- */
+    int currentLine() {
+        return getCurrentToken() != null ? getCurrentToken().getLine() : -1;
+    }
+
+/* 4 ------------------- Manejo de llamadas pendientes ------------------- */
     static class PendingCall {
         final String name;
         final int argCount;
@@ -23,32 +31,35 @@ grammar LogoTec;
     }
     List<PendingCall> pendingCalls = new ArrayList<>();
 
+/* 5 ------------------- Validación de restricciones del programa ------------------- */
     void ensureProgramConstraints() {
-        // Ya no fallar por falta de comentario en la primera línea.
+        if (!firstLineHasComment) {
+            errors.add("Error en línea 1: el programa debe iniciar con un comentario (// ...).");
+        }
         if (!atLeastOneVariable) {
             errors.add("Error: el programa debe definir al menos una variable con 'Haz' o 'INIC'.");
         }
-        // Validar llamadas pendientes a procedimientos (soporta referencias adelantadas)
         for (PendingCall pc : pendingCalls) {
             Symbol s = symbols.get(pc.name);
             if (s == null) {
-                errors.add("Error semántico: procedimiento '" + pc.name + "' no está definido.");
+                errors.add("Error en línea " + pc.line + ": procedimiento '" + pc.name + "' no está definido.");
             } else if (s.type != ValueType.PROCEDURE) {
-                errors.add("Error semántico: '" + pc.name + "' no es un procedimiento.");
+                errors.add("Error en línea " + pc.line + ": '" + pc.name + "' no es un procedimiento.");
             } else {
                 int expectedParams = (Integer) s.value;
                 if (pc.argCount != expectedParams) {
-                    errors.add("Error semántico: procedimiento '" + pc.name + "' espera " + expectedParams + " parámetros, pero se llamó con " + pc.argCount + ".");
+                    errors.add("Error en línea " + pc.line + ": procedimiento '" + pc.name + "' espera " + expectedParams +
+                               " parámetros, pero se llamó con " + pc.argCount + ".");
                 }
             }
         }
         pendingCalls.clear();
-
         if (!errors.isEmpty()) {
             throw new RuntimeException(String.join("\n", errors));
         }
     }
 
+/* 6 ------------------- Validación de nombres de variables ------------------- */
     boolean isValidVarName(String id) {
         if (id.length() == 0 || id.length() > 10) return false;
         if (!Character.isLowerCase(id.charAt(0))) return false;
@@ -57,10 +68,22 @@ grammar LogoTec;
         }
         return true;
     }
+    
+    /**
+     * Valida longitud de identificador en cualquier contexto.
+     * Restricción #3
+     */
+    void validateIdentifierLength(String id, int line) {
+        if (id.length() > 10) {
+            errors.add("Error en línea " + line + 
+                       ": identificador '" + id + "' excede el límite de 10 caracteres (tiene " + id.length() + ").");
+        }
+    }
 
+/* 7 ------------------- Declaración y asignación de variables ------------------- */
     void declareOrAssign(String name, ValueType type, Object value) {
         if (!isValidVarName(name)) {
-            errors.add("Error léxico: identificador inválido '" + name + "'.");
+            errors.add("Error en línea " + currentLine() + ": identificador inválido '" + name + "'.");
             return;
         }
         Symbol s = symbols.get(name);
@@ -69,21 +92,45 @@ grammar LogoTec;
             atLeastOneVariable = true;
         } else {
             if (s.type != type) {
-                errors.add("Error semántico: intento de asignar " + type + " a variable '" + name + "' de tipo " + s.type + ".");
+                errors.add("Error en línea " + currentLine() + ": intento de asignar " + type +
+                           " a variable '" + name + "' de tipo " + s.type + ".");
             } else {
                 s.value = value;
             }
         }
     }
 
+/* 8 ------------------- GRUPO 2: INIC solo inicializa ------------------- */
+    void assignInitOnlyIfDeclared(String name, ValueType valueType, ExprNode exprNode) {
+        int line = currentLine();
+        if (!isValidVarName(name)) {
+            errors.add("Error en línea " + line + ": identificador inválido '" + name + "'.");
+            return;
+        }
+        Symbol s = symbols.get(name);
+        if (s == null) {
+            errors.add("Error en línea " + line +
+                       ": variable '" + name + "' no ha sido declarada antes de inicializar.");
+            return;
+        }
+        if (s.type != valueType) {
+            errors.add("Error en línea " + line +
+                       ": intento de asignar " + valueType + " a variable '" + name +
+                       "' de tipo " + s.type + ".");
+            return;
+        }
+        s.value = exprNode;
+    }
+
+/* 9 ------------------- Declaración de procedimientos ------------------- */
     void predeclareProcedure(String name) {
         Symbol s = symbols.get(name);
         if (s == null) {
             symbols.put(name, new Symbol(name, ValueType.PROCEDURE, null));
         } else if (s.type == ValueType.PROCEDURE && s.value == null) {
-            errors.add("Error semántico: procedimiento '" + name + "' ya está en proceso de definición.");
+            errors.add("Error en línea " + currentLine() + ": procedimiento '" + name + "' ya está en proceso de definición.");
         } else {
-            errors.add("Error semántico: símbolo '" + name + "' ya está definido y no puede volver a declararse como procedimiento.");
+            errors.add("Error en línea " + currentLine() + ": símbolo '" + name + "' ya está definido y no puede declararse como procedimiento.");
         }
     }
 
@@ -92,53 +139,154 @@ grammar LogoTec;
         if (s == null) {
             symbols.put(name, new Symbol(name, ValueType.PROCEDURE, paramCount));
         } else if (s.type != ValueType.PROCEDURE) {
-            errors.add("Error semántico: símbolo '" + name + "' ya está definido y no es un procedimiento.");
+            errors.add("Error en línea " + currentLine() + ": símbolo '" + name + "' ya está definido y no es un procedimiento.");
         } else if (s.value == null) {
             s.value = paramCount;
         } else {
             int expectedParams = (Integer) s.value;
             if (expectedParams != paramCount) {
-                errors.add("Error semántico: procedimiento '" + name + "' ya está definido con " + expectedParams + " parámetros.");
+                errors.add("Error en línea " + currentLine() + ": procedimiento '" + name +
+                           "' ya está definido con " + expectedParams + " parámetros.");
             }
         }
     }
 
+/* 10 ------------------- Validación de llamadas a procedimientos ------------------- */
     void validateProcedureCall(String name, int argCount) {
         Symbol s = symbols.get(name);
-        // Si no existe aún o está predeclarado sin aridad, difiere la validación
+        int line = currentLine();
         if (s == null || (s.type == ValueType.PROCEDURE && s.value == null)) {
-            pendingCalls.add(new PendingCall(name, argCount, getCurrentToken()!=null ? getCurrentToken().getLine() : -1));
+            pendingCalls.add(new PendingCall(name, argCount, line));
             return;
         }
         if (s.type != ValueType.PROCEDURE) {
-            errors.add("Error semántico: '" + name + "' no es un procedimiento.");
+            errors.add("Error en línea " + line + ": '" + name + "' no es un procedimiento.");
         } else {
             int expectedParams = (Integer) s.value;
             if (argCount != expectedParams) {
-                errors.add("Error semántico: procedimiento '" + name + "' espera " + expectedParams + " parámetros, pero se llamó con " + argCount + ".");
+                errors.add("Error en línea " + line + ": procedimiento '" + name + "' espera " +
+                           expectedParams + " parámetros, pero se llamó con " + argCount + ".");
             }
+        }
+    }
+
+/* 11 ------------------- GRUPO 1: Validación de tipos en expresiones ------------------- */
+    void requireNumericType(ExprNode expr, String commandName) {
+        ValueType t = ValueType.infer(expr, symbols);
+        if (t != ValueType.INT && t != ValueType.UNKNOWN) {
+            errors.add("Error en línea " + currentLine() + 
+                       ": comando '" + commandName + "' requiere argumento numérico, recibió " + t + ".");
+        }
+    }
+
+    void requireBooleanType(ExprNode expr, String context) {
+        ValueType t = ValueType.infer(expr, symbols);
+        if (t != ValueType.BOOL && t != ValueType.UNKNOWN) {
+            errors.add("Error en línea " + currentLine() + 
+                       ": " + context + " requiere expresión booleana, recibió " + t + ".");
+        }
+    }
+
+    void validateIncrement(String varName, ExprNode incrementExpr) {
+        int line = currentLine();
+        Symbol s = symbols.get(varName);
+        if (s == null) {
+            errors.add("Error en línea " + line + 
+                       ": variable '" + varName + "' no declarada.");
+            return;
+        }
+        if (s.type != ValueType.INT) {
+            errors.add("Error en línea " + line + 
+                       ": INC solo puede incrementar variables numéricas, '" + varName + 
+                       "' es de tipo " + s.type + ".");
+        }
+        ValueType incType = ValueType.infer(incrementExpr, symbols);
+        if (incType != ValueType.INT && incType != ValueType.UNKNOWN) {
+            errors.add("Error en línea " + line + 
+                       ": INC requiere incremento numérico, recibió " + incType + ".");
+        }
+    }
+
+    void requireNumericArgs(ExprNode arg1, ExprNode arg2, String funcName) {
+        int line = currentLine();
+        ValueType t1 = ValueType.infer(arg1, symbols);
+        ValueType t2 = arg2 != null ? ValueType.infer(arg2, symbols) : ValueType.INT;
+        if (t1 != ValueType.INT && t1 != ValueType.UNKNOWN) {
+            errors.add("Error en línea " + line + 
+                       ": función '" + funcName + "' requiere argumentos numéricos, primer argumento es " + t1 + ".");
+        }
+        if (arg2 != null && t2 != ValueType.INT && t2 != ValueType.UNKNOWN) {
+            errors.add("Error en línea " + line + 
+                       ": función '" + funcName + "' requiere argumentos numéricos, segundo argumento es " + t2 + ".");
+        }
+    }
+    
+/* GRUPO 3: Validación de bloques de control de flujo */
+    
+    /**
+     * Valida que un bloque de sentencias no esté vacío.
+     * Restricciones #37, #39
+     */
+    void requireNonEmptyBlock(List<StmtNode> body, String blockType) {
+        if (body == null || body.isEmpty()) {
+            errors.add("Error en línea " + currentLine() + 
+                       ": bloque de '" + blockType + "' no puede estar vacío.");
+        }
+    }
+
+    /**
+     * Valida que un SI solo tenga un bloque ELSE (máximo).
+     * Restricción #36
+     */
+    void validateSingleElse(int elseBlockCount, String context) {
+        if (elseBlockCount > 1) {
+            errors.add("Error en línea " + currentLine() + 
+                       ": " + context + " solo puede tener un bloque ELSE, se encontraron " + elseBlockCount + ".");
+        }
+    }
+
+    /**
+     * Valida que HAZ.HASTA/HAZ.MIENTRAS tenga condición.
+     * Restricción #38, #40
+     */
+    void requireCondition(ExprNode condition, String loopType) {
+        if (condition == null) {
+            errors.add("Error en línea " + currentLine() + 
+                       ": '" + loopType + "' requiere una condición entre paréntesis.");
+        }
+    }
+
+    /**
+     * Valida que funciones binarias tengan exactamente 2 argumentos.
+     * Restricción #44
+     */
+    void requireTwoArguments(int argCount, String funcName, int line) {
+        if (argCount != 2) {
+            errors.add("Error en línea " + line + 
+                       ": función '" + funcName + "' requiere exactamente 2 argumentos, recibió " + argCount + ".");
+        }
+    }
+
+    /**
+     * Valida que funciones unarias tengan exactamente 1 argumento.
+     */
+    void requireOneArgument(int argCount, String funcName, int line) {
+        if (argCount != 1) {
+            errors.add("Error en línea " + line + 
+                       ": función '" + funcName + "' requiere exactamente 1 argumento, recibió " + argCount + ".");
         }
     }
 }
 
-/* ------------------- Programa ------------------- 
-Parsea la unidad completa de un fichero LogoTec y construye el nodo raíz 
-del AST (ProgramNode).
-
-Comportamiento:
-Acepta opcionalmente un comentario inicial (cmtFirstLine).
-Procesa un proceduresBlock que puede contener declaraciones de procedimiento y 
-sentencias principales mezcladas.
-Acumula ProcDeclNode en la lista decls y StmtNode en la lista mainBody.
-
-Llama a ensureProgramConstraints() para validar restricciones globales antes 
-de devolver el ProgramNode
-*/
-
+/* ------------------- Programa ------------------- */
 program returns [ProgramNode node]
-    : cmtFirstLine?                // el comentario inicial es OPCIONAL para parsear,
-                                   // pero se valida luego en ensureProgramConstraints()
-      p=proceduresBlock EOF
+    @init {
+        // Validar comentario ANTES de procesar
+        if (!firstLineHasComment) {
+            errors.add("Error en línea 1: el programa debe iniciar con un comentario (// ...).");
+        }
+    }
+    : cmtFirstLine? p=proceduresBlock EOF
       {
         ensureProgramConstraints();
         $node = $p.node;
@@ -152,74 +300,37 @@ proceduresBlock returns [ProgramNode node]
     }
     : (  procedureDecl { decls.add($procedureDecl.node); }
        | sentence      { mainBody.add($sentence.node); }
+       | invalidComment
       )*
-      {
-        $node = new ProgramNode(decls, mainBody);
-      }
-    ;
+      { $node = new ProgramNode(decls, mainBody); }
+   ;
 
-/* ------------------- Procedimientos ------------------- 
-Parsear una declaración de procedimiento y construir su nodo AST (ProcDeclNode).
-Sintaxis: PARA <procName> (lista de parámetros entre corchetes) 
-(cuerpo de sentencias entre corchetes) FIN.
-
-Durante el parseo acumula los nombres de parámetros en params y las sentencias 
-en body.
-
-Marca atLeastOneVariable = true si el procedimiento declara parámetros, 
-contando éstos como variables válidas para las comprobaciones globales.
-
-Al finalizar crea y devuelve new ProcDeclNode(procName, params, body).
-*/
-
+/* ------------------- Procedimientos ------------------- */
 procedureDecl returns [ProcDeclNode node]
-@init { 
-    List<String> params = new ArrayList<>(); 
-    List<StmtNode> body = new ArrayList<>(); 
-}
-: PARA procName=ID
-  { predeclareProcedure($procName.text); }
-  BRACKET_OPEN (param=ID { 
-      params.add($param.getText()); 
-      declareOrAssign($param.text, ValueType.UNKNOWN, null);
-  })* BRACKET_CLOSE
-  { declareProcedure($procName.text, params.size()); }
-  BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
-  FIN
-  {
-    if (!params.isEmpty()) atLeastOneVariable = true;
-    $node = new ProcDeclNode($procName.text, params, body);
-  }
-;
+    @init { 
+        List<String> params = new ArrayList<>(); 
+        List<StmtNode> body = new ArrayList<>(); 
+    }
+    : PARA procName=ID
+      { 
+        validateIdentifierLength($procName.text, $procName.line);
+        predeclareProcedure($procName.text); 
+      }
+      BRACKET_OPEN (param=ID { 
+          validateIdentifierLength($param.text, $param.line);
+          params.add($param.getText()); 
+          declareOrAssign($param.text, ValueType.UNKNOWN, null);
+      })* BRACKET_CLOSE
+      { declareProcedure($procName.text, params.size()); }
+      BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
+      FIN
+      {
+        if (!params.isEmpty()) atLeastOneVariable = true;
+        $node = new ProcDeclNode($procName.text, params, body);
+      }
+ ;
 
-
-/* ------------------- Sentencias ------------------- 
-Define las formas válidas de sentencia en el lenguaje y construir los nodos AST 
-correspondientes (StmtNode).
-
-sentence:
-Alternativa que agrupa todas las formas de sentencia: declaración de variable, asignación, comando de tortuga, control de flujo, bloque de ejecución o llamada a procedimiento.
-Devuelve el nodo específico producido por la subregla seleccionada.
-
-varDecl (HAZ):
-Sintaxis: HAZ <name> <literal|string> [;]
-Infiera el tipo del literal con ValueType.infer(...), registra la variable
-mediante declareOrAssign(...), y devuelve VarDeclNode(name, value).
-Nota: permite punto y coma opcional al final.
-
-varInit (INIC):
-Sintaxis: INIC <name> ASSIGN <expression> ;
-Infiera el tipo de la expresión, registra la asignación con declareOrAssign(...), 
-y devuelve VarAssignNode(name, expression).
-Requiere el punto y coma final para terminar la sentencia.
-
-callProc:
-Sintaxis flexible: <procName> (args entre corchetes) | procName arg1 arg2 ...
-Acumula expresiones de argumento en una lista args y construye 
-ProcCallNode(procName, args).
-Soporta cero o más argumentos; corchetes opcionales según la forma usada.
-*/
-
+/* ------------------- Sentencias ------------------- */
 sentence returns [StmtNode node]
     : hazHastaStmt      { $node = $hazHastaStmt.node; }
     | hazMientrasStmt   { $node = $hazMientrasStmt.node; }
@@ -232,12 +343,12 @@ sentence returns [StmtNode node]
     | mientrasStmt      { $node = $mientrasStmt.node; }
     | repiteBlock       { $node = $repiteBlock.node; }
     | execBlock         { $node = $execBlock.node; }
- ;
+    ;
 
-/* Declaración de variables */
 varDecl returns [StmtNode node]
     : HAZ name=ID value=literalOrString (SEMICOLON)?
       {
+        validateIdentifierLength($name.text, $name.line);
         declareOrAssign($name.text, ValueType.infer($value.node), $value.jval);
         $node = new VarDeclNode($name.text, $value.node);
       }
@@ -246,35 +357,34 @@ varDecl returns [StmtNode node]
 varInit returns [StmtNode node]
     : INIC name=ID ASSIGN expression SEMICOLON
       {
-        ValueType t = ValueType.infer($expression.node);
-        declareOrAssign($name.text, t, null);
+        validateIdentifierLength($name.text, $name.line);
+        ValueType t = ValueType.infer($expression.node, symbols);
+        assignInitOnlyIfDeclared($name.text, t, $expression.node);
         $node = new VarAssignNode($name.text, $expression.node);
       }
     ;
 
-/* Llamada a procedimiento */
 callProc returns [StmtNode node]
     @init { List<ExprNode> args = new ArrayList<>(); }
     : proc=ID
+      {
+        validateIdentifierLength($proc.text, $proc.line);
+      }
       (
-        // Forma 1: con corchetes (tradicional LogoTec)
         BRACKET_OPEN
             ( expression { args.add($expression.node); }
               ( (COMMA)? expression { args.add($expression.node); } )*
             )?
         BRACKET_CLOSE
         |
-        // Forma 2: argumentos directos sin corchetes
-        // SOLO acepta primarios simples (números, variables, expresiones entre paréntesis)
         ( primaryArg { args.add($primaryArg.node); } )*
       )
       {
         validateProcedureCall($proc.text, args.size());
         $node = new ProcCallNode($proc.text, args);
       }
-   ;
+    ;
 
-// Argumento primario simple (para llamadas sin corchetes)
 primaryArg returns [ExprNode node]
     : NUMBER { $node = new ConstNode(Integer.parseInt($NUMBER.text)); }
     | ID { $node = new VarRefNode($ID.text); }
@@ -288,10 +398,7 @@ expressionSeries returns [List<ExprNode> list]
       )?
     ;
 
-/* ------------------- Bloques ------------------- 
-Parsear bloques compuestos de sentencias y convertirlos en nodos AST que 
-representan ejecución secuencial y bucles.
-*/
+/* ------------------- Bloques ------------------- */
 execBlock returns [StmtNode node]
     @init { List<StmtNode> body = new ArrayList<>(); }
     : EJECUTA BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
@@ -300,78 +407,85 @@ execBlock returns [StmtNode node]
 
 repiteBlock returns [StmtNode node]
     @init { List<StmtNode> body = new ArrayList<>(); }
-    : REPITE times=expression BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
-      { $node = new RepeatNode($times.node, body); }
-    ;
-
-/* ------------------- Control de flujo ------------------- 
-Parsear las construcciones de control del lenguaje y construir los nodos 
-AST correspondientes (IfNode, WhileNode, DoWhileNode, UntilNode, DoUntilNode, 
-RepeatNode).
-
-flowStmt: 
-regla agregadora que delega en las subreglas específicas de control 
-(si, haz/hasta, hasta, haz/mientras, mientras, repite).
-
-siStmt (SI): 
-evalúa la condición, acumula sentencias del bloque "then" y opcionalmente del 
-bloque "else", devuelve IfNode(cond, thenBody, elseBody|null).
-
-hazHastaStmt (HAZ . HASTA): 
-ejecuta el cuerpo al menos una vez y luego evalúa la condición; 
-devuelve DoUntilNode(body, cond).
-
-hastaStmt (HASTA): 
-evalúa la condición antes o después según la semántica; construye 
-UntilNode(cond, body).
-
-hazMientrasStmt (HAZ . MIENTRAS): 
-ejecuta el cuerpo al menos
-devuelve DoWhileNode(body, cond).
-
-mientrasStmt (MIENTRAS): 
-evalúa la condición y, si es verdadera, ejecuta el cuerpo repetidamente; devuelve WhileNode(cond, body).
-repiteBlock: 
-bucle con contador fijo (ya documentado en la sección de bloques).
-*/
-
-// La regla 'flowStmt' ya no es necesaria, sus alternativas se han movido a 'sentence'
-
-siStmt returns [StmtNode node]
-    @init { List<StmtNode> thenBody = new ArrayList<>(); List<StmtNode> elseBody = new ArrayList<>(); }
-    : SI PAR_OPEN cond=expression PAR_CLOSE
-      BRACKET_OPEN ( sentence {thenBody.add($sentence.node);} )* BRACKET_CLOSE
-      ( BRACKET_OPEN ( sentence {elseBody.add($sentence.node);} )* BRACKET_CLOSE )?
+    : REPITE times=expression 
       {
+        requireNumericType($times.node, "REPITE");
+      }
+      BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
+      { $node = new RepeatNode($times.node, body); }
+   ;
+
+/* ------------------- Control de flujo ------------------- */
+siStmt returns [StmtNode node]
+    @init { 
+        List<StmtNode> thenBody = new ArrayList<>(); 
+        List<StmtNode> elseBody = new ArrayList<>();
+        int elseCount = 0;  // ← NUEVO: contador de bloques ELSE
+    }
+    : SI PAR_OPEN cond=expression PAR_CLOSE
+      {
+        requireBooleanType($cond.node, "condición de SI");
+      }
+      BRACKET_OPEN ( sentence {thenBody.add($sentence.node);} )* BRACKET_CLOSE
+      ( 
+        BRACKET_OPEN 
+        { elseCount++; }  // ← NUEVO: incrementar contador
+        ( sentence {elseBody.add($sentence.node);} )* 
+        BRACKET_CLOSE 
+      )*  // ← CAMBIO: permitir múltiples bloques para detectar error
+      {
+        validateSingleElse(elseCount, "SI");  // ← NUEVO: validar
         $node = new IfNode($cond.node, thenBody, elseBody.isEmpty()? null : elseBody);
       }
     ;
 
 hazHastaStmt returns [StmtNode node]
-    @init { List<StmtNode> body = new ArrayList<>(); }
+    @init { 
+        List<StmtNode> body = new ArrayList<>(); 
+        ExprNode condition = null;
+        int line = currentLine();
+    }
     : HAZ (DOT)?
       BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
-      HASTA PAR_OPEN cond=expression PAR_CLOSE
+      (HASTA PAR_OPEN cond=expression PAR_CLOSE { condition = $cond.node; })?
       {
-        $node = new DoUntilNode(body, $cond.node);
+        requireCondition(condition, "HAZ.HASTA");
+        requireNonEmptyBlock(body, "HAZ.HASTA");
+        if (condition != null) {
+            requireBooleanType(condition, "condición de HAZ.HASTA");
+        }
+        $node = new DoUntilNode(body, condition);
       }
     ;
 
 hazMientrasStmt returns [StmtNode node]
-    @init { List<StmtNode> body = new ArrayList<>(); }
+    @init { 
+        List<StmtNode> body = new ArrayList<>(); 
+        ExprNode condition = null;
+        int line = currentLine();
+    }
     : HAZ (DOT)?
       BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
-      MIENTRAS PAR_OPEN cond=expression PAR_CLOSE
+      (MIENTRAS PAR_OPEN cond=expression PAR_CLOSE { condition = $cond.node; })?
       {
-        $node = new DoWhileNode(body, $cond.node);
+        requireCondition(condition, "HAZ.MIENTRAS");
+        requireNonEmptyBlock(body, "HAZ.MIENTRAS");
+        if (condition != null) {
+            requireBooleanType(condition, "condición de HAZ.MIENTRAS");
+        }
+        $node = new DoWhileNode(body, condition);
       }
     ;
 
 mientrasStmt returns [StmtNode node]
     @init { List<StmtNode> body = new ArrayList<>(); }
     : MIENTRAS PAR_OPEN cond=expression PAR_CLOSE
+      {
+        requireBooleanType($cond.node, "condición de MIENTRAS");
+      }
       BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
       {
+        requireNonEmptyBlock(body, "MIENTRAS");  // ← NUEVO: validar bloque no vacío
         $node = new WhileNode($cond.node, body);
       }
     ;
@@ -379,48 +493,58 @@ mientrasStmt returns [StmtNode node]
 hastaStmt returns [StmtNode node]
     @init { List<StmtNode> body = new ArrayList<>(); }
     : HASTA PAR_OPEN cond=expression PAR_CLOSE
+      {
+        requireBooleanType($cond.node, "condición de HASTA");
+      }
       BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
       {
+        requireNonEmptyBlock(body, "HASTA");  // ← NUEVO: validar bloque no vacío
         $node = new UntilNode($cond.node, body);
       }
     ;
 
-/* ------------------- Comandos de tortuga ------------------- 
-Parsear todas las instrucciones que controlan la "tortuga" 
-(movimiento, orientación, lápiz, posición y utilidades) y convertirlas en nodos 
-AST específicos de sentencia.
-
-Soporta formas largos y abreviadas del mismo comando 
-(por ejemplo AVANZA / AV, GIRADERECHA / GD).
-
-Para comandos con argumentos visita la(s) expresión(es) correspondiente(s) y 
-crea el nodo con esos ExprNode.
-
-Para comandos sin argumentos construye nodos simples sin expresión 
-(HideTurtleNode, CenterNode, ShowHeadingNode, PenUpNode, PenDownNode).
-
-PONPOS admite versión con corchetes para separar X e Y; PONXY acepta ambos 
-argumentos en secuencia sin corchetes.
-
-INC admite incremento por 1 implícito o incremento por expresión explícita, 
-construyendo un IncNode con VarRefNode y ConstNode/ExprNode.
-
-Nodos generados (ejemplos):
-ForwardNode, BackwardNode, TurnRightNode, TurnLeftNode
-SetPosNode, SetHeadingNode, ShowHeadingNode, SetXNode, SetYNode
-PenDownNode, PenUpNode, CenterNode, WaitNode
-IncNode con VarRefNode + ExprNode
-*/
-
+/* ------------------- Comandos de tortuga ------------------- */
 turtleCmd returns [StmtNode node]
-    : AVANZA e=expression        { $node = new ForwardNode($e.node); }
-    | AV e=expression            { $node = new ForwardNode($e.node); }
-    | RETROCEDE e=expression     { $node = new BackwardNode($e.node); }
-    | RE e=expression            { $node = new BackwardNode($e.node); }
-    | GIRADERECHA e=expression   { $node = new TurnRightNode($e.node); }
-    | GD e=expression            { $node = new TurnRightNode($e.node); }
-    | GIRAIZQUIERDA e=expression { $node = new TurnLeftNode($e.node); } // corregido
-    | GI e=expression            { $node = new TurnLeftNode($e.node); }
+    : AVANZA e=expression        
+      { 
+        requireNumericType($e.node, "AVANZA");
+        $node = new ForwardNode($e.node); 
+      }
+    | AV e=expression            
+      { 
+        requireNumericType($e.node, "AV");
+        $node = new ForwardNode($e.node); 
+      }
+    | RETROCEDE e=expression     
+      { 
+        requireNumericType($e.node, "RETROCEDE");
+        $node = new BackwardNode($e.node); 
+      }
+    | RE e=expression            
+      { 
+        requireNumericType($e.node, "RE");
+        $node = new BackwardNode($e.node); 
+      }
+    | GIRADERECHA e=expression   
+      { 
+        requireNumericType($e.node, "GIRADERECHA");
+        $node = new TurnRightNode($e.node); 
+      }
+    | GD e=expression            
+      { 
+        requireNumericType($e.node, "GD");
+        $node = new TurnRightNode($e.node); 
+      }
+    | GIRAIZQUIERDA e=expression 
+      { 
+        requireNumericType($e.node, "GIRAIZQUIERDA");
+        $node = new TurnLeftNode($e.node); 
+      }
+    | GI e=expression            
+      { 
+        requireNumericType($e.node, "GI");
+        $node = new TurnLeftNode($e.node); 
+      }
     | OCULTATORTUGA              { $node = new HideTurtleNode(); }
     | OT                         { $node = new HideTurtleNode(); }
     | APARECETORTUGA             { $node = new ShowTurtleNode(); }
@@ -429,50 +553,82 @@ turtleCmd returns [StmtNode node]
       {
         List<ExprNode> coordsList = $coords.list;
         if (coordsList.size() != 2) {
-            errors.add("Error semántico: 'PONPOS' requiere exactamente dos expresiones para X e Y.");
+            errors.add("Error en línea " + currentLine() + ": 'PONPOS' requiere exactamente dos expresiones para X e Y.");
         }
         ExprNode xNode = coordsList.size() > 0 ? coordsList.get(0) : new ConstNode(0);
         ExprNode yNode = coordsList.size() > 1 ? coordsList.get(1) : new ConstNode(0);
+        requireNumericType(xNode, "PONPOS (coordenada X)");
+        requireNumericType(yNode, "PONPOS (coordenada Y)");
         $node = new SetPosNode(xNode, yNode, true);
       }
-    | PONXY x=expression y=expression { $node = new SetPosNode($x.node, $y.node, false); }
-    | PONRUMBO e=expression      { $node = new SetHeadingNode($e.node); }
+    | PONXY x=expression y=expression 
+      { 
+        requireNumericType($x.node, "PONXY (coordenada X)");
+        requireNumericType($y.node, "PONXY (coordenada Y)");
+        $node = new SetPosNode($x.node, $y.node, false); 
+      }
+    | PONRUMBO e=expression      
+      { 
+        requireNumericType($e.node, "PONRUMBO");
+        $node = new SetHeadingNode($e.node); 
+      }
     | RUMBO                      { $node = new ShowHeadingNode(); }
-    | PONX e=expression          { $node = new SetXNode($e.node); }
-    | PONY e=expression          { $node = new SetYNode($e.node); }
+    | PONX e=expression          
+      { 
+        requireNumericType($e.node, "PONX");
+        $node = new SetXNode($e.node); 
+      }
+    | PONY e=expression          
+      { 
+        requireNumericType($e.node, "PONY");
+        $node = new SetYNode($e.node); 
+      }
     | BAJALAPIZ                  { $node = new PenDownNode(); }
     | BL                         { $node = new PenDownNode(); }
     | SUBELAPIZ                  { $node = new PenUpNode(); }
     | SB                         { $node = new PenUpNode(); }
     | CENTRO                     { $node = new CenterNode(); }
-    | ESPERA e=expression        { $node = new WaitNode($e.node); }
+    | ESPERA e=expression        
+      { 
+        requireNumericType($e.node, "ESPERA");
+        $node = new WaitNode($e.node); 
+      }
     | INC BRACKET_OPEN id=ID BRACKET_CLOSE
-      { $node = new IncNode(new VarRefNode($id.text), new ConstNode(1)); }
+      { 
+        validateIncrement($id.text, new ConstNode(1));
+        $node = new IncNode(new VarRefNode($id.text), new ConstNode(1)); 
+      }
     | INC BRACKET_OPEN id=ID n=expression BRACKET_CLOSE
-      { $node = new IncNode(new VarRefNode($id.text), $n.node); }
-    // NUEVO: Comandos de color
+      { 
+        validateIncrement($id.text, $n.node);
+        $node = new IncNode(new VarRefNode($id.text), $n.node); 
+      }
     | PONCOLORLAPIZ BRACKET_OPEN coords=expressionSeries BRACKET_CLOSE
       {
         List<ExprNode> colorList = $coords.list;
         if (colorList.size() != 3) {
-            errors.add("Error semántico: 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
+            errors.add("Error en línea " + currentLine() + ": 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
         }
         ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
         ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
         ExprNode bNode = colorList.size() > 2 ? colorList.get(2) : new ConstNode(0);
-        // Nota: La validación de colores permitidos se hace en SetColorNode.execute()
+        requireNumericType(rNode, "PONCOLORLAPIZ (valor R)");
+        requireNumericType(gNode, "PONCOLORLAPIZ (valor G)");
+        requireNumericType(bNode, "PONCOLORLAPIZ (valor B)");
         $node = new SetColorNode(rNode, gNode, bNode);
       }
     | PONCL BRACKET_OPEN coords=expressionSeries BRACKET_CLOSE
       {
         List<ExprNode> colorList = $coords.list;
         if (colorList.size() != 3) {
-            errors.add("Error semántico: 'PONCL' requiere exactamente tres valores RGB.");
+            errors.add("Error en línea " + currentLine() + ": 'PONCL' requiere exactamente tres valores RGB.");
         }
         ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
         ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
         ExprNode bNode = colorList.size() > 2 ? colorList.get(2) : new ConstNode(0);
-        // Nota: La validación de colores permitidos se hace en SetColorNode.execute()
+        requireNumericType(rNode, "PONCL (valor R)");
+        requireNumericType(gNode, "PONCL (valor G)");
+        requireNumericType(bNode, "PONCL (valor B)");
         $node = new SetColorNode(rNode, gNode, bNode);
       }
     | PONCOLORLAPIZ c=colorName
@@ -486,36 +642,7 @@ colorName returns [String value]
     | id=ID   { $value = $id.getText().toLowerCase(); }
     ;
 
-/* ------------------- Expresiones ------------------- 
-Parsear expresiones aritméticas, lógicas y de funciones, construir su 
-jerarquía de ExprNode y realizar inferencia de valor parcial usando el 
-atributo val.
-
-Estructura y precedencia
-Nivel lógico: OR (expression) → AND (logicTerm) → NOT / relacional (logicFactor).
-Comparaciones: relational aplica GT, LT, GEQ, LEQ, EQ, NEQ sobre arithExpr.
-Aritmética: arithExpr maneja PLUS/MINUS; term maneja MULT/DIV; factor y exponente 
-manejan EXP (exponenciación).
-primary cubre literales (NUMBER, BOOLEAN, STRING), identificadores (ID) y 
-paréntesis.
-
-Funciones y formas especiales
-funcCall define funciones por palabra (IGUALESQ, YFUNC, OFUNC, MAYORQ, MENORQ, 
-AZAR, PRODUCTO, POTENCIA, DIVISION, SUMA, DIFERENCIA).
-Algunas funciones permiten múltiples argumentos acumulados (PRODUCTO, SUMA, 
-DIFERENCIA) y construyen nodos compuestos con listas auxiliares.
-
-Variantes de función mappean a nodos reutilizando operadores
-lógicos/relacionales cuando aplica (por ejemplo YFUNC → LogicalAndNode).
-
-Atributos semánticos
-Cada regla devuelve ExprNode node y Value val cuando aplica; val se usa para 
-inferencia temprana de tipos/valores y debe tratar unknown y errores 
-explícitamente.
-
-primary asigna valores concretos para literales y unknown para ID.
-*/
-
+/* ------------------- Expresiones ------------------- */
 expression returns [ExprNode node, Value val]
     : t1=logicTerm { $node = $t1.node; $val = $t1.val; }
       ( OR t2=logicTerm { $node = new LogicalOrNode($node, $t2.node); } )*
@@ -570,45 +697,88 @@ unary returns [ExprNode node, Value val]
     | PLUS u=unary  { $node = $u.node; $val = $u.val; }
     | funcCall      { $node = $funcCall.node; $val = $funcCall.val; }
     | primary       { $node = $primary.node; $val = $primary.val; }
- ;
+    ;
 
-/* Funciones */
 funcCall returns [ExprNode node, Value val]
-    : IGUALESQ PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
-      { $node = new EqualsFuncNode($e1.node, $e2.node); }
-    | YFUNC PAR_OPEN e1=expression PAR_CLOSE PAR_OPEN e2=expression PAR_CLOSE
-      { $node = new LogicalAndNode($e1.node,$e2.node); }
-    | YFUNC PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
-      { $node = new LogicalAndNode($e1.node,$e2.node); }
-    | OFUNC PAR_OPEN e1=expression PAR_CLOSE PAR_OPEN e2=expression PAR_CLOSE
-      { $node = new LogicalOrNode($e1.node,$e2.node); }
-    | OFUNC PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
-      { $node = new LogicalOrNode($e1.node,$e2.node); }
-    | MAYORQ PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
-      { $node = new GreaterThanNode($e1.node,$e2.node);  }
-    | MENORQ PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
-      { $node = new LessThanNode($e1.node,$e2.node);  }
-    | AZAR PAR_OPEN e=expression PAR_CLOSE
-      { $node = new RandomNode($e.node); }
+    : IGUALESQ PAR_OPEN args=expressionSeries PAR_CLOSE
+      { 
+        requireTwoArguments($args.list.size(), "Iguales?", currentLine());
+        ExprNode e1 = $args.list.size() > 0 ? $args.list.get(0) : new ConstNode(0);
+        ExprNode e2 = $args.list.size() > 1 ? $args.list.get(1) : new ConstNode(0);
+        $node = new EqualsFuncNode(e1, e2); 
+      }
+    | YFUNC PAR_OPEN args=expressionSeries PAR_CLOSE
+      { 
+        requireTwoArguments($args.list.size(), "Y", currentLine());
+        ExprNode e1 = $args.list.size() > 0 ? $args.list.get(0) : new ConstNode(false);
+        ExprNode e2 = $args.list.size() > 1 ? $args.list.get(1) : new ConstNode(false);
+        $node = new LogicalAndNode(e1, e2);
+      }
+    | OFUNC PAR_OPEN args=expressionSeries PAR_CLOSE
+      { 
+        requireTwoArguments($args.list.size(), "O", currentLine());
+        ExprNode e1 = $args.list.size() > 0 ? $args.list.get(0) : new ConstNode(false);
+        ExprNode e2 = $args.list.size() > 1 ? $args.list.get(1) : new ConstNode(false);
+        $node = new LogicalOrNode(e1, e2);
+      }
+    | MAYORQ PAR_OPEN args=expressionSeries PAR_CLOSE
+      { 
+        requireTwoArguments($args.list.size(), "MayorQue?", currentLine());
+        ExprNode e1 = $args.list.size() > 0 ? $args.list.get(0) : new ConstNode(0);
+        ExprNode e2 = $args.list.size() > 1 ? $args.list.get(1) : new ConstNode(0);
+        requireNumericArgs(e1, e2, "MayorQue?");
+        $node = new GreaterThanNode(e1, e2);  
+      }
+    | MENORQ PAR_OPEN args=expressionSeries PAR_CLOSE
+      { 
+        requireTwoArguments($args.list.size(), "MenorQue?", currentLine());
+        ExprNode e1 = $args.list.size() > 0 ? $args.list.get(0) : new ConstNode(0);
+        ExprNode e2 = $args.list.size() > 1 ? $args.list.get(1) : new ConstNode(0);
+        requireNumericArgs(e1, e2, "MenorQue?");
+        $node = new LessThanNode(e1, e2);  
+      }
+    | AZAR PAR_OPEN args=expressionSeries PAR_CLOSE
+      { 
+        requireOneArgument($args.list.size(), "AZAR", currentLine());
+        ExprNode e = $args.list.size() > 0 ? $args.list.get(0) : new ConstNode(1);
+        requireNumericType(e, "AZAR");
+        $node = new RandomNode(e); 
+      }
     | PRODUCTO PAR_OPEN e1=expression (COMMA rest+=expression)* PAR_CLOSE
       {
+        requireNumericType($e1.node, "PRODUCTO");
         List<ExprNode> restNodes = new ArrayList<>();
         if ($rest != null) {
             for (ExpressionContext ctx : $rest) {
+                requireNumericType(ctx.node, "PRODUCTO");
                 restNodes.add(ctx.node);
             }
         }
         $node = new ProductNode($e1.node, restNodes);
       }
-    | POTENCIA PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
-      { $node = new ExponentiationNode($e1.node, $e2.node); }
-    | DIVISION PAR_OPEN e1=expression COMMA e2=expression PAR_CLOSE
-      { $node = new DivisionNode($e1.node, $e2.node); }
+    | POTENCIA PAR_OPEN args=expressionSeries PAR_CLOSE
+      { 
+        requireTwoArguments($args.list.size(), "POTENCIA", currentLine());
+        ExprNode e1 = $args.list.size() > 0 ? $args.list.get(0) : new ConstNode(0);
+        ExprNode e2 = $args.list.size() > 1 ? $args.list.get(1) : new ConstNode(0);
+        requireNumericArgs(e1, e2, "POTENCIA");
+        $node = new ExponentiationNode(e1, e2); 
+      }
+    | DIVISION PAR_OPEN args=expressionSeries PAR_CLOSE
+      { 
+        requireTwoArguments($args.list.size(), "DIVISION", currentLine());
+        ExprNode e1 = $args.list.size() > 0 ? $args.list.get(0) : new ConstNode(0);
+        ExprNode e2 = $args.list.size() > 1 ? $args.list.get(1) : new ConstNode(1);
+        requireNumericArgs(e1, e2, "DIVISION");
+        $node = new DivisionNode(e1, e2); 
+      }
     | SUMA PAR_OPEN e1=expression (COMMA rest+=expression)* PAR_CLOSE
       {
+        requireNumericType($e1.node, "SUMA");
         List<ExprNode> restNodes = new ArrayList<>();
         if ($rest != null) {
             for (ExpressionContext ctx : $rest) {
+                requireNumericType(ctx.node, "SUMA");
                 restNodes.add(ctx.node);
             }
         }
@@ -616,9 +786,11 @@ funcCall returns [ExprNode node, Value val]
       }
     | DIFERENCIA PAR_OPEN e1=expression (COMMA rest+=expression)* PAR_CLOSE
       {
+        requireNumericType($e1.node, "DIFERENCIA");
         List<ExprNode> restNodes = new ArrayList<>();
         if ($rest != null) {
             for (ExpressionContext ctx : $rest) {
+                requireNumericType(ctx.node, "DIFERENCIA");
                 restNodes.add(ctx.node);
             }
         }
@@ -626,13 +798,12 @@ funcCall returns [ExprNode node, Value val]
       }
     ;
 
-/* Primarios */
 primary returns [ExprNode node, Value val]
     : DECIMAL
       {
         double v = Double.parseDouble($DECIMAL.text.replace(',', '.'));
         $node = new ConstNode(v);
-        $val = Value.unknown(); // se mantiene inferencia desconocida si no hay soporte de double en Value
+        $val = Value.unknown();
       }
     | NUMBER
       { 
@@ -648,6 +819,7 @@ primary returns [ExprNode node, Value val]
       }
     | ID
       { 
+        validateIdentifierLength($ID.text, $ID.line);
         $node = new VarRefNode($ID.text);
         $val = Value.unknown();
       }
@@ -663,7 +835,6 @@ primary returns [ExprNode node, Value val]
         $val = $expression.val; 
       }
     ;
-
 
 literalOrString returns [ExprNode node, Object jval]
     : MINUS DECIMAL
@@ -704,9 +875,7 @@ literalOrString returns [ExprNode node, Object jval]
       }
     ;
 
-
 /* ------------------- Tokens ------------------- */
-// Make key keywords case-tolerant
 PARA: 'Para' | 'para' | 'PARA';
 HAZ: 'Haz' | 'haz' | 'HAZ';
 FIN: 'fin' | 'Fin' | 'FIN';
@@ -714,7 +883,7 @@ EJECUTA: 'Ejecuta' | 'ejecuta' | 'EJECUTA';
 REPITE: 'repite' | 'Repite' | 'REPITE';
 APARECETORTUGA: 'aparecetortuga' | 'APARECETORTUGA' | 'ApareceTortuga';
 AT: 'at' | 'AT';
-PONPOS: 'ponpos' | 'PONPOS' | 'PonPos';
+PONPOS: 'PonPOS' | 'ponpos' | 'PONPOS'| 'PonPos';
 PONXY: 'ponxy' | 'PONXY' | 'PonXY';
 PONRUMBO: 'ponrumbo' | 'PONRUMBO' | 'PonRumbo';
 RUMBO: 'rumbo' | 'RUMBO';
@@ -731,24 +900,25 @@ SI: 'SI';
 HASTA: 'HASTA';
 MIENTRAS: 'MIENTRAS';
 INIC: 'INIC';
-AVANZA: 'avanza';
-AV: 'av';
-RETROCEDE: 'retrocede';
-RE: 're';
+AVANZA: 'avanza' | 'AVANZA' | 'Avanza';
+AV: 'av' | 'AV' | 'Av';
+RETROCEDE: 'retrocede' | 'RETROCEDE' | 'Retrocede';
+RE: 'RE' | 're' | 'Re';
 ATRAS: 'atras';
-GIRADERECHA: 'giraderecha';
-GD: 'gd';
-GIRAIZQUIERDA: 'giraizquierda';
-GI: 'gi';
+GIRADERECHA: 'GiraDerecha' | 'GIRADERECHA' | 'giraderecha';
+GD: 'GD' | 'gd' | 'Gd';
+GIRAIZQUIERDA: 'GiraIzquierda' | 'GIRAIZQUIERDA' | 'giraizquierda';
+GI: 'GI' | 'gi' | 'Gi';
 OCULTATORTUGA: 'ocultatortuga';
 OT: 'ot';
 PONCOLORLAPIZ: 'poncolorlapiz' | 'PONCOLORLAPIZ' | 'PonColorLapiz';
-PONCL: 'poncl' | 'PONCL' | 'PonCL';
+// Alias para compatibilidad con archivo de prueba
+PONCL_ALIAS: 'ponCL';  // Se procesa primero que ID
+PONCL: 'poncl' | 'ponCL' | 'PONCL' | 'PonCL';
 
-/* Funciones (case-tolerant) */
 IGUALESQ: 'iguales?' | 'Iguales?' | 'IGUALES?';
-YFUNC: 'Y';      // mantener solo mayúscula para no chocar con ID
-OFUNC: 'O';      // idem
+YFUNC: 'Y';
+OFUNC: 'O';
 MAYORQ: 'mayorque?' | 'Mayorque?' | 'MAYORQUE?';
 MENORQ: 'menorque?' | 'Menorque?' | 'MENORQUE?';
 DIFERENCIA: 'diferencia' | 'Diferencia' | 'DIFERENCIA';
@@ -758,7 +928,6 @@ POTENCIA: 'potencia' | 'Potencia' | 'POTENCIA';
 DIVISION: 'division' | 'Division' | 'DIVISION';
 SUMA: 'suma' | 'Suma' | 'SUMA';
 
-/* Operadores y símbolos */
 PLUS: '+';
 MINUS: '-';
 MULT: '*';
@@ -779,37 +948,31 @@ BRACKET_CLOSE: ']' | '}';
 PAR_OPEN: '(';
 PAR_CLOSE: ')';
 SEMICOLON: ';';
-/* Evita que la coma entre dígitos sea tratada como separador de argumentos */
 COMMA: { !(Character.isDigit((char)_input.LA(-1)) && Character.isDigit((char)_input.LA(1)) ) }? ',';
 DOT: '.';
 
-/* Literales (números decimales con coma) */
-BOOLEAN: 'TRUE' | 'FALSE' | 'true' | 'false';
-/* Permite 3,14 y 3.14 (sin espacios) */
-DECIMAL: [0-9]+ (',' | '.') [0-9]+; // usar 3,14 o 3.14 (no 3, 14)
+BOOLEAN: 'TRUE' | 'FALSE' | 'True' | 'False' | 'true' | 'false';
+DECIMAL: [0-9]+ (',' | '.') [0-9]+;
 NUMBER: [0-9]+;
-STRING: '"' (~["\r\n])* '"' ;
+STRING: ('"' | '"') (~["\r\n""])* ('"' | '"') ;
+ID: [a-z] [a-zA-Z0-9&@]*;
 
-/* Identificadores */
-ID: [a-z] [a-zA-Z0-9_&@]*;
-
-// ------------------ Comentarios ------------------
-
-// Comentario en primera línea (no se salta) para poder validarlo en 'program'
+/* ------------------- Comentarios -------------------*/
 cmtFirstLine
     : FIRSTLINE_COMMENT { firstLineHasComment = true; }
     ;
 
-FIRSTLINE_COMMENT
-    : {getLine()==1}? '//' ~[\n\r]*
+invalidComment
+    : INVALID_COMMENT
+      {
+        errors.add("Error en línea " + currentLine() + ": los comentarios deben empezar con //");
+        //throw new RuntimeException("Error en línea " + currentLine() + ": los comentarios deben empezar con //");
+      }
     ;
 
-COMMENT_LINE
-    : '//' ~[\n\r]* -> skip
-    ;
+FIRSTLINE_COMMENT : {getLine()==1}? '//' ~[\n\r]* ;
+COMMENT_LINE : '//' ~[\n\r]* -> skip ;
+INVALID_COMMENT : '--' ~[\n\r]* ;
 
-/* Espacios */
 WS: [ \t\r\n]+ -> skip;
-
-/* Colores */
 COLOR: 'Negro' | 'Azul' | 'Rojo' | 'negro' | 'azul' | 'rojo' | 'NEGRO' | 'AZUL' | 'ROJO';
