@@ -11,14 +11,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Interfaz gráfica principal para ejecutar programas LogoTec.
  * Incluye editor de código, canvas de dibujo y controles.
  */
 public class VMMain extends JFrame {
+    private static final String DEFAULT_TCP_ENDPOINT = "192.168.4.1:6789";
     
     private JTextArea editorArea;
     private JTextArea consoleArea;
@@ -28,7 +35,9 @@ public class VMMain extends JFrame {
     private JButton btnLimpiar;
     private JButton btnCargar;
     private JButton btnGuardar;
+    private JButton btnHardwareSync;
     private JSlider speedSlider;
+    private HardwareBridge hardwareBridge;
     
     // Estado de compilación
     private ObjectCodeGenerator.Result compiledCode;
@@ -37,6 +46,14 @@ public class VMMain extends JFrame {
     public VMMain() {
         super("LogoTec IDE - Máquina Virtual");
         initUI();
+        hardwareBridge = new HardwareBridge();
+        hardwareBridge.tryAutoConnect();
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                hardwareBridge.closeQuietly();
+            }
+        });
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 800);
         setLocationRelativeTo(null);
@@ -74,6 +91,9 @@ public class VMMain extends JFrame {
         
         btnGuardar = new JButton("Guardar");
         btnGuardar.addActionListener(e -> guardarArchivo());
+
+        btnHardwareSync = new JButton("ESP32");
+        btnHardwareSync.addActionListener(e -> solicitarConexionHardware());
         
         buttonPanel.add(btnCompilar);
         buttonPanel.add(btnEjecutar);
@@ -81,6 +101,7 @@ public class VMMain extends JFrame {
         buttonPanel.add(new JLabel("  "));
         buttonPanel.add(btnCargar);
         buttonPanel.add(btnGuardar);
+        buttonPanel.add(btnHardwareSync);
         
         leftPanel.add(buttonPanel, BorderLayout.NORTH);
         
@@ -244,6 +265,30 @@ public class VMMain extends JFrame {
         }
     }
     
+    private void solicitarConexionHardware() {
+        String endpoint = hardwareBridge.getEndpointHint();
+        String value = JOptionPane.showInputDialog(
+            this,
+            "Host:Puerto (ej. 192.168.4.1:6789)",
+            endpoint
+        );
+        if (value == null || value.isBlank()) return;
+        try {
+            hardwareBridge.connect(value.trim());
+        } catch (Exception ex) {
+            log("❌ No se pudo conectar: " + ex.getMessage());
+            if (esConexionTcpRechazada(ex)) {
+                log("ℹ️ Verifica IP/puerto del ESP32 y que el servidor WiFi esté escuchando.");
+            }
+        }
+    }
+
+    private boolean esConexionTcpRechazada(Throwable t) {
+        return t instanceof IOException &&
+               t.getMessage() != null &&
+               t.getMessage().contains("Connection refused");
+    }
+    
     private void animarDibujo(List<AccionTortuga> acciones) {
         canvas.reset();
         
@@ -260,8 +305,18 @@ public class VMMain extends JFrame {
             @Override
             protected Void doInBackground() throws Exception {
                 for (AccionTortuga accion : acciones) {
+                    if (hardwareBridge.isReady()) {
+                        try {
+                            hardwareBridge.syncWithAction(accion);
+                        } catch (IOException hwEx) {
+                            log("⚠️ ESP32 desincronizado: " + hwEx.getMessage());
+                            hardwareBridge.closeQuietly();
+                            Thread.sleep(finalDelay);
+                        }
+                    } else {
+                        Thread.sleep(finalDelay);
+                    }
                     publish(accion);
-                    Thread.sleep(finalDelay);
                 }
                 return null;
             }
@@ -334,8 +389,132 @@ public class VMMain extends JFrame {
     }
     
     private void log(String message) {
-        consoleArea.append(message + "\n");
-        consoleArea.setCaretPosition(consoleArea.getDocument().getLength());
+        SwingUtilities.invokeLater(() -> {
+            consoleArea.append(message + "\n");
+            consoleArea.setCaretPosition(consoleArea.getDocument().getLength());
+        });
+    }
+
+    private class HardwareBridge implements Closeable {
+        private static final String HOST_ENV = "LOGOTEC_ESP32_HOST";
+        private static final String PORT_ENV = "LOGOTEC_ESP32_PORT";
+        private static final String ENDPOINT_ENV = "LOGOTEC_ESP32_ENDPOINT";
+        private static final int CONNECT_TIMEOUT = 3000;
+        private static final int READ_TIMEOUT = 15000;
+
+        private final Object ioLock = new Object();
+        private Socket socket;
+        private BufferedReader reader;
+        private BufferedWriter writer;
+        private String lastEndpoint = DEFAULT_TCP_ENDPOINT;
+
+        void tryAutoConnect() {
+            String endpoint = System.getenv(ENDPOINT_ENV);
+            if (endpoint == null) {
+                String host = System.getenv(HOST_ENV);
+                String portValue = System.getenv(PORT_ENV);
+                if (host != null && portValue != null) endpoint = host + ":" + portValue;
+            }
+            if (endpoint == null) endpoint = DEFAULT_TCP_ENDPOINT;
+            try {
+                connect(endpoint);
+            } catch (Exception ex) {
+                log("⚠️ Auto-conexión WiFi falló: " + ex.getMessage());
+            }
+        }
+
+        String getEndpointHint() {
+            return lastEndpoint;
+        }
+
+        void connect(String endpoint) throws IOException {
+            lastEndpoint = endpoint;
+            close();
+            String[] parts = endpoint.split(":");
+            if (parts.length != 2) throw new IOException("Formato host:puerto inválido");
+            String host = parts[0].trim();
+            int port = Integer.parseInt(parts[1].trim());
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(host, port), CONNECT_TIMEOUT);
+            socket.setSoTimeout(READ_TIMEOUT);
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+            log("📡 Conectado a ESP32 por WiFi (" + host + ":" + port + ")");
+        }
+
+        boolean isReady() {
+            return reader != null && writer != null;
+        }
+
+        void syncWithAction(AccionTortuga accion) throws IOException {
+            if (!isReady()) return;
+            String command = translate(accion);
+            if (command == null) return;
+            send(command);
+            awaitReady();
+        }
+
+        private String translate(AccionTortuga accion) {
+            switch (accion.getTipo()) {
+                case AVANZAR:
+                    int distancia = (int) Math.round(accion.getValor());
+                    if (distancia == 0) return null;
+                    return (distancia > 0 ? "F" : "B") + Math.abs(distancia);
+                case GIRAR:
+                    int grados = (int) Math.round(accion.getValor());
+                    if (grados == 0) return null;
+                    return (grados > 0 ? "R" : "L") + Math.abs(grados);
+                case BAJAR_LAPIZ:
+                    return "D";
+                case LEVANTAR_LAPIZ:
+                    return "U";
+                default:
+                    return null;
+            }
+        }
+
+        private void send(String command) throws IOException {
+            synchronized (ioLock) {
+                writer.write(command);
+                writer.write('\n');
+                writer.flush();
+            }
+        }
+
+        private void awaitReady() throws IOException {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+                if ("READY".equalsIgnoreCase(line)) return;
+                log("↪ ESP32: " + line);
+            }
+            throw new EOFException("ESP32 cerró la conexión");
+        }
+
+        void closeQuietly() {
+            try {
+                close();
+            } catch (IOException ignored) {}
+        }
+
+        @Override
+        public void close() throws IOException {
+            synchronized (ioLock) {
+                if (reader != null) {
+                    reader.close();
+                    reader = null;
+                }
+                if (writer != null) {
+                    writer.close();
+                    writer = null;
+                }
+                if (socket != null) {
+                    socket.close();
+                    socket = null;
+                }
+            }
+        }
     }
     
     // ==================== CANVAS DE TORTUGA ====================
