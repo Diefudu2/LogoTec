@@ -1,4 +1,4 @@
-// Generated from com\miorganizacion\logotec\compilador\LogoTec.g4 by ANTLR 4.5.1
+// Generated from LogoTec.g4 by ANTLR 4.4
 package com.miorganizacion.logotec.compilador;
 
     import java.util.*;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LogoTecParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -26,13 +26,26 @@ public class LogoTecParser extends Parser {
 		SUBELAPIZ=16, SB=17, CENTRO=18, ESPERA=19, INC=20, SI=21, HASTA=22, MIENTRAS=23, 
 		INIC=24, AVANZA=25, AV=26, RETROCEDE=27, RE=28, ATRAS=29, GIRADERECHA=30, 
 		GD=31, GIRAIZQUIERDA=32, GI=33, OCULTATORTUGA=34, OT=35, PONCOLORLAPIZ=36, 
-		PONCL=37, IGUALESQ=38, YFUNC=39, OFUNC=40, MAYORQ=41, MENORQ=42, DIFERENCIA=43, 
-		AZAR=44, PRODUCTO=45, POTENCIA=46, DIVISION=47, SUMA=48, PLUS=49, MINUS=50, 
-		MULT=51, DIV=52, EXP=53, AND=54, OR=55, NOT=56, GT=57, LT=58, GEQ=59, 
-		LEQ=60, EQ=61, NEQ=62, ASSIGN=63, BRACKET_OPEN=64, BRACKET_CLOSE=65, PAR_OPEN=66, 
-		PAR_CLOSE=67, SEMICOLON=68, COMMA=69, DOT=70, BOOLEAN=71, DECIMAL=72, 
-		NUMBER=73, STRING=74, ID=75, FIRSTLINE_COMMENT=76, COMMENT_LINE=77, WS=78, 
-		COLOR=79;
+		PONCL_ALIAS=37, PONCL=38, IGUALESQ=39, YFUNC=40, OFUNC=41, MAYORQ=42, 
+		MENORQ=43, DIFERENCIA=44, AZAR=45, PRODUCTO=46, POTENCIA=47, DIVISION=48, 
+		SUMA=49, PLUS=50, MINUS=51, MULT=52, DIV=53, EXP=54, AND=55, OR=56, NOT=57, 
+		GT=58, LT=59, GEQ=60, LEQ=61, EQ=62, NEQ=63, ASSIGN=64, BRACKET_OPEN=65, 
+		BRACKET_CLOSE=66, PAR_OPEN=67, PAR_CLOSE=68, SEMICOLON=69, COMMA=70, DOT=71, 
+		BOOLEAN=72, DECIMAL=73, NUMBER=74, STRING=75, ID=76, FIRSTLINE_COMMENT=77, 
+		COMMENT_LINE=78, INVALID_COMMENT=79, WS=80, COLOR=81;
+	public static final String[] tokenNames = {
+		"<INVALID>", "PARA", "HAZ", "FIN", "EJECUTA", "REPITE", "APARECETORTUGA", 
+		"AT", "PONPOS", "PONXY", "PONRUMBO", "RUMBO", "PONX", "PONY", "BAJALAPIZ", 
+		"BL", "SUBELAPIZ", "SB", "CENTRO", "ESPERA", "INC", "'SI'", "'HASTA'", 
+		"'MIENTRAS'", "'INIC'", "AVANZA", "AV", "RETROCEDE", "RE", "'atras'", 
+		"GIRADERECHA", "GD", "GIRAIZQUIERDA", "GI", "'ocultatortuga'", "'ot'", 
+		"PONCOLORLAPIZ", "'ponCL'", "PONCL", "IGUALESQ", "'Y'", "'O'", "MAYORQ", 
+		"MENORQ", "DIFERENCIA", "AZAR", "PRODUCTO", "POTENCIA", "DIVISION", "SUMA", 
+		"'+'", "'-'", "'*'", "'/'", "'^'", "'&&'", "'||'", "'!'", "'>'", "'<'", 
+		"'>='", "'<='", "'=='", "'!='", "'='", "BRACKET_OPEN", "BRACKET_CLOSE", 
+		"'('", "')'", "';'", "COMMA", "'.'", "BOOLEAN", "DECIMAL", "NUMBER", "STRING", 
+		"ID", "FIRSTLINE_COMMENT", "COMMENT_LINE", "INVALID_COMMENT", "WS", "COLOR"
+	};
 	public static final int
 		RULE_program = 0, RULE_proceduresBlock = 1, RULE_procedureDecl = 2, RULE_sentence = 3, 
 		RULE_varDecl = 4, RULE_varInit = 5, RULE_callProc = 6, RULE_primaryArg = 7, 
@@ -41,74 +54,22 @@ public class LogoTecParser extends Parser {
 		RULE_hastaStmt = 15, RULE_turtleCmd = 16, RULE_colorName = 17, RULE_expression = 18, 
 		RULE_logicTerm = 19, RULE_logicFactor = 20, RULE_relational = 21, RULE_arithExpr = 22, 
 		RULE_term = 23, RULE_factor = 24, RULE_exponent = 25, RULE_unary = 26, 
-		RULE_funcCall = 27, RULE_primary = 28, RULE_literalOrString = 29, RULE_cmtFirstLine = 30;
+		RULE_funcCall = 27, RULE_primary = 28, RULE_literalOrString = 29, RULE_cmtFirstLine = 30, 
+		RULE_invalidComment = 31;
 	public static final String[] ruleNames = {
 		"program", "proceduresBlock", "procedureDecl", "sentence", "varDecl", 
 		"varInit", "callProc", "primaryArg", "expressionSeries", "execBlock", 
 		"repiteBlock", "siStmt", "hazHastaStmt", "hazMientrasStmt", "mientrasStmt", 
 		"hastaStmt", "turtleCmd", "colorName", "expression", "logicTerm", "logicFactor", 
 		"relational", "arithExpr", "term", "factor", "exponent", "unary", "funcCall", 
-		"primary", "literalOrString", "cmtFirstLine"
+		"primary", "literalOrString", "cmtFirstLine", "invalidComment"
 	};
-
-	private static final String[] _LITERAL_NAMES = {
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, "'SI'", "'HASTA'", 
-		"'MIENTRAS'", "'INIC'", "'avanza'", "'av'", "'retrocede'", "'re'", "'atras'", 
-		"'giraderecha'", "'gd'", "'giraizquierda'", "'gi'", "'ocultatortuga'", 
-		"'ot'", null, null, null, "'Y'", "'O'", null, null, null, null, null, 
-		null, null, null, "'+'", "'-'", "'*'", "'/'", "'^'", "'&&'", "'||'", "'!'", 
-		"'>'", "'<'", "'>='", "'<='", "'=='", "'!='", "'='", null, null, "'('", 
-		"')'", "';'", null, "'.'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, "PARA", "HAZ", "FIN", "EJECUTA", "REPITE", "APARECETORTUGA", "AT", 
-		"PONPOS", "PONXY", "PONRUMBO", "RUMBO", "PONX", "PONY", "BAJALAPIZ", "BL", 
-		"SUBELAPIZ", "SB", "CENTRO", "ESPERA", "INC", "SI", "HASTA", "MIENTRAS", 
-		"INIC", "AVANZA", "AV", "RETROCEDE", "RE", "ATRAS", "GIRADERECHA", "GD", 
-		"GIRAIZQUIERDA", "GI", "OCULTATORTUGA", "OT", "PONCOLORLAPIZ", "PONCL", 
-		"IGUALESQ", "YFUNC", "OFUNC", "MAYORQ", "MENORQ", "DIFERENCIA", "AZAR", 
-		"PRODUCTO", "POTENCIA", "DIVISION", "SUMA", "PLUS", "MINUS", "MULT", "DIV", 
-		"EXP", "AND", "OR", "NOT", "GT", "LT", "GEQ", "LEQ", "EQ", "NEQ", "ASSIGN", 
-		"BRACKET_OPEN", "BRACKET_CLOSE", "PAR_OPEN", "PAR_CLOSE", "SEMICOLON", 
-		"COMMA", "DOT", "BOOLEAN", "DECIMAL", "NUMBER", "STRING", "ID", "FIRSTLINE_COMMENT", 
-		"COMMENT_LINE", "WS", "COLOR"
-	};
-	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
-
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
-	@Deprecated
-	public static final String[] tokenNames;
-	static {
-		tokenNames = new String[_SYMBOLIC_NAMES.length];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = VOCABULARY.getLiteralName(i);
-			if (tokenNames[i] == null) {
-				tokenNames[i] = VOCABULARY.getSymbolicName(i);
-			}
-
-			if (tokenNames[i] == null) {
-				tokenNames[i] = "<INVALID>";
-			}
-		}
-	}
-
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
-	}
-
-	@Override
-
-	public Vocabulary getVocabulary() {
-		return VOCABULARY;
-	}
 
 	@Override
 	public String getGrammarFileName() { return "LogoTec.g4"; }
+
+	@Override
+	public String[] getTokenNames() { return tokenNames; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -120,12 +81,18 @@ public class LogoTecParser extends Parser {
 	public ATN getATN() { return _ATN; }
 
 
-	    Map<String, Symbol> symbols = new HashMap<>(); 
+	/* 2 ------------------- Variables de estado ------------------- */
+	    Map<String, Symbol> symbols = new HashMap<>();
 	    List<String> errors = new ArrayList<>();
 	    boolean firstLineHasComment = false;
 	    boolean atLeastOneVariable = false;
 
-	    // Nuevo: llamadas a procedimientos pendientes para validar al final
+	/* 3 ------------------- Utilidad para línea actual ------------------- */
+	    int currentLine() {
+	        return getCurrentToken() != null ? getCurrentToken().getLine() : -1;
+	    }
+
+	/* 4 ------------------- Manejo de llamadas pendientes ------------------- */
 	    static class PendingCall {
 	        final String name;
 	        final int argCount;
@@ -138,32 +105,35 @@ public class LogoTecParser extends Parser {
 	    }
 	    List<PendingCall> pendingCalls = new ArrayList<>();
 
+	/* 5 ------------------- Validación de restricciones del programa ------------------- */
 	    void ensureProgramConstraints() {
-	        // Ya no fallar por falta de comentario en la primera l�nea.
+	        if (!firstLineHasComment) {
+	            errors.add("Error en línea 1: el programa debe iniciar con un comentario (// ...).");
+	        }
 	        if (!atLeastOneVariable) {
 	            errors.add("Error: el programa debe definir al menos una variable con 'Haz' o 'INIC'.");
 	        }
-	        // Validar llamadas pendientes a procedimientos (soporta referencias adelantadas)
 	        for (PendingCall pc : pendingCalls) {
 	            Symbol s = symbols.get(pc.name);
 	            if (s == null) {
-	                errors.add("Error sem�ntico: procedimiento '" + pc.name + "' no est� definido.");
+	                errors.add("Error en línea " + pc.line + ": procedimiento '" + pc.name + "' no está definido.");
 	            } else if (s.type != ValueType.PROCEDURE) {
-	                errors.add("Error sem�ntico: '" + pc.name + "' no es un procedimiento.");
+	                errors.add("Error en línea " + pc.line + ": '" + pc.name + "' no es un procedimiento.");
 	            } else {
 	                int expectedParams = (Integer) s.value;
 	                if (pc.argCount != expectedParams) {
-	                    errors.add("Error sem�ntico: procedimiento '" + pc.name + "' espera " + expectedParams + " par�metros, pero se llam� con " + pc.argCount + ".");
+	                    errors.add("Error en línea " + pc.line + ": procedimiento '" + pc.name + "' espera " + expectedParams +
+	                               " parámetros, pero se llamó con " + pc.argCount + ".");
 	                }
 	            }
 	        }
 	        pendingCalls.clear();
-
 	        if (!errors.isEmpty()) {
 	            throw new RuntimeException(String.join("\n", errors));
 	        }
 	    }
 
+	/* 6 ------------------- Validación de nombres de variables ------------------- */
 	    boolean isValidVarName(String id) {
 	        if (id.length() == 0 || id.length() > 10) return false;
 	        if (!Character.isLowerCase(id.charAt(0))) return false;
@@ -173,9 +143,10 @@ public class LogoTecParser extends Parser {
 	        return true;
 	    }
 
+	/* 7 ------------------- Declaración y asignación de variables ------------------- */
 	    void declareOrAssign(String name, ValueType type, Object value) {
 	        if (!isValidVarName(name)) {
-	            errors.add("Error l�xico: identificador inv�lido '" + name + "'.");
+	            errors.add("Error en línea " + currentLine() + ": identificador inválido '" + name + "'.");
 	            return;
 	        }
 	        Symbol s = symbols.get(name);
@@ -184,21 +155,45 @@ public class LogoTecParser extends Parser {
 	            atLeastOneVariable = true;
 	        } else {
 	            if (s.type != type) {
-	                errors.add("Error sem�ntico: intento de asignar " + type + " a variable '" + name + "' de tipo " + s.type + ".");
+	                errors.add("Error en línea " + currentLine() + ": intento de asignar " + type +
+	                           " a variable '" + name + "' de tipo " + s.type + ".");
 	            } else {
 	                s.value = value;
 	            }
 	        }
 	    }
 
+	/* 8 ------------------- GRUPO 2: INIC solo inicializa ------------------- */
+	    void assignInitOnlyIfDeclared(String name, ValueType valueType, ExprNode exprNode) {
+	        int line = currentLine();
+	        if (!isValidVarName(name)) {
+	            errors.add("Error en línea " + line + ": identificador inválido '" + name + "'.");
+	            return;
+	        }
+	        Symbol s = symbols.get(name);
+	        if (s == null) {
+	            errors.add("Error en línea " + line +
+	                       ": variable '" + name + "' no ha sido declarada antes de inicializar.");
+	            return;
+	        }
+	        if (s.type != valueType) {
+	            errors.add("Error en línea " + line +
+	                       ": intento de asignar " + valueType + " a variable '" + name +
+	                       "' de tipo " + s.type + ".");
+	            return;
+	        }
+	        s.value = exprNode;
+	    }
+
+	/* 9 ------------------- Declaración de procedimientos ------------------- */
 	    void predeclareProcedure(String name) {
 	        Symbol s = symbols.get(name);
 	        if (s == null) {
 	            symbols.put(name, new Symbol(name, ValueType.PROCEDURE, null));
 	        } else if (s.type == ValueType.PROCEDURE && s.value == null) {
-	            errors.add("Error sem�ntico: procedimiento '" + name + "' ya est� en proceso de definici�n.");
+	            errors.add("Error en línea " + currentLine() + ": procedimiento '" + name + "' ya está en proceso de definición.");
 	        } else {
-	            errors.add("Error sem�ntico: s�mbolo '" + name + "' ya est� definido y no puede volver a declararse como procedimiento.");
+	            errors.add("Error en línea " + currentLine() + ": símbolo '" + name + "' ya está definido y no puede declararse como procedimiento.");
 	        }
 	    }
 
@@ -207,31 +202,141 @@ public class LogoTecParser extends Parser {
 	        if (s == null) {
 	            symbols.put(name, new Symbol(name, ValueType.PROCEDURE, paramCount));
 	        } else if (s.type != ValueType.PROCEDURE) {
-	            errors.add("Error sem�ntico: s�mbolo '" + name + "' ya est� definido y no es un procedimiento.");
+	            errors.add("Error en línea " + currentLine() + ": símbolo '" + name + "' ya está definido y no es un procedimiento.");
 	        } else if (s.value == null) {
 	            s.value = paramCount;
 	        } else {
 	            int expectedParams = (Integer) s.value;
 	            if (expectedParams != paramCount) {
-	                errors.add("Error sem�ntico: procedimiento '" + name + "' ya est� definido con " + expectedParams + " par�metros.");
+	                errors.add("Error en línea " + currentLine() + ": procedimiento '" + name +
+	                           "' ya está definido con " + expectedParams + " parámetros.");
 	            }
 	        }
 	    }
 
+	/* 10 ------------------- Validación de llamadas a procedimientos ------------------- */
 	    void validateProcedureCall(String name, int argCount) {
 	        Symbol s = symbols.get(name);
-	        // Si no existe a�n o est� predeclarado sin aridad, difiere la validaci�n
+	        int line = currentLine();
 	        if (s == null || (s.type == ValueType.PROCEDURE && s.value == null)) {
-	            pendingCalls.add(new PendingCall(name, argCount, getCurrentToken()!=null ? getCurrentToken().getLine() : -1));
+	            pendingCalls.add(new PendingCall(name, argCount, line));
 	            return;
 	        }
 	        if (s.type != ValueType.PROCEDURE) {
-	            errors.add("Error sem�ntico: '" + name + "' no es un procedimiento.");
+	            errors.add("Error en línea " + line + ": '" + name + "' no es un procedimiento.");
 	        } else {
 	            int expectedParams = (Integer) s.value;
 	            if (argCount != expectedParams) {
-	                errors.add("Error sem�ntico: procedimiento '" + name + "' espera " + expectedParams + " par�metros, pero se llam� con " + argCount + ".");
+	                errors.add("Error en línea " + line + ": procedimiento '" + name + "' espera " +
+	                           expectedParams + " parámetros, pero se llamó con " + argCount + ".");
 	            }
+	        }
+	    }
+
+	/* 11 ------------------- GRUPO 1: Validación de tipos en expresiones ------------------- */
+	    void requireNumericType(ExprNode expr, String commandName) {
+	        ValueType t = ValueType.infer(expr, symbols);
+	        if (t != ValueType.INT && t != ValueType.UNKNOWN) {
+	            errors.add("Error en línea " + currentLine() + 
+	                       ": comando '" + commandName + "' requiere argumento numérico, recibió " + t + ".");
+	        }
+	    }
+
+	    void requireBooleanType(ExprNode expr, String context) {
+	        ValueType t = ValueType.infer(expr, symbols);
+	        if (t != ValueType.BOOL && t != ValueType.UNKNOWN) {
+	            errors.add("Error en línea " + currentLine() + 
+	                       ": " + context + " requiere expresión booleana, recibió " + t + ".");
+	        }
+	    }
+
+	    void validateIncrement(String varName, ExprNode incrementExpr) {
+	        int line = currentLine();
+	        Symbol s = symbols.get(varName);
+	        if (s == null) {
+	            errors.add("Error en línea " + line + 
+	                       ": variable '" + varName + "' no declarada.");
+	            return;
+	        }
+	        if (s.type != ValueType.INT) {
+	            errors.add("Error en línea " + line + 
+	                       ": INC solo puede incrementar variables numéricas, '" + varName + 
+	                       "' es de tipo " + s.type + ".");
+	        }
+	        ValueType incType = ValueType.infer(incrementExpr, symbols);
+	        if (incType != ValueType.INT && incType != ValueType.UNKNOWN) {
+	            errors.add("Error en línea " + line + 
+	                       ": INC requiere incremento numérico, recibió " + incType + ".");
+	        }
+	    }
+
+	    void requireNumericArgs(ExprNode arg1, ExprNode arg2, String funcName) {
+	        int line = currentLine();
+	        ValueType t1 = ValueType.infer(arg1, symbols);
+	        ValueType t2 = arg2 != null ? ValueType.infer(arg2, symbols) : ValueType.INT;
+	        if (t1 != ValueType.INT && t1 != ValueType.UNKNOWN) {
+	            errors.add("Error en línea " + line + 
+	                       ": función '" + funcName + "' requiere argumentos numéricos, primer argumento es " + t1 + ".");
+	        }
+	        if (arg2 != null && t2 != ValueType.INT && t2 != ValueType.UNKNOWN) {
+	            errors.add("Error en línea " + line + 
+	                       ": función '" + funcName + "' requiere argumentos numéricos, segundo argumento es " + t2 + ".");
+	        }
+	    }
+	    
+	/* GRUPO 3: Validación de bloques de control de flujo */
+	    
+	    /**
+	     * Valida que un bloque de sentencias no esté vacío.
+	     * Restricciones #37, #39
+	     */
+	    void requireNonEmptyBlock(List<StmtNode> body, String blockType) {
+	        if (body == null || body.isEmpty()) {
+	            errors.add("Error en línea " + currentLine() + 
+	                       ": bloque de '" + blockType + "' no puede estar vacío.");
+	        }
+	    }
+
+	    /**
+	     * Valida que un SI solo tenga un bloque ELSE (máximo).
+	     * Restricción #36
+	     */
+	    void validateSingleElse(int elseBlockCount, String context) {
+	        if (elseBlockCount > 1) {
+	            errors.add("Error en línea " + currentLine() + 
+	                       ": " + context + " solo puede tener un bloque ELSE, se encontraron " + elseBlockCount + ".");
+	        }
+	    }
+
+	    /**
+	     * Valida que HAZ.HASTA/HAZ.MIENTRAS tenga condición.
+	     * Restricción #38, #40
+	     */
+	    void requireCondition(ExprNode condition, String loopType) {
+	        if (condition == null) {
+	            errors.add("Error en línea " + currentLine() + 
+	                       ": '" + loopType + "' requiere una condición entre paréntesis.");
+	        }
+	    }
+
+	    /**
+	     * Valida que funciones binarias tengan exactamente 2 argumentos.
+	     * Restricción #44
+	     */
+	    void requireTwoArguments(int argCount, String funcName, int line) {
+	        if (argCount != 2) {
+	            errors.add("Error en línea " + line + 
+	                       ": función '" + funcName + "' requiere exactamente 2 argumentos, recibió " + argCount + ".");
+	        }
+	    }
+
+	    /**
+	     * Valida que funciones unarias tengan exactamente 1 argumento.
+	     */
+	    void requireOneArgument(int argCount, String funcName, int line) {
+	        if (argCount != 1) {
+	            errors.add("Error en línea " + line + 
+	                       ": función '" + funcName + "' requiere exactamente 1 argumento, recibió " + argCount + ".");
 	        }
 	    }
 
@@ -242,10 +347,10 @@ public class LogoTecParser extends Parser {
 	public static class ProgramContext extends ParserRuleContext {
 		public ProgramNode node;
 		public ProceduresBlockContext p;
-		public TerminalNode EOF() { return getToken(LogoTecParser.EOF, 0); }
 		public ProceduresBlockContext proceduresBlock() {
 			return getRuleContext(ProceduresBlockContext.class,0);
 		}
+		public TerminalNode EOF() { return getToken(LogoTecParser.EOF, 0); }
 		public CmtFirstLineContext cmtFirstLine() {
 			return getRuleContext(CmtFirstLineContext.class,0);
 		}
@@ -261,11 +366,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitProgram(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitProgram(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -275,19 +375,16 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
+			setState(65);
 			_la = _input.LA(1);
 			if (_la==FIRSTLINE_COMMENT) {
 				{
-				setState(62);
-				cmtFirstLine();
+				setState(64); cmtFirstLine();
 				}
 			}
 
-			setState(65);
-			((ProgramContext)_localctx).p = proceduresBlock();
-			setState(66);
-			match(EOF);
+			setState(67); ((ProgramContext)_localctx).p = proceduresBlock();
+			setState(68); match(EOF);
 
 			        ensureProgramConstraints();
 			        ((ProgramContext)_localctx).node =  ((ProgramContext)_localctx).p.node;
@@ -309,17 +406,23 @@ public class LogoTecParser extends Parser {
 		public ProgramNode node;
 		public ProcedureDeclContext procedureDecl;
 		public SentenceContext sentence;
+		public InvalidCommentContext invalidComment(int i) {
+			return getRuleContext(InvalidCommentContext.class,i);
+		}
 		public List<ProcedureDeclContext> procedureDecl() {
 			return getRuleContexts(ProcedureDeclContext.class);
+		}
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
+		}
+		public List<InvalidCommentContext> invalidComment() {
+			return getRuleContexts(InvalidCommentContext.class);
 		}
 		public ProcedureDeclContext procedureDecl(int i) {
 			return getRuleContext(ProcedureDeclContext.class,i);
 		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
-		}
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
 		}
 		public ProceduresBlockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -332,11 +435,6 @@ public class LogoTecParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitProceduresBlock(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitProceduresBlock(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -351,17 +449,16 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(77);
+			setState(80);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PARA) | (1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PARA) | (1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID || _la==INVALID_COMMENT) {
 				{
-				setState(75);
+				setState(78);
 				switch (_input.LA(1)) {
 				case PARA:
 					{
-					setState(69);
-					((ProceduresBlockContext)_localctx).procedureDecl = procedureDecl();
+					setState(71); ((ProceduresBlockContext)_localctx).procedureDecl = procedureDecl();
 					 decls.add(((ProceduresBlockContext)_localctx).procedureDecl.node); 
 					}
 					break;
@@ -401,22 +498,24 @@ public class LogoTecParser extends Parser {
 				case PONCL:
 				case ID:
 					{
-					setState(72);
-					((ProceduresBlockContext)_localctx).sentence = sentence();
+					setState(74); ((ProceduresBlockContext)_localctx).sentence = sentence();
 					 mainBody.add(((ProceduresBlockContext)_localctx).sentence.node); 
+					}
+					break;
+				case INVALID_COMMENT:
+					{
+					setState(77); invalidComment();
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(79);
+				setState(82);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-
-			        ((ProceduresBlockContext)_localctx).node =  new ProgramNode(decls, mainBody);
-			      
+			 ((ProceduresBlockContext)_localctx).node =  new ProgramNode(decls, mainBody); 
 			}
 		}
 		catch (RecognitionException re) {
@@ -435,25 +534,25 @@ public class LogoTecParser extends Parser {
 		public Token procName;
 		public Token param;
 		public SentenceContext sentence;
+		public List<TerminalNode> ID() { return getTokens(LogoTecParser.ID); }
 		public TerminalNode PARA() { return getToken(LogoTecParser.PARA, 0); }
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
+		}
+		public List<TerminalNode> BRACKET_CLOSE() { return getTokens(LogoTecParser.BRACKET_CLOSE); }
+		public TerminalNode ID(int i) {
+			return getToken(LogoTecParser.ID, i);
+		}
 		public List<TerminalNode> BRACKET_OPEN() { return getTokens(LogoTecParser.BRACKET_OPEN); }
 		public TerminalNode BRACKET_OPEN(int i) {
 			return getToken(LogoTecParser.BRACKET_OPEN, i);
 		}
-		public List<TerminalNode> BRACKET_CLOSE() { return getTokens(LogoTecParser.BRACKET_CLOSE); }
 		public TerminalNode BRACKET_CLOSE(int i) {
 			return getToken(LogoTecParser.BRACKET_CLOSE, i);
 		}
 		public TerminalNode FIN() { return getToken(LogoTecParser.FIN, 0); }
-		public List<TerminalNode> ID() { return getTokens(LogoTecParser.ID); }
-		public TerminalNode ID(int i) {
-			return getToken(LogoTecParser.ID, i);
-		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
-		}
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
 		}
 		public ProcedureDeclContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -467,77 +566,63 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitProcedureDecl(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitProcedureDecl(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ProcedureDeclContext procedureDecl() throws RecognitionException {
 		ProcedureDeclContext _localctx = new ProcedureDeclContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_procedureDecl);
 		 
-		    List<String> params = new ArrayList<>(); 
-		    List<StmtNode> body = new ArrayList<>(); 
-
+		        List<String> params = new ArrayList<>(); 
+		        List<StmtNode> body = new ArrayList<>(); 
+		    
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(82);
-			match(PARA);
-			setState(83);
-			((ProcedureDeclContext)_localctx).procName = match(ID);
+			setState(85); match(PARA);
+			setState(86); ((ProcedureDeclContext)_localctx).procName = match(ID);
 			 predeclareProcedure((((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getText():null)); 
-			setState(85);
-			match(BRACKET_OPEN);
-			setState(90);
+			setState(88); match(BRACKET_OPEN);
+			setState(93);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==ID) {
 				{
 				{
-				setState(86);
-				((ProcedureDeclContext)_localctx).param = match(ID);
+				setState(89); ((ProcedureDeclContext)_localctx).param = match(ID);
 				 
-				      params.add(((ProcedureDeclContext)_localctx).param.getText()); 
-				      declareOrAssign((((ProcedureDeclContext)_localctx).param!=null?((ProcedureDeclContext)_localctx).param.getText():null), ValueType.UNKNOWN, null);
-				  
+				          params.add(((ProcedureDeclContext)_localctx).param.getText()); 
+				          declareOrAssign((((ProcedureDeclContext)_localctx).param!=null?((ProcedureDeclContext)_localctx).param.getText():null), ValueType.UNKNOWN, null);
+				      
 				}
 				}
-				setState(92);
+				setState(95);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(93);
-			match(BRACKET_CLOSE);
+			setState(96); match(BRACKET_CLOSE);
 			 declareProcedure((((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getText():null), params.size()); 
-			setState(95);
-			match(BRACKET_OPEN);
-			setState(101);
+			setState(98); match(BRACKET_OPEN);
+			setState(104);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(96);
-				((ProcedureDeclContext)_localctx).sentence = sentence();
+				setState(99); ((ProcedureDeclContext)_localctx).sentence = sentence();
 				body.add(((ProcedureDeclContext)_localctx).sentence.node);
 				}
 				}
-				setState(103);
+				setState(106);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(104);
-			match(BRACKET_CLOSE);
-			setState(105);
-			match(FIN);
+			setState(107); match(BRACKET_CLOSE);
+			setState(108); match(FIN);
 
-			    if (!params.isEmpty()) atLeastOneVariable = true;
-			    ((ProcedureDeclContext)_localctx).node =  new ProcDeclNode((((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getText():null), params, body);
-			  
+			        if (!params.isEmpty()) atLeastOneVariable = true;
+			        ((ProcedureDeclContext)_localctx).node =  new ProcDeclNode((((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getText():null), params, body);
+			      
 			}
 		}
 		catch (RecognitionException re) {
@@ -567,26 +652,23 @@ public class LogoTecParser extends Parser {
 		public HazHastaStmtContext hazHastaStmt() {
 			return getRuleContext(HazHastaStmtContext.class,0);
 		}
+		public HastaStmtContext hastaStmt() {
+			return getRuleContext(HastaStmtContext.class,0);
+		}
+		public SiStmtContext siStmt() {
+			return getRuleContext(SiStmtContext.class,0);
+		}
+		public VarInitContext varInit() {
+			return getRuleContext(VarInitContext.class,0);
+		}
 		public HazMientrasStmtContext hazMientrasStmt() {
 			return getRuleContext(HazMientrasStmtContext.class,0);
 		}
 		public VarDeclContext varDecl() {
 			return getRuleContext(VarDeclContext.class,0);
 		}
-		public VarInitContext varInit() {
-			return getRuleContext(VarInitContext.class,0);
-		}
-		public CallProcContext callProc() {
-			return getRuleContext(CallProcContext.class,0);
-		}
 		public TurtleCmdContext turtleCmd() {
 			return getRuleContext(TurtleCmdContext.class,0);
-		}
-		public SiStmtContext siStmt() {
-			return getRuleContext(SiStmtContext.class,0);
-		}
-		public HastaStmtContext hastaStmt() {
-			return getRuleContext(HastaStmtContext.class,0);
 		}
 		public MientrasStmtContext mientrasStmt() {
 			return getRuleContext(MientrasStmtContext.class,0);
@@ -596,6 +678,9 @@ public class LogoTecParser extends Parser {
 		}
 		public ExecBlockContext execBlock() {
 			return getRuleContext(ExecBlockContext.class,0);
+		}
+		public CallProcContext callProc() {
+			return getRuleContext(CallProcContext.class,0);
 		}
 		public SentenceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -609,104 +694,88 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitSentence(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitSentence(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final SentenceContext sentence() throws RecognitionException {
 		SentenceContext _localctx = new SentenceContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_sentence);
 		try {
-			setState(141);
+			setState(144);
 			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(108);
-				((SentenceContext)_localctx).hazHastaStmt = hazHastaStmt();
+				setState(111); ((SentenceContext)_localctx).hazHastaStmt = hazHastaStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).hazHastaStmt.node; 
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(111);
-				((SentenceContext)_localctx).hazMientrasStmt = hazMientrasStmt();
+				setState(114); ((SentenceContext)_localctx).hazMientrasStmt = hazMientrasStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).hazMientrasStmt.node; 
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(114);
-				((SentenceContext)_localctx).varDecl = varDecl();
+				setState(117); ((SentenceContext)_localctx).varDecl = varDecl();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).varDecl.node; 
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(117);
-				((SentenceContext)_localctx).varInit = varInit();
+				setState(120); ((SentenceContext)_localctx).varInit = varInit();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).varInit.node; 
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(120);
-				((SentenceContext)_localctx).callProc = callProc();
+				setState(123); ((SentenceContext)_localctx).callProc = callProc();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).callProc.node; 
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(123);
-				((SentenceContext)_localctx).turtleCmd = turtleCmd();
+				setState(126); ((SentenceContext)_localctx).turtleCmd = turtleCmd();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).turtleCmd.node; 
 				}
 				break;
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(126);
-				((SentenceContext)_localctx).siStmt = siStmt();
+				setState(129); ((SentenceContext)_localctx).siStmt = siStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).siStmt.node; 
 				}
 				break;
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(129);
-				((SentenceContext)_localctx).hastaStmt = hastaStmt();
+				setState(132); ((SentenceContext)_localctx).hastaStmt = hastaStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).hastaStmt.node; 
 				}
 				break;
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(132);
-				((SentenceContext)_localctx).mientrasStmt = mientrasStmt();
+				setState(135); ((SentenceContext)_localctx).mientrasStmt = mientrasStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).mientrasStmt.node; 
 				}
 				break;
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(135);
-				((SentenceContext)_localctx).repiteBlock = repiteBlock();
+				setState(138); ((SentenceContext)_localctx).repiteBlock = repiteBlock();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).repiteBlock.node; 
 				}
 				break;
 			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(138);
-				((SentenceContext)_localctx).execBlock = execBlock();
+				setState(141); ((SentenceContext)_localctx).execBlock = execBlock();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).execBlock.node; 
 				}
 				break;
@@ -727,12 +796,12 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public Token name;
 		public LiteralOrStringContext value;
-		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
 		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
 		public LiteralOrStringContext literalOrString() {
 			return getRuleContext(LiteralOrStringContext.class,0);
 		}
 		public TerminalNode SEMICOLON() { return getToken(LogoTecParser.SEMICOLON, 0); }
+		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
 		public VarDeclContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -745,11 +814,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitVarDecl(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitVarDecl(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final VarDeclContext varDecl() throws RecognitionException {
@@ -759,18 +823,14 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(143);
-			match(HAZ);
-			setState(144);
-			((VarDeclContext)_localctx).name = match(ID);
-			setState(145);
-			((VarDeclContext)_localctx).value = literalOrString();
-			setState(147);
+			setState(146); match(HAZ);
+			setState(147); ((VarDeclContext)_localctx).name = match(ID);
+			setState(148); ((VarDeclContext)_localctx).value = literalOrString();
+			setState(150);
 			_la = _input.LA(1);
 			if (_la==SEMICOLON) {
 				{
-				setState(146);
-				match(SEMICOLON);
+				setState(149); match(SEMICOLON);
 				}
 			}
 
@@ -795,13 +855,13 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public Token name;
 		public ExpressionContext expression;
-		public TerminalNode INIC() { return getToken(LogoTecParser.INIC, 0); }
 		public TerminalNode ASSIGN() { return getToken(LogoTecParser.ASSIGN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(LogoTecParser.SEMICOLON, 0); }
+		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode INIC() { return getToken(LogoTecParser.INIC, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode SEMICOLON() { return getToken(LogoTecParser.SEMICOLON, 0); }
-		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
 		public VarInitContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -814,11 +874,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitVarInit(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitVarInit(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final VarInitContext varInit() throws RecognitionException {
@@ -827,19 +882,14 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(151);
-			match(INIC);
-			setState(152);
-			((VarInitContext)_localctx).name = match(ID);
-			setState(153);
-			match(ASSIGN);
-			setState(154);
-			((VarInitContext)_localctx).expression = expression();
-			setState(155);
-			match(SEMICOLON);
+			setState(154); match(INIC);
+			setState(155); ((VarInitContext)_localctx).name = match(ID);
+			setState(156); match(ASSIGN);
+			setState(157); ((VarInitContext)_localctx).expression = expression();
+			setState(158); match(SEMICOLON);
 
-			        ValueType t = ValueType.infer(((VarInitContext)_localctx).expression.node);
-			        declareOrAssign((((VarInitContext)_localctx).name!=null?((VarInitContext)_localctx).name.getText():null), t, null);
+			        ValueType t = ValueType.infer(((VarInitContext)_localctx).expression.node, symbols);
+			        assignInitOnlyIfDeclared((((VarInitContext)_localctx).name!=null?((VarInitContext)_localctx).name.getText():null), t, ((VarInitContext)_localctx).expression.node);
 			        ((VarInitContext)_localctx).node =  new VarAssignNode((((VarInitContext)_localctx).name!=null?((VarInitContext)_localctx).name.getText():null), ((VarInitContext)_localctx).expression.node);
 			      
 			}
@@ -861,14 +911,6 @@ public class LogoTecParser extends Parser {
 		public ExpressionContext expression;
 		public PrimaryArgContext primaryArg;
 		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
 		public List<PrimaryArgContext> primaryArg() {
 			return getRuleContexts(PrimaryArgContext.class);
 		}
@@ -876,6 +918,14 @@ public class LogoTecParser extends Parser {
 			return getRuleContext(PrimaryArgContext.class,i);
 		}
 		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
 		public TerminalNode COMMA(int i) {
 			return getToken(LogoTecParser.COMMA, i);
 		}
@@ -891,11 +941,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitCallProc(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitCallProc(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final CallProcContext callProc() throws RecognitionException {
@@ -907,50 +952,44 @@ public class LogoTecParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(158);
-			((CallProcContext)_localctx).proc = match(ID);
-			setState(184);
+			setState(161); ((CallProcContext)_localctx).proc = match(ID);
+			setState(187);
 			switch (_input.LA(1)) {
 			case BRACKET_OPEN:
 				{
-				setState(159);
-				match(BRACKET_OPEN);
-				setState(173);
+				setState(162); match(BRACKET_OPEN);
+				setState(176);
 				_la = _input.LA(1);
-				if (((((_la - 38)) & ~0x3f) == 0 && ((1L << (_la - 38)) & ((1L << (IGUALESQ - 38)) | (1L << (YFUNC - 38)) | (1L << (OFUNC - 38)) | (1L << (MAYORQ - 38)) | (1L << (MENORQ - 38)) | (1L << (DIFERENCIA - 38)) | (1L << (AZAR - 38)) | (1L << (PRODUCTO - 38)) | (1L << (POTENCIA - 38)) | (1L << (DIVISION - 38)) | (1L << (SUMA - 38)) | (1L << (PLUS - 38)) | (1L << (MINUS - 38)) | (1L << (NOT - 38)) | (1L << (PAR_OPEN - 38)) | (1L << (BOOLEAN - 38)) | (1L << (DECIMAL - 38)) | (1L << (NUMBER - 38)) | (1L << (STRING - 38)) | (1L << (ID - 38)))) != 0)) {
+				if (((((_la - 39)) & ~0x3f) == 0 && ((1L << (_la - 39)) & ((1L << (IGUALESQ - 39)) | (1L << (YFUNC - 39)) | (1L << (OFUNC - 39)) | (1L << (MAYORQ - 39)) | (1L << (MENORQ - 39)) | (1L << (DIFERENCIA - 39)) | (1L << (AZAR - 39)) | (1L << (PRODUCTO - 39)) | (1L << (POTENCIA - 39)) | (1L << (DIVISION - 39)) | (1L << (SUMA - 39)) | (1L << (PLUS - 39)) | (1L << (MINUS - 39)) | (1L << (NOT - 39)) | (1L << (PAR_OPEN - 39)) | (1L << (BOOLEAN - 39)) | (1L << (DECIMAL - 39)) | (1L << (NUMBER - 39)) | (1L << (STRING - 39)) | (1L << (ID - 39)))) != 0)) {
 					{
-					setState(160);
-					((CallProcContext)_localctx).expression = expression();
+					setState(163); ((CallProcContext)_localctx).expression = expression();
 					 args.add(((CallProcContext)_localctx).expression.node); 
-					setState(170);
+					setState(173);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-					while (((((_la - 38)) & ~0x3f) == 0 && ((1L << (_la - 38)) & ((1L << (IGUALESQ - 38)) | (1L << (YFUNC - 38)) | (1L << (OFUNC - 38)) | (1L << (MAYORQ - 38)) | (1L << (MENORQ - 38)) | (1L << (DIFERENCIA - 38)) | (1L << (AZAR - 38)) | (1L << (PRODUCTO - 38)) | (1L << (POTENCIA - 38)) | (1L << (DIVISION - 38)) | (1L << (SUMA - 38)) | (1L << (PLUS - 38)) | (1L << (MINUS - 38)) | (1L << (NOT - 38)) | (1L << (PAR_OPEN - 38)) | (1L << (COMMA - 38)) | (1L << (BOOLEAN - 38)) | (1L << (DECIMAL - 38)) | (1L << (NUMBER - 38)) | (1L << (STRING - 38)) | (1L << (ID - 38)))) != 0)) {
+					while (((((_la - 39)) & ~0x3f) == 0 && ((1L << (_la - 39)) & ((1L << (IGUALESQ - 39)) | (1L << (YFUNC - 39)) | (1L << (OFUNC - 39)) | (1L << (MAYORQ - 39)) | (1L << (MENORQ - 39)) | (1L << (DIFERENCIA - 39)) | (1L << (AZAR - 39)) | (1L << (PRODUCTO - 39)) | (1L << (POTENCIA - 39)) | (1L << (DIVISION - 39)) | (1L << (SUMA - 39)) | (1L << (PLUS - 39)) | (1L << (MINUS - 39)) | (1L << (NOT - 39)) | (1L << (PAR_OPEN - 39)) | (1L << (COMMA - 39)) | (1L << (BOOLEAN - 39)) | (1L << (DECIMAL - 39)) | (1L << (NUMBER - 39)) | (1L << (STRING - 39)) | (1L << (ID - 39)))) != 0)) {
 						{
 						{
-						setState(163);
+						setState(166);
 						_la = _input.LA(1);
 						if (_la==COMMA) {
 							{
-							setState(162);
-							match(COMMA);
+							setState(165); match(COMMA);
 							}
 						}
 
-						setState(165);
-						((CallProcContext)_localctx).expression = expression();
+						setState(168); ((CallProcContext)_localctx).expression = expression();
 						 args.add(((CallProcContext)_localctx).expression.node); 
 						}
 						}
-						setState(172);
+						setState(175);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
 					}
 				}
 
-				setState(175);
-				match(BRACKET_CLOSE);
+				setState(178); match(BRACKET_CLOSE);
 				}
 				break;
 			case EOF:
@@ -993,21 +1032,21 @@ public class LogoTecParser extends Parser {
 			case PAR_OPEN:
 			case NUMBER:
 			case ID:
+			case INVALID_COMMENT:
 				{
-				setState(181);
+				setState(184);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(176);
-						((CallProcContext)_localctx).primaryArg = primaryArg();
+						setState(179); ((CallProcContext)_localctx).primaryArg = primaryArg();
 						 args.add(((CallProcContext)_localctx).primaryArg.node); 
 						}
 						} 
 					}
-					setState(183);
+					setState(186);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
 				}
@@ -1038,13 +1077,13 @@ public class LogoTecParser extends Parser {
 		public Token NUMBER;
 		public Token ID;
 		public ExpressionContext expression;
-		public TerminalNode NUMBER() { return getToken(LogoTecParser.NUMBER, 0); }
 		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode NUMBER() { return getToken(LogoTecParser.NUMBER, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public PrimaryArgContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1057,44 +1096,34 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitPrimaryArg(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitPrimaryArg(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final PrimaryArgContext primaryArg() throws RecognitionException {
 		PrimaryArgContext _localctx = new PrimaryArgContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_primaryArg);
 		try {
-			setState(197);
+			setState(200);
 			switch (_input.LA(1)) {
 			case NUMBER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(188);
-				((PrimaryArgContext)_localctx).NUMBER = match(NUMBER);
+				setState(191); ((PrimaryArgContext)_localctx).NUMBER = match(NUMBER);
 				 ((PrimaryArgContext)_localctx).node =  new ConstNode(Integer.parseInt((((PrimaryArgContext)_localctx).NUMBER!=null?((PrimaryArgContext)_localctx).NUMBER.getText():null))); 
 				}
 				break;
 			case ID:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(190);
-				((PrimaryArgContext)_localctx).ID = match(ID);
+				setState(193); ((PrimaryArgContext)_localctx).ID = match(ID);
 				 ((PrimaryArgContext)_localctx).node =  new VarRefNode((((PrimaryArgContext)_localctx).ID!=null?((PrimaryArgContext)_localctx).ID.getText():null)); 
 				}
 				break;
 			case PAR_OPEN:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(192);
-				match(PAR_OPEN);
-				setState(193);
-				((PrimaryArgContext)_localctx).expression = expression();
-				setState(194);
-				match(PAR_CLOSE);
+				setState(195); match(PAR_OPEN);
+				setState(196); ((PrimaryArgContext)_localctx).expression = expression();
+				setState(197); match(PAR_CLOSE);
 				 ((PrimaryArgContext)_localctx).node =  ((PrimaryArgContext)_localctx).expression.node; 
 				}
 				break;
@@ -1116,13 +1145,13 @@ public class LogoTecParser extends Parser {
 	public static class ExpressionSeriesContext extends ParserRuleContext {
 		public List<ExprNode> list;
 		public ExpressionContext expression;
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
+		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
 		public TerminalNode COMMA(int i) {
 			return getToken(LogoTecParser.COMMA, i);
 		}
@@ -1138,11 +1167,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitExpressionSeries(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitExpressionSeries(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ExpressionSeriesContext expressionSeries() throws RecognitionException {
@@ -1153,34 +1177,31 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(212);
+			setState(215);
 			_la = _input.LA(1);
-			if (((((_la - 38)) & ~0x3f) == 0 && ((1L << (_la - 38)) & ((1L << (IGUALESQ - 38)) | (1L << (YFUNC - 38)) | (1L << (OFUNC - 38)) | (1L << (MAYORQ - 38)) | (1L << (MENORQ - 38)) | (1L << (DIFERENCIA - 38)) | (1L << (AZAR - 38)) | (1L << (PRODUCTO - 38)) | (1L << (POTENCIA - 38)) | (1L << (DIVISION - 38)) | (1L << (SUMA - 38)) | (1L << (PLUS - 38)) | (1L << (MINUS - 38)) | (1L << (NOT - 38)) | (1L << (PAR_OPEN - 38)) | (1L << (BOOLEAN - 38)) | (1L << (DECIMAL - 38)) | (1L << (NUMBER - 38)) | (1L << (STRING - 38)) | (1L << (ID - 38)))) != 0)) {
+			if (((((_la - 39)) & ~0x3f) == 0 && ((1L << (_la - 39)) & ((1L << (IGUALESQ - 39)) | (1L << (YFUNC - 39)) | (1L << (OFUNC - 39)) | (1L << (MAYORQ - 39)) | (1L << (MENORQ - 39)) | (1L << (DIFERENCIA - 39)) | (1L << (AZAR - 39)) | (1L << (PRODUCTO - 39)) | (1L << (POTENCIA - 39)) | (1L << (DIVISION - 39)) | (1L << (SUMA - 39)) | (1L << (PLUS - 39)) | (1L << (MINUS - 39)) | (1L << (NOT - 39)) | (1L << (PAR_OPEN - 39)) | (1L << (BOOLEAN - 39)) | (1L << (DECIMAL - 39)) | (1L << (NUMBER - 39)) | (1L << (STRING - 39)) | (1L << (ID - 39)))) != 0)) {
 				{
-				setState(199);
-				((ExpressionSeriesContext)_localctx).expression = expression();
+				setState(202); ((ExpressionSeriesContext)_localctx).expression = expression();
 				 _localctx.list.add(((ExpressionSeriesContext)_localctx).expression.node); 
-				setState(209);
+				setState(212);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while (((((_la - 38)) & ~0x3f) == 0 && ((1L << (_la - 38)) & ((1L << (IGUALESQ - 38)) | (1L << (YFUNC - 38)) | (1L << (OFUNC - 38)) | (1L << (MAYORQ - 38)) | (1L << (MENORQ - 38)) | (1L << (DIFERENCIA - 38)) | (1L << (AZAR - 38)) | (1L << (PRODUCTO - 38)) | (1L << (POTENCIA - 38)) | (1L << (DIVISION - 38)) | (1L << (SUMA - 38)) | (1L << (PLUS - 38)) | (1L << (MINUS - 38)) | (1L << (NOT - 38)) | (1L << (PAR_OPEN - 38)) | (1L << (COMMA - 38)) | (1L << (BOOLEAN - 38)) | (1L << (DECIMAL - 38)) | (1L << (NUMBER - 38)) | (1L << (STRING - 38)) | (1L << (ID - 38)))) != 0)) {
+				while (((((_la - 39)) & ~0x3f) == 0 && ((1L << (_la - 39)) & ((1L << (IGUALESQ - 39)) | (1L << (YFUNC - 39)) | (1L << (OFUNC - 39)) | (1L << (MAYORQ - 39)) | (1L << (MENORQ - 39)) | (1L << (DIFERENCIA - 39)) | (1L << (AZAR - 39)) | (1L << (PRODUCTO - 39)) | (1L << (POTENCIA - 39)) | (1L << (DIVISION - 39)) | (1L << (SUMA - 39)) | (1L << (PLUS - 39)) | (1L << (MINUS - 39)) | (1L << (NOT - 39)) | (1L << (PAR_OPEN - 39)) | (1L << (COMMA - 39)) | (1L << (BOOLEAN - 39)) | (1L << (DECIMAL - 39)) | (1L << (NUMBER - 39)) | (1L << (STRING - 39)) | (1L << (ID - 39)))) != 0)) {
 					{
 					{
-					setState(202);
+					setState(205);
 					_la = _input.LA(1);
 					if (_la==COMMA) {
 						{
-						setState(201);
-						match(COMMA);
+						setState(204); match(COMMA);
 						}
 					}
 
-					setState(204);
-					((ExpressionSeriesContext)_localctx).expression = expression();
+					setState(207); ((ExpressionSeriesContext)_localctx).expression = expression();
 					 _localctx.list.add(((ExpressionSeriesContext)_localctx).expression.node); 
 					}
 					}
-					setState(211);
+					setState(214);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
@@ -1204,13 +1225,13 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public SentenceContext sentence;
 		public TerminalNode EJECUTA() { return getToken(LogoTecParser.EJECUTA, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
-		public List<SentenceContext> sentence() {
-			return getRuleContexts(SentenceContext.class);
-		}
 		public SentenceContext sentence(int i) {
 			return getRuleContext(SentenceContext.class,i);
+		}
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public List<SentenceContext> sentence() {
+			return getRuleContexts(SentenceContext.class);
 		}
 		public ExecBlockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1224,11 +1245,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitExecBlock(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitExecBlock(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ExecBlockContext execBlock() throws RecognitionException {
@@ -1239,27 +1255,23 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(214);
-			match(EJECUTA);
-			setState(215);
-			match(BRACKET_OPEN);
-			setState(221);
+			setState(217); match(EJECUTA);
+			setState(218); match(BRACKET_OPEN);
+			setState(224);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(216);
-				((ExecBlockContext)_localctx).sentence = sentence();
+				setState(219); ((ExecBlockContext)_localctx).sentence = sentence();
 				body.add(((ExecBlockContext)_localctx).sentence.node);
 				}
 				}
-				setState(223);
+				setState(226);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(224);
-			match(BRACKET_CLOSE);
+			setState(227); match(BRACKET_CLOSE);
 			 ((ExecBlockContext)_localctx).node =  new ExecBlockNode(body); 
 			}
 		}
@@ -1279,16 +1291,16 @@ public class LogoTecParser extends Parser {
 		public ExpressionContext times;
 		public SentenceContext sentence;
 		public TerminalNode REPITE() { return getToken(LogoTecParser.REPITE, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
+		}
 		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
-		}
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
 		}
 		public RepiteBlockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1302,11 +1314,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitRepiteBlock(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitRepiteBlock(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final RepiteBlockContext repiteBlock() throws RecognitionException {
@@ -1317,29 +1324,27 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(227);
-			match(REPITE);
-			setState(228);
-			((RepiteBlockContext)_localctx).times = expression();
-			setState(229);
-			match(BRACKET_OPEN);
-			setState(235);
+			setState(230); match(REPITE);
+			setState(231); ((RepiteBlockContext)_localctx).times = expression();
+
+			        requireNumericType(((RepiteBlockContext)_localctx).times.node, "REPITE");
+			      
+			setState(233); match(BRACKET_OPEN);
+			setState(239);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(230);
-				((RepiteBlockContext)_localctx).sentence = sentence();
+				setState(234); ((RepiteBlockContext)_localctx).sentence = sentence();
 				body.add(((RepiteBlockContext)_localctx).sentence.node);
 				}
 				}
-				setState(237);
+				setState(241);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(238);
-			match(BRACKET_CLOSE);
+			setState(242); match(BRACKET_CLOSE);
 			 ((RepiteBlockContext)_localctx).node =  new RepeatNode(((RepiteBlockContext)_localctx).times.node, body); 
 			}
 		}
@@ -1358,25 +1363,25 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public ExpressionContext cond;
 		public SentenceContext sentence;
-		public TerminalNode SI() { return getToken(LogoTecParser.SI, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public List<TerminalNode> BRACKET_OPEN() { return getTokens(LogoTecParser.BRACKET_OPEN); }
-		public TerminalNode BRACKET_OPEN(int i) {
-			return getToken(LogoTecParser.BRACKET_OPEN, i);
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
 		}
 		public List<TerminalNode> BRACKET_CLOSE() { return getTokens(LogoTecParser.BRACKET_CLOSE); }
-		public TerminalNode BRACKET_CLOSE(int i) {
-			return getToken(LogoTecParser.BRACKET_CLOSE, i);
-		}
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode SI() { return getToken(LogoTecParser.SI, 0); }
+		public List<TerminalNode> BRACKET_OPEN() { return getTokens(LogoTecParser.BRACKET_OPEN); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode BRACKET_OPEN(int i) {
+			return getToken(LogoTecParser.BRACKET_OPEN, i);
+		}
+		public TerminalNode BRACKET_CLOSE(int i) {
+			return getToken(LogoTecParser.BRACKET_CLOSE, i);
+		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
-		}
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
 		}
 		public SiStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1390,75 +1395,74 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitSiStmt(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitSiStmt(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final SiStmtContext siStmt() throws RecognitionException {
 		SiStmtContext _localctx = new SiStmtContext(_ctx, getState());
 		enterRule(_localctx, 22, RULE_siStmt);
-		 List<StmtNode> thenBody = new ArrayList<>(); List<StmtNode> elseBody = new ArrayList<>(); 
+		 
+		        List<StmtNode> thenBody = new ArrayList<>(); 
+		        List<StmtNode> elseBody = new ArrayList<>();
+		        int elseCount = 0;  // ← NUEVO: contador de bloques ELSE
+		    
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(241);
-			match(SI);
-			setState(242);
-			match(PAR_OPEN);
-			setState(243);
-			((SiStmtContext)_localctx).cond = expression();
-			setState(244);
-			match(PAR_CLOSE);
-			setState(245);
-			match(BRACKET_OPEN);
-			setState(251);
+			setState(245); match(SI);
+			setState(246); match(PAR_OPEN);
+			setState(247); ((SiStmtContext)_localctx).cond = expression();
+			setState(248); match(PAR_CLOSE);
+
+			        requireBooleanType(((SiStmtContext)_localctx).cond.node, "condición de SI");
+			      
+			setState(250); match(BRACKET_OPEN);
+			setState(256);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(246);
-				((SiStmtContext)_localctx).sentence = sentence();
+				setState(251); ((SiStmtContext)_localctx).sentence = sentence();
 				thenBody.add(((SiStmtContext)_localctx).sentence.node);
 				}
 				}
-				setState(253);
+				setState(258);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(254);
-			match(BRACKET_CLOSE);
-			setState(265);
+			setState(259); match(BRACKET_CLOSE);
+			setState(273);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==BRACKET_OPEN) {
+			while (_la==BRACKET_OPEN) {
 				{
-				setState(255);
-				match(BRACKET_OPEN);
-				setState(261);
+				{
+				setState(260); match(BRACKET_OPEN);
+				 elseCount++; 
+				setState(267);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 					{
 					{
-					setState(256);
-					((SiStmtContext)_localctx).sentence = sentence();
+					setState(262); ((SiStmtContext)_localctx).sentence = sentence();
 					elseBody.add(((SiStmtContext)_localctx).sentence.node);
 					}
 					}
-					setState(263);
+					setState(269);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(264);
-				match(BRACKET_CLOSE);
+				setState(270); match(BRACKET_CLOSE);
 				}
+				}
+				setState(275);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
 			}
 
-
+			        validateSingleElse(elseCount, "SI");  // ← NUEVO: validar
 			        ((SiStmtContext)_localctx).node =  new IfNode(((SiStmtContext)_localctx).cond.node, thenBody, elseBody.isEmpty()? null : elseBody);
 			      
 			}
@@ -1478,21 +1482,21 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public SentenceContext sentence;
 		public ExpressionContext cond;
-		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
-		public TerminalNode HASTA() { return getToken(LogoTecParser.HASTA, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode DOT() { return getToken(LogoTecParser.DOT, 0); }
 		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
+		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
+		}
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode HASTA() { return getToken(LogoTecParser.HASTA, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode DOT() { return getToken(LogoTecParser.DOT, 0); }
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
-		}
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
 		}
 		public HazHastaStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1506,61 +1510,64 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitHazHastaStmt(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitHazHastaStmt(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final HazHastaStmtContext hazHastaStmt() throws RecognitionException {
 		HazHastaStmtContext _localctx = new HazHastaStmtContext(_ctx, getState());
 		enterRule(_localctx, 24, RULE_hazHastaStmt);
-		 List<StmtNode> body = new ArrayList<>(); 
+		 
+		        List<StmtNode> body = new ArrayList<>(); 
+		        ExprNode condition = null;
+		        int line = currentLine();
+		    
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(269);
-			match(HAZ);
-			setState(271);
+			setState(278); match(HAZ);
+			setState(280);
 			_la = _input.LA(1);
 			if (_la==DOT) {
 				{
-				setState(270);
-				match(DOT);
+				setState(279); match(DOT);
 				}
 			}
 
-			setState(273);
-			match(BRACKET_OPEN);
-			setState(279);
+			setState(282); match(BRACKET_OPEN);
+			setState(288);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(274);
-				((HazHastaStmtContext)_localctx).sentence = sentence();
+				setState(283); ((HazHastaStmtContext)_localctx).sentence = sentence();
 				body.add(((HazHastaStmtContext)_localctx).sentence.node);
 				}
 				}
-				setState(281);
+				setState(290);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(282);
-			match(BRACKET_CLOSE);
-			setState(283);
-			match(HASTA);
-			setState(284);
-			match(PAR_OPEN);
-			setState(285);
-			((HazHastaStmtContext)_localctx).cond = expression();
-			setState(286);
-			match(PAR_CLOSE);
+			setState(291); match(BRACKET_CLOSE);
+			setState(298);
+			switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
+			case 1:
+				{
+				setState(292); match(HASTA);
+				setState(293); match(PAR_OPEN);
+				setState(294); ((HazHastaStmtContext)_localctx).cond = expression();
+				setState(295); match(PAR_CLOSE);
+				 condition = ((HazHastaStmtContext)_localctx).cond.node; 
+				}
+				break;
+			}
 
-			        ((HazHastaStmtContext)_localctx).node =  new DoUntilNode(body, ((HazHastaStmtContext)_localctx).cond.node);
+			        requireCondition(condition, "HAZ.HASTA");
+			        requireNonEmptyBlock(body, "HAZ.HASTA");
+			        if (condition != null) {
+			            requireBooleanType(condition, "condición de HAZ.HASTA");
+			        }
+			        ((HazHastaStmtContext)_localctx).node =  new DoUntilNode(body, condition);
 			      
 			}
 		}
@@ -1579,21 +1586,21 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public SentenceContext sentence;
 		public ExpressionContext cond;
-		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode DOT() { return getToken(LogoTecParser.DOT, 0); }
 		public TerminalNode MIENTRAS() { return getToken(LogoTecParser.MIENTRAS, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
+		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
+		}
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode DOT() { return getToken(LogoTecParser.DOT, 0); }
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
-		}
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
 		}
 		public HazMientrasStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1607,61 +1614,64 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitHazMientrasStmt(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitHazMientrasStmt(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final HazMientrasStmtContext hazMientrasStmt() throws RecognitionException {
 		HazMientrasStmtContext _localctx = new HazMientrasStmtContext(_ctx, getState());
 		enterRule(_localctx, 26, RULE_hazMientrasStmt);
-		 List<StmtNode> body = new ArrayList<>(); 
+		 
+		        List<StmtNode> body = new ArrayList<>(); 
+		        ExprNode condition = null;
+		        int line = currentLine();
+		    
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(289);
-			match(HAZ);
-			setState(291);
+			setState(302); match(HAZ);
+			setState(304);
 			_la = _input.LA(1);
 			if (_la==DOT) {
 				{
-				setState(290);
-				match(DOT);
+				setState(303); match(DOT);
 				}
 			}
 
-			setState(293);
-			match(BRACKET_OPEN);
-			setState(299);
+			setState(306); match(BRACKET_OPEN);
+			setState(312);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(294);
-				((HazMientrasStmtContext)_localctx).sentence = sentence();
+				setState(307); ((HazMientrasStmtContext)_localctx).sentence = sentence();
 				body.add(((HazMientrasStmtContext)_localctx).sentence.node);
 				}
 				}
-				setState(301);
+				setState(314);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(302);
-			match(BRACKET_CLOSE);
-			setState(303);
-			match(MIENTRAS);
-			setState(304);
-			match(PAR_OPEN);
-			setState(305);
-			((HazMientrasStmtContext)_localctx).cond = expression();
-			setState(306);
-			match(PAR_CLOSE);
+			setState(315); match(BRACKET_CLOSE);
+			setState(322);
+			switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
+			case 1:
+				{
+				setState(316); match(MIENTRAS);
+				setState(317); match(PAR_OPEN);
+				setState(318); ((HazMientrasStmtContext)_localctx).cond = expression();
+				setState(319); match(PAR_CLOSE);
+				 condition = ((HazMientrasStmtContext)_localctx).cond.node; 
+				}
+				break;
+			}
 
-			        ((HazMientrasStmtContext)_localctx).node =  new DoWhileNode(body, ((HazMientrasStmtContext)_localctx).cond.node);
+			        requireCondition(condition, "HAZ.MIENTRAS");
+			        requireNonEmptyBlock(body, "HAZ.MIENTRAS");
+			        if (condition != null) {
+			            requireBooleanType(condition, "condición de HAZ.MIENTRAS");
+			        }
+			        ((HazMientrasStmtContext)_localctx).node =  new DoWhileNode(body, condition);
 			      
 			}
 		}
@@ -1681,18 +1691,18 @@ public class LogoTecParser extends Parser {
 		public ExpressionContext cond;
 		public SentenceContext sentence;
 		public TerminalNode MIENTRAS() { return getToken(LogoTecParser.MIENTRAS, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
+		}
 		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
-		}
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
 		}
 		public MientrasStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1706,11 +1716,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitMientrasStmt(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitMientrasStmt(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final MientrasStmtContext mientrasStmt() throws RecognitionException {
@@ -1721,34 +1726,31 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(309);
-			match(MIENTRAS);
-			setState(310);
-			match(PAR_OPEN);
-			setState(311);
-			((MientrasStmtContext)_localctx).cond = expression();
-			setState(312);
-			match(PAR_CLOSE);
-			setState(313);
-			match(BRACKET_OPEN);
-			setState(319);
+			setState(326); match(MIENTRAS);
+			setState(327); match(PAR_OPEN);
+			setState(328); ((MientrasStmtContext)_localctx).cond = expression();
+			setState(329); match(PAR_CLOSE);
+
+			        requireBooleanType(((MientrasStmtContext)_localctx).cond.node, "condición de MIENTRAS");
+			      
+			setState(331); match(BRACKET_OPEN);
+			setState(337);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(314);
-				((MientrasStmtContext)_localctx).sentence = sentence();
+				setState(332); ((MientrasStmtContext)_localctx).sentence = sentence();
 				body.add(((MientrasStmtContext)_localctx).sentence.node);
 				}
 				}
-				setState(321);
+				setState(339);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(322);
-			match(BRACKET_CLOSE);
+			setState(340); match(BRACKET_CLOSE);
 
+			        requireNonEmptyBlock(body, "MIENTRAS");  // ← NUEVO: validar bloque no vacío
 			        ((MientrasStmtContext)_localctx).node =  new WhileNode(((MientrasStmtContext)_localctx).cond.node, body);
 			      
 			}
@@ -1768,19 +1770,19 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public ExpressionContext cond;
 		public SentenceContext sentence;
-		public TerminalNode HASTA() { return getToken(LogoTecParser.HASTA, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
+		}
 		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode HASTA() { return getToken(LogoTecParser.HASTA, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
-		}
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
 		}
 		public HastaStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1794,11 +1796,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitHastaStmt(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitHastaStmt(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final HastaStmtContext hastaStmt() throws RecognitionException {
@@ -1809,34 +1806,31 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(325);
-			match(HASTA);
-			setState(326);
-			match(PAR_OPEN);
-			setState(327);
-			((HastaStmtContext)_localctx).cond = expression();
-			setState(328);
-			match(PAR_CLOSE);
-			setState(329);
-			match(BRACKET_OPEN);
-			setState(335);
+			setState(343); match(HASTA);
+			setState(344); match(PAR_OPEN);
+			setState(345); ((HastaStmtContext)_localctx).cond = expression();
+			setState(346); match(PAR_CLOSE);
+
+			        requireBooleanType(((HastaStmtContext)_localctx).cond.node, "condición de HASTA");
+			      
+			setState(348); match(BRACKET_OPEN);
+			setState(354);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(330);
-				((HastaStmtContext)_localctx).sentence = sentence();
+				setState(349); ((HastaStmtContext)_localctx).sentence = sentence();
 				body.add(((HastaStmtContext)_localctx).sentence.node);
 				}
 				}
-				setState(337);
+				setState(356);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(338);
-			match(BRACKET_CLOSE);
+			setState(357); match(BRACKET_CLOSE);
 
+			        requireNonEmptyBlock(body, "HASTA");  // ← NUEVO: validar bloque no vacío
 			        ((HastaStmtContext)_localctx).node =  new UntilNode(((HastaStmtContext)_localctx).cond.node, body);
 			      
 			}
@@ -1861,47 +1855,47 @@ public class LogoTecParser extends Parser {
 		public Token id;
 		public ExpressionContext n;
 		public ColorNameContext c;
+		public TerminalNode AT() { return getToken(LogoTecParser.AT, 0); }
+		public TerminalNode CENTRO() { return getToken(LogoTecParser.CENTRO, 0); }
 		public TerminalNode AVANZA() { return getToken(LogoTecParser.AVANZA, 0); }
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public TerminalNode AV() { return getToken(LogoTecParser.AV, 0); }
-		public TerminalNode RETROCEDE() { return getToken(LogoTecParser.RETROCEDE, 0); }
-		public TerminalNode RE() { return getToken(LogoTecParser.RE, 0); }
-		public TerminalNode GIRADERECHA() { return getToken(LogoTecParser.GIRADERECHA, 0); }
-		public TerminalNode GD() { return getToken(LogoTecParser.GD, 0); }
-		public TerminalNode GIRAIZQUIERDA() { return getToken(LogoTecParser.GIRAIZQUIERDA, 0); }
-		public TerminalNode GI() { return getToken(LogoTecParser.GI, 0); }
-		public TerminalNode OCULTATORTUGA() { return getToken(LogoTecParser.OCULTATORTUGA, 0); }
-		public TerminalNode OT() { return getToken(LogoTecParser.OT, 0); }
-		public TerminalNode APARECETORTUGA() { return getToken(LogoTecParser.APARECETORTUGA, 0); }
-		public TerminalNode AT() { return getToken(LogoTecParser.AT, 0); }
-		public TerminalNode PONPOS() { return getToken(LogoTecParser.PONPOS, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
-		public ExpressionSeriesContext expressionSeries() {
-			return getRuleContext(ExpressionSeriesContext.class,0);
-		}
 		public TerminalNode PONXY() { return getToken(LogoTecParser.PONXY, 0); }
-		public TerminalNode PONRUMBO() { return getToken(LogoTecParser.PONRUMBO, 0); }
-		public TerminalNode RUMBO() { return getToken(LogoTecParser.RUMBO, 0); }
-		public TerminalNode PONX() { return getToken(LogoTecParser.PONX, 0); }
-		public TerminalNode PONY() { return getToken(LogoTecParser.PONY, 0); }
-		public TerminalNode BAJALAPIZ() { return getToken(LogoTecParser.BAJALAPIZ, 0); }
-		public TerminalNode BL() { return getToken(LogoTecParser.BL, 0); }
-		public TerminalNode SUBELAPIZ() { return getToken(LogoTecParser.SUBELAPIZ, 0); }
 		public TerminalNode SB() { return getToken(LogoTecParser.SB, 0); }
-		public TerminalNode CENTRO() { return getToken(LogoTecParser.CENTRO, 0); }
+		public TerminalNode PONRUMBO() { return getToken(LogoTecParser.PONRUMBO, 0); }
+		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode PONX() { return getToken(LogoTecParser.PONX, 0); }
 		public TerminalNode ESPERA() { return getToken(LogoTecParser.ESPERA, 0); }
 		public TerminalNode INC() { return getToken(LogoTecParser.INC, 0); }
-		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode PONY() { return getToken(LogoTecParser.PONY, 0); }
+		public TerminalNode GD() { return getToken(LogoTecParser.GD, 0); }
+		public TerminalNode BAJALAPIZ() { return getToken(LogoTecParser.BAJALAPIZ, 0); }
 		public TerminalNode PONCOLORLAPIZ() { return getToken(LogoTecParser.PONCOLORLAPIZ, 0); }
-		public TerminalNode PONCL() { return getToken(LogoTecParser.PONCL, 0); }
+		public TerminalNode AV() { return getToken(LogoTecParser.AV, 0); }
+		public TerminalNode APARECETORTUGA() { return getToken(LogoTecParser.APARECETORTUGA, 0); }
+		public TerminalNode SUBELAPIZ() { return getToken(LogoTecParser.SUBELAPIZ, 0); }
+		public TerminalNode GIRADERECHA() { return getToken(LogoTecParser.GIRADERECHA, 0); }
+		public TerminalNode OT() { return getToken(LogoTecParser.OT, 0); }
 		public ColorNameContext colorName() {
 			return getRuleContext(ColorNameContext.class,0);
+		}
+		public TerminalNode OCULTATORTUGA() { return getToken(LogoTecParser.OCULTATORTUGA, 0); }
+		public TerminalNode RETROCEDE() { return getToken(LogoTecParser.RETROCEDE, 0); }
+		public TerminalNode PONPOS() { return getToken(LogoTecParser.PONPOS, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public TerminalNode GIRAIZQUIERDA() { return getToken(LogoTecParser.GIRAIZQUIERDA, 0); }
+		public TerminalNode RE() { return getToken(LogoTecParser.RE, 0); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode BL() { return getToken(LogoTecParser.BL, 0); }
+		public TerminalNode GI() { return getToken(LogoTecParser.GI, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public TerminalNode RUMBO() { return getToken(LogoTecParser.RUMBO, 0); }
+		public TerminalNode PONCL() { return getToken(LogoTecParser.PONCL, 0); }
+		public ExpressionSeriesContext expressionSeries() {
+			return getRuleContext(ExpressionSeriesContext.class,0);
 		}
 		public TurtleCmdContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1915,149 +1909,146 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitTurtleCmd(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitTurtleCmd(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final TurtleCmdContext turtleCmd() throws RecognitionException {
 		TurtleCmdContext _localctx = new TurtleCmdContext(_ctx, getState());
 		enterRule(_localctx, 32, RULE_turtleCmd);
 		try {
-			setState(452);
-			switch ( getInterpreter().adaptivePredict(_input,27,_ctx) ) {
+			setState(471);
+			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(341);
-				match(AVANZA);
-				setState(342);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new ForwardNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(360); match(AVANZA);
+				setState(361); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "AVANZA");
+				        ((TurtleCmdContext)_localctx).node =  new ForwardNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(345);
-				match(AV);
-				setState(346);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new ForwardNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(364); match(AV);
+				setState(365); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "AV");
+				        ((TurtleCmdContext)_localctx).node =  new ForwardNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(349);
-				match(RETROCEDE);
-				setState(350);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new BackwardNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(368); match(RETROCEDE);
+				setState(369); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "RETROCEDE");
+				        ((TurtleCmdContext)_localctx).node =  new BackwardNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(353);
-				match(RE);
-				setState(354);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new BackwardNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(372); match(RE);
+				setState(373); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "RE");
+				        ((TurtleCmdContext)_localctx).node =  new BackwardNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(357);
-				match(GIRADERECHA);
-				setState(358);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new TurnRightNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(376); match(GIRADERECHA);
+				setState(377); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "GIRADERECHA");
+				        ((TurtleCmdContext)_localctx).node =  new TurnRightNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(361);
-				match(GD);
-				setState(362);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new TurnRightNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(380); match(GD);
+				setState(381); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "GD");
+				        ((TurtleCmdContext)_localctx).node =  new TurnRightNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(365);
-				match(GIRAIZQUIERDA);
-				setState(366);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new TurnLeftNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(384); match(GIRAIZQUIERDA);
+				setState(385); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "GIRAIZQUIERDA");
+				        ((TurtleCmdContext)_localctx).node =  new TurnLeftNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(369);
-				match(GI);
-				setState(370);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new TurnLeftNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(388); match(GI);
+				setState(389); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "GI");
+				        ((TurtleCmdContext)_localctx).node =  new TurnLeftNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(373);
-				match(OCULTATORTUGA);
+				setState(392); match(OCULTATORTUGA);
 				 ((TurtleCmdContext)_localctx).node =  new HideTurtleNode(); 
 				}
 				break;
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(375);
-				match(OT);
+				setState(394); match(OT);
 				 ((TurtleCmdContext)_localctx).node =  new HideTurtleNode(); 
 				}
 				break;
 			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(377);
-				match(APARECETORTUGA);
+				setState(396); match(APARECETORTUGA);
 				 ((TurtleCmdContext)_localctx).node =  new ShowTurtleNode(); 
 				}
 				break;
 			case 12:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(379);
-				match(AT);
+				setState(398); match(AT);
 				 ((TurtleCmdContext)_localctx).node =  new ShowTurtleNode(); 
 				}
 				break;
 			case 13:
 				enterOuterAlt(_localctx, 13);
 				{
-				setState(381);
-				match(PONPOS);
-				setState(382);
-				match(BRACKET_OPEN);
-				setState(383);
-				((TurtleCmdContext)_localctx).coords = expressionSeries();
-				setState(384);
-				match(BRACKET_CLOSE);
+				setState(400); match(PONPOS);
+				setState(401); match(BRACKET_OPEN);
+				setState(402); ((TurtleCmdContext)_localctx).coords = expressionSeries();
+				setState(403); match(BRACKET_CLOSE);
 
 				        List<ExprNode> coordsList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (coordsList.size() != 2) {
-				            errors.add("Error sem�ntico: 'PONPOS' requiere exactamente dos expresiones para X e Y.");
+				            errors.add("Error en línea " + currentLine() + ": 'PONPOS' requiere exactamente dos expresiones para X e Y.");
 				        }
 				        ExprNode xNode = coordsList.size() > 0 ? coordsList.get(0) : new ConstNode(0);
 				        ExprNode yNode = coordsList.size() > 1 ? coordsList.get(1) : new ConstNode(0);
+				        requireNumericType(xNode, "PONPOS (coordenada X)");
+				        requireNumericType(yNode, "PONPOS (coordenada Y)");
 				        ((TurtleCmdContext)_localctx).node =  new SetPosNode(xNode, yNode, true);
 				      
 				}
@@ -2065,153 +2056,147 @@ public class LogoTecParser extends Parser {
 			case 14:
 				enterOuterAlt(_localctx, 14);
 				{
-				setState(387);
-				match(PONXY);
-				setState(388);
-				((TurtleCmdContext)_localctx).x = expression();
-				setState(389);
-				((TurtleCmdContext)_localctx).y = expression();
-				 ((TurtleCmdContext)_localctx).node =  new SetPosNode(((TurtleCmdContext)_localctx).x.node, ((TurtleCmdContext)_localctx).y.node, false); 
+				setState(406); match(PONXY);
+				setState(407); ((TurtleCmdContext)_localctx).x = expression();
+				setState(408); ((TurtleCmdContext)_localctx).y = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).x.node, "PONXY (coordenada X)");
+				        requireNumericType(((TurtleCmdContext)_localctx).y.node, "PONXY (coordenada Y)");
+				        ((TurtleCmdContext)_localctx).node =  new SetPosNode(((TurtleCmdContext)_localctx).x.node, ((TurtleCmdContext)_localctx).y.node, false); 
+				      
 				}
 				break;
 			case 15:
 				enterOuterAlt(_localctx, 15);
 				{
-				setState(392);
-				match(PONRUMBO);
-				setState(393);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new SetHeadingNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(411); match(PONRUMBO);
+				setState(412); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "PONRUMBO");
+				        ((TurtleCmdContext)_localctx).node =  new SetHeadingNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 16:
 				enterOuterAlt(_localctx, 16);
 				{
-				setState(396);
-				match(RUMBO);
+				setState(415); match(RUMBO);
 				 ((TurtleCmdContext)_localctx).node =  new ShowHeadingNode(); 
 				}
 				break;
 			case 17:
 				enterOuterAlt(_localctx, 17);
 				{
-				setState(398);
-				match(PONX);
-				setState(399);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new SetXNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(417); match(PONX);
+				setState(418); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "PONX");
+				        ((TurtleCmdContext)_localctx).node =  new SetXNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 18:
 				enterOuterAlt(_localctx, 18);
 				{
-				setState(402);
-				match(PONY);
-				setState(403);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new SetYNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(421); match(PONY);
+				setState(422); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "PONY");
+				        ((TurtleCmdContext)_localctx).node =  new SetYNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 19:
 				enterOuterAlt(_localctx, 19);
 				{
-				setState(406);
-				match(BAJALAPIZ);
+				setState(425); match(BAJALAPIZ);
 				 ((TurtleCmdContext)_localctx).node =  new PenDownNode(); 
 				}
 				break;
 			case 20:
 				enterOuterAlt(_localctx, 20);
 				{
-				setState(408);
-				match(BL);
+				setState(427); match(BL);
 				 ((TurtleCmdContext)_localctx).node =  new PenDownNode(); 
 				}
 				break;
 			case 21:
 				enterOuterAlt(_localctx, 21);
 				{
-				setState(410);
-				match(SUBELAPIZ);
+				setState(429); match(SUBELAPIZ);
 				 ((TurtleCmdContext)_localctx).node =  new PenUpNode(); 
 				}
 				break;
 			case 22:
 				enterOuterAlt(_localctx, 22);
 				{
-				setState(412);
-				match(SB);
+				setState(431); match(SB);
 				 ((TurtleCmdContext)_localctx).node =  new PenUpNode(); 
 				}
 				break;
 			case 23:
 				enterOuterAlt(_localctx, 23);
 				{
-				setState(414);
-				match(CENTRO);
+				setState(433); match(CENTRO);
 				 ((TurtleCmdContext)_localctx).node =  new CenterNode(); 
 				}
 				break;
 			case 24:
 				enterOuterAlt(_localctx, 24);
 				{
-				setState(416);
-				match(ESPERA);
-				setState(417);
-				((TurtleCmdContext)_localctx).e = expression();
-				 ((TurtleCmdContext)_localctx).node =  new WaitNode(((TurtleCmdContext)_localctx).e.node); 
+				setState(435); match(ESPERA);
+				setState(436); ((TurtleCmdContext)_localctx).e = expression();
+				 
+				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "ESPERA");
+				        ((TurtleCmdContext)_localctx).node =  new WaitNode(((TurtleCmdContext)_localctx).e.node); 
+				      
 				}
 				break;
 			case 25:
 				enterOuterAlt(_localctx, 25);
 				{
-				setState(420);
-				match(INC);
-				setState(421);
-				match(BRACKET_OPEN);
-				setState(422);
-				((TurtleCmdContext)_localctx).id = match(ID);
-				setState(423);
-				match(BRACKET_CLOSE);
-				 ((TurtleCmdContext)_localctx).node =  new IncNode(new VarRefNode((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null)), new ConstNode(1)); 
+				setState(439); match(INC);
+				setState(440); match(BRACKET_OPEN);
+				setState(441); ((TurtleCmdContext)_localctx).id = match(ID);
+				setState(442); match(BRACKET_CLOSE);
+				 
+				        validateIncrement((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null), new ConstNode(1));
+				        ((TurtleCmdContext)_localctx).node =  new IncNode(new VarRefNode((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null)), new ConstNode(1)); 
+				      
 				}
 				break;
 			case 26:
 				enterOuterAlt(_localctx, 26);
 				{
-				setState(425);
-				match(INC);
-				setState(426);
-				match(BRACKET_OPEN);
-				setState(427);
-				((TurtleCmdContext)_localctx).id = match(ID);
-				setState(428);
-				((TurtleCmdContext)_localctx).n = expression();
-				setState(429);
-				match(BRACKET_CLOSE);
-				 ((TurtleCmdContext)_localctx).node =  new IncNode(new VarRefNode((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null)), ((TurtleCmdContext)_localctx).n.node); 
+				setState(444); match(INC);
+				setState(445); match(BRACKET_OPEN);
+				setState(446); ((TurtleCmdContext)_localctx).id = match(ID);
+				setState(447); ((TurtleCmdContext)_localctx).n = expression();
+				setState(448); match(BRACKET_CLOSE);
+				 
+				        validateIncrement((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null), ((TurtleCmdContext)_localctx).n.node);
+				        ((TurtleCmdContext)_localctx).node =  new IncNode(new VarRefNode((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null)), ((TurtleCmdContext)_localctx).n.node); 
+				      
 				}
 				break;
 			case 27:
 				enterOuterAlt(_localctx, 27);
 				{
-				setState(432);
-				match(PONCOLORLAPIZ);
-				setState(433);
-				match(BRACKET_OPEN);
-				setState(434);
-				((TurtleCmdContext)_localctx).coords = expressionSeries();
-				setState(435);
-				match(BRACKET_CLOSE);
+				setState(451); match(PONCOLORLAPIZ);
+				setState(452); match(BRACKET_OPEN);
+				setState(453); ((TurtleCmdContext)_localctx).coords = expressionSeries();
+				setState(454); match(BRACKET_CLOSE);
 
 				        List<ExprNode> colorList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (colorList.size() != 3) {
-				            errors.add("Error sem�ntico: 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
+				            errors.add("Error en línea " + currentLine() + ": 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
 				        }
 				        ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
 				        ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
 				        ExprNode bNode = colorList.size() > 2 ? colorList.get(2) : new ConstNode(0);
-				        // Nota: La validaci�n de colores permitidos se hace en SetColorNode.execute()
+				        requireNumericType(rNode, "PONCOLORLAPIZ (valor R)");
+				        requireNumericType(gNode, "PONCOLORLAPIZ (valor G)");
+				        requireNumericType(bNode, "PONCOLORLAPIZ (valor B)");
 				        ((TurtleCmdContext)_localctx).node =  new SetColorNode(rNode, gNode, bNode);
 				      
 				}
@@ -2219,23 +2204,21 @@ public class LogoTecParser extends Parser {
 			case 28:
 				enterOuterAlt(_localctx, 28);
 				{
-				setState(438);
-				match(PONCL);
-				setState(439);
-				match(BRACKET_OPEN);
-				setState(440);
-				((TurtleCmdContext)_localctx).coords = expressionSeries();
-				setState(441);
-				match(BRACKET_CLOSE);
+				setState(457); match(PONCL);
+				setState(458); match(BRACKET_OPEN);
+				setState(459); ((TurtleCmdContext)_localctx).coords = expressionSeries();
+				setState(460); match(BRACKET_CLOSE);
 
 				        List<ExprNode> colorList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (colorList.size() != 3) {
-				            errors.add("Error sem�ntico: 'PONCL' requiere exactamente tres valores RGB.");
+				            errors.add("Error en línea " + currentLine() + ": 'PONCL' requiere exactamente tres valores RGB.");
 				        }
 				        ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
 				        ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
 				        ExprNode bNode = colorList.size() > 2 ? colorList.get(2) : new ConstNode(0);
-				        // Nota: La validaci�n de colores permitidos se hace en SetColorNode.execute()
+				        requireNumericType(rNode, "PONCL (valor R)");
+				        requireNumericType(gNode, "PONCL (valor G)");
+				        requireNumericType(bNode, "PONCL (valor B)");
 				        ((TurtleCmdContext)_localctx).node =  new SetColorNode(rNode, gNode, bNode);
 				      
 				}
@@ -2243,20 +2226,16 @@ public class LogoTecParser extends Parser {
 			case 29:
 				enterOuterAlt(_localctx, 29);
 				{
-				setState(444);
-				match(PONCOLORLAPIZ);
-				setState(445);
-				((TurtleCmdContext)_localctx).c = colorName();
+				setState(463); match(PONCOLORLAPIZ);
+				setState(464); ((TurtleCmdContext)_localctx).c = colorName();
 				 ((TurtleCmdContext)_localctx).node =  new SetPenColorNode(((TurtleCmdContext)_localctx).c.value); 
 				}
 				break;
 			case 30:
 				enterOuterAlt(_localctx, 30);
 				{
-				setState(448);
-				match(PONCL);
-				setState(449);
-				((TurtleCmdContext)_localctx).c = colorName();
+				setState(467); match(PONCL);
+				setState(468); ((TurtleCmdContext)_localctx).c = colorName();
 				 ((TurtleCmdContext)_localctx).node =  new SetPenColorNode(((TurtleCmdContext)_localctx).c.value); 
 				}
 				break;
@@ -2291,32 +2270,25 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitColorName(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitColorName(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ColorNameContext colorName() throws RecognitionException {
 		ColorNameContext _localctx = new ColorNameContext(_ctx, getState());
 		enterRule(_localctx, 34, RULE_colorName);
 		try {
-			setState(458);
+			setState(477);
 			switch (_input.LA(1)) {
 			case COLOR:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(454);
-				((ColorNameContext)_localctx).c = match(COLOR);
+				setState(473); ((ColorNameContext)_localctx).c = match(COLOR);
 				 ((ColorNameContext)_localctx).value =  ((ColorNameContext)_localctx).c.getText().toLowerCase(); 
 				}
 				break;
 			case ID:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(456);
-				((ColorNameContext)_localctx).id = match(ID);
+				setState(475); ((ColorNameContext)_localctx).id = match(ID);
 				 ((ColorNameContext)_localctx).value =  ((ColorNameContext)_localctx).id.getText().toLowerCase(); 
 				}
 				break;
@@ -2362,11 +2334,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitExpression(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitExpression(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -2376,23 +2343,20 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(460);
-			((ExpressionContext)_localctx).t1 = logicTerm();
+			setState(479); ((ExpressionContext)_localctx).t1 = logicTerm();
 			 ((ExpressionContext)_localctx).node =  ((ExpressionContext)_localctx).t1.node; ((ExpressionContext)_localctx).val =  ((ExpressionContext)_localctx).t1.val; 
-			setState(468);
+			setState(487);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==OR) {
 				{
 				{
-				setState(462);
-				match(OR);
-				setState(463);
-				((ExpressionContext)_localctx).t2 = logicTerm();
+				setState(481); match(OR);
+				setState(482); ((ExpressionContext)_localctx).t2 = logicTerm();
 				 ((ExpressionContext)_localctx).node =  new LogicalOrNode(_localctx.node, ((ExpressionContext)_localctx).t2.node); 
 				}
 				}
-				setState(470);
+				setState(489);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2414,15 +2378,15 @@ public class LogoTecParser extends Parser {
 		public Value val;
 		public LogicFactorContext f1;
 		public LogicFactorContext f2;
-		public List<LogicFactorContext> logicFactor() {
-			return getRuleContexts(LogicFactorContext.class);
+		public TerminalNode AND(int i) {
+			return getToken(LogoTecParser.AND, i);
 		}
 		public LogicFactorContext logicFactor(int i) {
 			return getRuleContext(LogicFactorContext.class,i);
 		}
 		public List<TerminalNode> AND() { return getTokens(LogoTecParser.AND); }
-		public TerminalNode AND(int i) {
-			return getToken(LogoTecParser.AND, i);
+		public List<LogicFactorContext> logicFactor() {
+			return getRuleContexts(LogicFactorContext.class);
 		}
 		public LogicTermContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2436,11 +2400,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitLogicTerm(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitLogicTerm(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final LogicTermContext logicTerm() throws RecognitionException {
@@ -2450,23 +2409,20 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(471);
-			((LogicTermContext)_localctx).f1 = logicFactor();
+			setState(490); ((LogicTermContext)_localctx).f1 = logicFactor();
 			 ((LogicTermContext)_localctx).node =  ((LogicTermContext)_localctx).f1.node; ((LogicTermContext)_localctx).val =  ((LogicTermContext)_localctx).f1.val; 
-			setState(479);
+			setState(498);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==AND) {
 				{
 				{
-				setState(473);
-				match(AND);
-				setState(474);
-				((LogicTermContext)_localctx).f2 = logicFactor();
+				setState(492); match(AND);
+				setState(493); ((LogicTermContext)_localctx).f2 = logicFactor();
 				 ((LogicTermContext)_localctx).node =  new LogicalAndNode(_localctx.node, ((LogicTermContext)_localctx).f2.node); 
 				}
 				}
-				setState(481);
+				setState(500);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2489,11 +2445,11 @@ public class LogoTecParser extends Parser {
 		public LogicFactorContext lf;
 		public RelationalContext r;
 		public TerminalNode NOT() { return getToken(LogoTecParser.NOT, 0); }
-		public LogicFactorContext logicFactor() {
-			return getRuleContext(LogicFactorContext.class,0);
-		}
 		public RelationalContext relational() {
 			return getRuleContext(RelationalContext.class,0);
+		}
+		public LogicFactorContext logicFactor() {
+			return getRuleContext(LogicFactorContext.class,0);
 		}
 		public LogicFactorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2507,26 +2463,19 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitLogicFactor(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitLogicFactor(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final LogicFactorContext logicFactor() throws RecognitionException {
 		LogicFactorContext _localctx = new LogicFactorContext(_ctx, getState());
 		enterRule(_localctx, 40, RULE_logicFactor);
 		try {
-			setState(489);
+			setState(508);
 			switch (_input.LA(1)) {
 			case NOT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(482);
-				match(NOT);
-				setState(483);
-				((LogicFactorContext)_localctx).lf = logicFactor();
+				setState(501); match(NOT);
+				setState(502); ((LogicFactorContext)_localctx).lf = logicFactor();
 				 ((LogicFactorContext)_localctx).node =  new LogicalNotNode(((LogicFactorContext)_localctx).lf.node);
 				}
 				break;
@@ -2551,8 +2500,7 @@ public class LogoTecParser extends Parser {
 			case ID:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(486);
-				((LogicFactorContext)_localctx).r = relational();
+				setState(505); ((LogicFactorContext)_localctx).r = relational();
 				 ((LogicFactorContext)_localctx).node =  ((LogicFactorContext)_localctx).r.node; ((LogicFactorContext)_localctx).val =  ((LogicFactorContext)_localctx).r.val; 
 				}
 				break;
@@ -2576,35 +2524,35 @@ public class LogoTecParser extends Parser {
 		public Value val;
 		public ArithExprContext a1;
 		public ArithExprContext a2;
+		public List<TerminalNode> NEQ() { return getTokens(LogoTecParser.NEQ); }
+		public TerminalNode EQ(int i) {
+			return getToken(LogoTecParser.EQ, i);
+		}
+		public List<TerminalNode> LT() { return getTokens(LogoTecParser.LT); }
 		public List<ArithExprContext> arithExpr() {
 			return getRuleContexts(ArithExprContext.class);
 		}
-		public ArithExprContext arithExpr(int i) {
-			return getRuleContext(ArithExprContext.class,i);
-		}
 		public List<TerminalNode> GT() { return getTokens(LogoTecParser.GT); }
-		public TerminalNode GT(int i) {
-			return getToken(LogoTecParser.GT, i);
-		}
-		public List<TerminalNode> LT() { return getTokens(LogoTecParser.LT); }
-		public TerminalNode LT(int i) {
-			return getToken(LogoTecParser.LT, i);
+		public TerminalNode NEQ(int i) {
+			return getToken(LogoTecParser.NEQ, i);
 		}
 		public List<TerminalNode> GEQ() { return getTokens(LogoTecParser.GEQ); }
-		public TerminalNode GEQ(int i) {
-			return getToken(LogoTecParser.GEQ, i);
+		public ArithExprContext arithExpr(int i) {
+			return getRuleContext(ArithExprContext.class,i);
 		}
 		public List<TerminalNode> LEQ() { return getTokens(LogoTecParser.LEQ); }
 		public TerminalNode LEQ(int i) {
 			return getToken(LogoTecParser.LEQ, i);
 		}
 		public List<TerminalNode> EQ() { return getTokens(LogoTecParser.EQ); }
-		public TerminalNode EQ(int i) {
-			return getToken(LogoTecParser.EQ, i);
+		public TerminalNode GT(int i) {
+			return getToken(LogoTecParser.GT, i);
 		}
-		public List<TerminalNode> NEQ() { return getTokens(LogoTecParser.NEQ); }
-		public TerminalNode NEQ(int i) {
-			return getToken(LogoTecParser.NEQ, i);
+		public TerminalNode LT(int i) {
+			return getToken(LogoTecParser.LT, i);
+		}
+		public TerminalNode GEQ(int i) {
+			return getToken(LogoTecParser.GEQ, i);
 		}
 		public RelationalContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2618,11 +2566,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitRelational(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitRelational(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final RelationalContext relational() throws RecognitionException {
@@ -2632,67 +2575,54 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(491);
-			((RelationalContext)_localctx).a1 = arithExpr();
+			setState(510); ((RelationalContext)_localctx).a1 = arithExpr();
 			 ((RelationalContext)_localctx).node =  ((RelationalContext)_localctx).a1.node; ((RelationalContext)_localctx).val =  ((RelationalContext)_localctx).a1.val; 
-			setState(519);
+			setState(538);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << GT) | (1L << LT) | (1L << GEQ) | (1L << LEQ) | (1L << EQ) | (1L << NEQ))) != 0)) {
 				{
-				setState(517);
+				setState(536);
 				switch (_input.LA(1)) {
 				case GT:
 					{
-					setState(493);
-					match(GT);
-					setState(494);
-					((RelationalContext)_localctx).a2 = arithExpr();
+					setState(512); match(GT);
+					setState(513); ((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new GreaterThanNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case LT:
 					{
-					setState(497);
-					match(LT);
-					setState(498);
-					((RelationalContext)_localctx).a2 = arithExpr();
+					setState(516); match(LT);
+					setState(517); ((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new LessThanNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case GEQ:
 					{
-					setState(501);
-					match(GEQ);
-					setState(502);
-					((RelationalContext)_localctx).a2 = arithExpr();
+					setState(520); match(GEQ);
+					setState(521); ((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new GreaterEqualNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case LEQ:
 					{
-					setState(505);
-					match(LEQ);
-					setState(506);
-					((RelationalContext)_localctx).a2 = arithExpr();
+					setState(524); match(LEQ);
+					setState(525); ((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new LessEqualNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case EQ:
 					{
-					setState(509);
-					match(EQ);
-					setState(510);
-					((RelationalContext)_localctx).a2 = arithExpr();
+					setState(528); match(EQ);
+					setState(529); ((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new EqualsNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case NEQ:
 					{
-					setState(513);
-					match(NEQ);
-					setState(514);
-					((RelationalContext)_localctx).a2 = arithExpr();
+					setState(532); match(NEQ);
+					setState(533); ((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new NotEqualsNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
@@ -2700,7 +2630,7 @@ public class LogoTecParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(521);
+				setState(540);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2722,6 +2652,9 @@ public class LogoTecParser extends Parser {
 		public Value val;
 		public TermContext t1;
 		public TermContext t2;
+		public TerminalNode MINUS(int i) {
+			return getToken(LogoTecParser.MINUS, i);
+		}
 		public List<TermContext> term() {
 			return getRuleContexts(TermContext.class);
 		}
@@ -2729,12 +2662,9 @@ public class LogoTecParser extends Parser {
 			return getRuleContext(TermContext.class,i);
 		}
 		public List<TerminalNode> PLUS() { return getTokens(LogoTecParser.PLUS); }
+		public List<TerminalNode> MINUS() { return getTokens(LogoTecParser.MINUS); }
 		public TerminalNode PLUS(int i) {
 			return getToken(LogoTecParser.PLUS, i);
-		}
-		public List<TerminalNode> MINUS() { return getTokens(LogoTecParser.MINUS); }
-		public TerminalNode MINUS(int i) {
-			return getToken(LogoTecParser.MINUS, i);
 		}
 		public ArithExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2748,11 +2678,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitArithExpr(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitArithExpr(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ArithExprContext arithExpr() throws RecognitionException {
@@ -2762,32 +2687,27 @@ public class LogoTecParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(522);
-			((ArithExprContext)_localctx).t1 = term();
+			setState(541); ((ArithExprContext)_localctx).t1 = term();
 			 ((ArithExprContext)_localctx).node =  ((ArithExprContext)_localctx).t1.node; ((ArithExprContext)_localctx).val =  ((ArithExprContext)_localctx).t1.val; 
-			setState(534);
+			setState(553);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,35,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,37,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
-					setState(532);
+					setState(551);
 					switch (_input.LA(1)) {
 					case PLUS:
 						{
-						setState(524);
-						match(PLUS);
-						setState(525);
-						((ArithExprContext)_localctx).t2 = term();
+						setState(543); match(PLUS);
+						setState(544); ((ArithExprContext)_localctx).t2 = term();
 						 ((ArithExprContext)_localctx).node =  new AdditionNode(_localctx.node, ((ArithExprContext)_localctx).t2.node); 
 						}
 						break;
 					case MINUS:
 						{
-						setState(528);
-						match(MINUS);
-						setState(529);
-						((ArithExprContext)_localctx).t2 = term();
+						setState(547); match(MINUS);
+						setState(548); ((ArithExprContext)_localctx).t2 = term();
 						 ((ArithExprContext)_localctx).node =  new SubtractionNode(_localctx.node, ((ArithExprContext)_localctx).t2.node);  
 						}
 						break;
@@ -2796,9 +2716,9 @@ public class LogoTecParser extends Parser {
 					}
 					} 
 				}
-				setState(536);
+				setState(555);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,35,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,37,_ctx);
 			}
 			}
 		}
@@ -2818,6 +2738,9 @@ public class LogoTecParser extends Parser {
 		public Value val;
 		public FactorContext f1;
 		public FactorContext f2;
+		public TerminalNode MULT(int i) {
+			return getToken(LogoTecParser.MULT, i);
+		}
 		public List<FactorContext> factor() {
 			return getRuleContexts(FactorContext.class);
 		}
@@ -2825,9 +2748,6 @@ public class LogoTecParser extends Parser {
 			return getRuleContext(FactorContext.class,i);
 		}
 		public List<TerminalNode> MULT() { return getTokens(LogoTecParser.MULT); }
-		public TerminalNode MULT(int i) {
-			return getToken(LogoTecParser.MULT, i);
-		}
 		public List<TerminalNode> DIV() { return getTokens(LogoTecParser.DIV); }
 		public TerminalNode DIV(int i) {
 			return getToken(LogoTecParser.DIV, i);
@@ -2844,11 +2764,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitTerm(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitTerm(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final TermContext term() throws RecognitionException {
@@ -2858,31 +2773,26 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(537);
-			((TermContext)_localctx).f1 = factor();
+			setState(556); ((TermContext)_localctx).f1 = factor();
 			 ((TermContext)_localctx).node =  ((TermContext)_localctx).f1.node; ((TermContext)_localctx).val =  ((TermContext)_localctx).f1.val; 
-			setState(549);
+			setState(568);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==MULT || _la==DIV) {
 				{
-				setState(547);
+				setState(566);
 				switch (_input.LA(1)) {
 				case MULT:
 					{
-					setState(539);
-					match(MULT);
-					setState(540);
-					((TermContext)_localctx).f2 = factor();
+					setState(558); match(MULT);
+					setState(559); ((TermContext)_localctx).f2 = factor();
 					 ((TermContext)_localctx).node =  new MultiplicationNode(_localctx.node, ((TermContext)_localctx).f2.node);  
 					}
 					break;
 				case DIV:
 					{
-					setState(543);
-					match(DIV);
-					setState(544);
-					((TermContext)_localctx).f2 = factor();
+					setState(562); match(DIV);
+					setState(563); ((TermContext)_localctx).f2 = factor();
 					 ((TermContext)_localctx).node =  new DivisionNode(_localctx.node, ((TermContext)_localctx).f2.node); 
 					}
 					break;
@@ -2890,7 +2800,7 @@ public class LogoTecParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(551);
+				setState(570);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2915,13 +2825,13 @@ public class LogoTecParser extends Parser {
 		public List<ExponentContext> exponent() {
 			return getRuleContexts(ExponentContext.class);
 		}
+		public TerminalNode EXP(int i) {
+			return getToken(LogoTecParser.EXP, i);
+		}
 		public ExponentContext exponent(int i) {
 			return getRuleContext(ExponentContext.class,i);
 		}
 		public List<TerminalNode> EXP() { return getTokens(LogoTecParser.EXP); }
-		public TerminalNode EXP(int i) {
-			return getToken(LogoTecParser.EXP, i);
-		}
 		public FactorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2934,11 +2844,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitFactor(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitFactor(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final FactorContext factor() throws RecognitionException {
@@ -2948,23 +2853,20 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(552);
-			((FactorContext)_localctx).e1 = exponent();
+			setState(571); ((FactorContext)_localctx).e1 = exponent();
 			 ((FactorContext)_localctx).node =  ((FactorContext)_localctx).e1.node; ((FactorContext)_localctx).val =  ((FactorContext)_localctx).e1.val; 
-			setState(560);
+			setState(579);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==EXP) {
 				{
 				{
-				setState(554);
-				match(EXP);
-				setState(555);
-				((FactorContext)_localctx).e2 = exponent();
+				setState(573); match(EXP);
+				setState(574); ((FactorContext)_localctx).e2 = exponent();
 				 ((FactorContext)_localctx).node =  new ExponentiationNode(_localctx.node, ((FactorContext)_localctx).e2.node);  
 				}
 				}
-				setState(562);
+				setState(581);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -3000,11 +2902,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitExponent(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitExponent(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ExponentContext exponent() throws RecognitionException {
@@ -3013,8 +2910,7 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(563);
-			((ExponentContext)_localctx).unary = unary();
+			setState(582); ((ExponentContext)_localctx).unary = unary();
 			 ((ExponentContext)_localctx).node =  ((ExponentContext)_localctx).unary.node; ((ExponentContext)_localctx).val =  ((ExponentContext)_localctx).unary.val; 
 			}
 		}
@@ -3035,17 +2931,17 @@ public class LogoTecParser extends Parser {
 		public UnaryContext u;
 		public FuncCallContext funcCall;
 		public PrimaryContext primary;
-		public TerminalNode MINUS() { return getToken(LogoTecParser.MINUS, 0); }
-		public UnaryContext unary() {
-			return getRuleContext(UnaryContext.class,0);
-		}
-		public TerminalNode PLUS() { return getToken(LogoTecParser.PLUS, 0); }
 		public FuncCallContext funcCall() {
 			return getRuleContext(FuncCallContext.class,0);
+		}
+		public UnaryContext unary() {
+			return getRuleContext(UnaryContext.class,0);
 		}
 		public PrimaryContext primary() {
 			return getRuleContext(PrimaryContext.class,0);
 		}
+		public TerminalNode MINUS() { return getToken(LogoTecParser.MINUS, 0); }
+		public TerminalNode PLUS() { return getToken(LogoTecParser.PLUS, 0); }
 		public UnaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3058,36 +2954,27 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitUnary(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitUnary(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final UnaryContext unary() throws RecognitionException {
 		UnaryContext _localctx = new UnaryContext(_ctx, getState());
 		enterRule(_localctx, 52, RULE_unary);
 		try {
-			setState(580);
+			setState(599);
 			switch (_input.LA(1)) {
 			case MINUS:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(566);
-				match(MINUS);
-				setState(567);
-				((UnaryContext)_localctx).u = unary();
+				setState(585); match(MINUS);
+				setState(586); ((UnaryContext)_localctx).u = unary();
 				 ((UnaryContext)_localctx).node =  new SubtractionNode(new ConstNode(0), ((UnaryContext)_localctx).u.node); ((UnaryContext)_localctx).val =  Value.unknown(); 
 				}
 				break;
 			case PLUS:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(570);
-				match(PLUS);
-				setState(571);
-				((UnaryContext)_localctx).u = unary();
+				setState(589); match(PLUS);
+				setState(590); ((UnaryContext)_localctx).u = unary();
 				 ((UnaryContext)_localctx).node =  ((UnaryContext)_localctx).u.node; ((UnaryContext)_localctx).val =  ((UnaryContext)_localctx).u.val; 
 				}
 				break;
@@ -3104,8 +2991,7 @@ public class LogoTecParser extends Parser {
 			case SUMA:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(574);
-				((UnaryContext)_localctx).funcCall = funcCall();
+				setState(593); ((UnaryContext)_localctx).funcCall = funcCall();
 				 ((UnaryContext)_localctx).node =  ((UnaryContext)_localctx).funcCall.node; ((UnaryContext)_localctx).val =  ((UnaryContext)_localctx).funcCall.val; 
 				}
 				break;
@@ -3117,8 +3003,7 @@ public class LogoTecParser extends Parser {
 			case ID:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(577);
-				((UnaryContext)_localctx).primary = primary();
+				setState(596); ((UnaryContext)_localctx).primary = primary();
 				 ((UnaryContext)_localctx).node =  ((UnaryContext)_localctx).primary.node; ((UnaryContext)_localctx).val =  ((UnaryContext)_localctx).primary.val; 
 				}
 				break;
@@ -3140,40 +3025,36 @@ public class LogoTecParser extends Parser {
 	public static class FuncCallContext extends ParserRuleContext {
 		public ExprNode node;
 		public Value val;
+		public ExpressionSeriesContext args;
 		public ExpressionContext e1;
-		public ExpressionContext e2;
-		public ExpressionContext e;
 		public ExpressionContext expression;
 		public List<ExpressionContext> rest = new ArrayList<ExpressionContext>();
 		public TerminalNode IGUALESQ() { return getToken(LogoTecParser.IGUALESQ, 0); }
-		public List<TerminalNode> PAR_OPEN() { return getTokens(LogoTecParser.PAR_OPEN); }
-		public TerminalNode PAR_OPEN(int i) {
-			return getToken(LogoTecParser.PAR_OPEN, i);
-		}
-		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
-		public TerminalNode COMMA(int i) {
-			return getToken(LogoTecParser.COMMA, i);
-		}
-		public List<TerminalNode> PAR_CLOSE() { return getTokens(LogoTecParser.PAR_CLOSE); }
-		public TerminalNode PAR_CLOSE(int i) {
-			return getToken(LogoTecParser.PAR_CLOSE, i);
-		}
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
+		public TerminalNode DIVISION() { return getToken(LogoTecParser.DIVISION, 0); }
+		public TerminalNode POTENCIA() { return getToken(LogoTecParser.POTENCIA, 0); }
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
+		public TerminalNode MENORQ() { return getToken(LogoTecParser.MENORQ, 0); }
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public TerminalNode YFUNC() { return getToken(LogoTecParser.YFUNC, 0); }
-		public TerminalNode OFUNC() { return getToken(LogoTecParser.OFUNC, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode MAYORQ() { return getToken(LogoTecParser.MAYORQ, 0); }
-		public TerminalNode MENORQ() { return getToken(LogoTecParser.MENORQ, 0); }
-		public TerminalNode AZAR() { return getToken(LogoTecParser.AZAR, 0); }
+		public TerminalNode COMMA(int i) {
+			return getToken(LogoTecParser.COMMA, i);
+		}
+		public TerminalNode OFUNC() { return getToken(LogoTecParser.OFUNC, 0); }
 		public TerminalNode PRODUCTO() { return getToken(LogoTecParser.PRODUCTO, 0); }
-		public TerminalNode POTENCIA() { return getToken(LogoTecParser.POTENCIA, 0); }
-		public TerminalNode DIVISION() { return getToken(LogoTecParser.DIVISION, 0); }
-		public TerminalNode SUMA() { return getToken(LogoTecParser.SUMA, 0); }
+		public TerminalNode AZAR() { return getToken(LogoTecParser.AZAR, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
+		public TerminalNode YFUNC() { return getToken(LogoTecParser.YFUNC, 0); }
 		public TerminalNode DIFERENCIA() { return getToken(LogoTecParser.DIFERENCIA, 0); }
+		public TerminalNode SUMA() { return getToken(LogoTecParser.SUMA, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionSeriesContext expressionSeries() {
+			return getRuleContext(ExpressionSeriesContext.class,0);
+		}
 		public FuncCallContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3186,11 +3067,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitFuncCall(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitFuncCall(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final FuncCallContext funcCall() throws RecognitionException {
@@ -3198,184 +3074,128 @@ public class LogoTecParser extends Parser {
 		enterRule(_localctx, 54, RULE_funcCall);
 		int _la;
 		try {
-			setState(701);
-			switch ( getInterpreter().adaptivePredict(_input,43,_ctx) ) {
-			case 1:
+			setState(688);
+			switch (_input.LA(1)) {
+			case IGUALESQ:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(582);
-				match(IGUALESQ);
-				setState(583);
-				match(PAR_OPEN);
-				setState(584);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(585);
-				match(COMMA);
-				setState(586);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(587);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new EqualsFuncNode(((FuncCallContext)_localctx).e1.node, ((FuncCallContext)_localctx).e2.node); 
+				setState(601); match(IGUALESQ);
+				setState(602); match(PAR_OPEN);
+				setState(603); ((FuncCallContext)_localctx).args = expressionSeries();
+				setState(604); match(PAR_CLOSE);
+				 
+				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "Iguales?", currentLine());
+				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
+				        ExprNode e2 = ((FuncCallContext)_localctx).args.list.size() > 1 ? ((FuncCallContext)_localctx).args.list.get(1) : new ConstNode(0);
+				        ((FuncCallContext)_localctx).node =  new EqualsFuncNode(e1, e2); 
+				      
 				}
 				break;
-			case 2:
+			case YFUNC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(590);
-				match(YFUNC);
-				setState(591);
-				match(PAR_OPEN);
-				setState(592);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(593);
-				match(PAR_CLOSE);
-				setState(594);
-				match(PAR_OPEN);
-				setState(595);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(596);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new LogicalAndNode(((FuncCallContext)_localctx).e1.node,((FuncCallContext)_localctx).e2.node); 
+				setState(607); match(YFUNC);
+				setState(608); match(PAR_OPEN);
+				setState(609); ((FuncCallContext)_localctx).args = expressionSeries();
+				setState(610); match(PAR_CLOSE);
+				 
+				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "Y", currentLine());
+				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(false);
+				        ExprNode e2 = ((FuncCallContext)_localctx).args.list.size() > 1 ? ((FuncCallContext)_localctx).args.list.get(1) : new ConstNode(false);
+				        ((FuncCallContext)_localctx).node =  new LogicalAndNode(e1, e2);
+				      
 				}
 				break;
-			case 3:
+			case OFUNC:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(599);
-				match(YFUNC);
-				setState(600);
-				match(PAR_OPEN);
-				setState(601);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(602);
-				match(COMMA);
-				setState(603);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(604);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new LogicalAndNode(((FuncCallContext)_localctx).e1.node,((FuncCallContext)_localctx).e2.node); 
+				setState(613); match(OFUNC);
+				setState(614); match(PAR_OPEN);
+				setState(615); ((FuncCallContext)_localctx).args = expressionSeries();
+				setState(616); match(PAR_CLOSE);
+				 
+				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "O", currentLine());
+				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(false);
+				        ExprNode e2 = ((FuncCallContext)_localctx).args.list.size() > 1 ? ((FuncCallContext)_localctx).args.list.get(1) : new ConstNode(false);
+				        ((FuncCallContext)_localctx).node =  new LogicalOrNode(e1, e2);
+				      
 				}
 				break;
-			case 4:
+			case MAYORQ:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(607);
-				match(OFUNC);
-				setState(608);
-				match(PAR_OPEN);
-				setState(609);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(610);
-				match(PAR_CLOSE);
-				setState(611);
-				match(PAR_OPEN);
-				setState(612);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(613);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new LogicalOrNode(((FuncCallContext)_localctx).e1.node,((FuncCallContext)_localctx).e2.node); 
+				setState(619); match(MAYORQ);
+				setState(620); match(PAR_OPEN);
+				setState(621); ((FuncCallContext)_localctx).args = expressionSeries();
+				setState(622); match(PAR_CLOSE);
+				 
+				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "MayorQue?", currentLine());
+				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
+				        ExprNode e2 = ((FuncCallContext)_localctx).args.list.size() > 1 ? ((FuncCallContext)_localctx).args.list.get(1) : new ConstNode(0);
+				        requireNumericArgs(e1, e2, "MayorQue?");
+				        ((FuncCallContext)_localctx).node =  new GreaterThanNode(e1, e2);  
+				      
 				}
 				break;
-			case 5:
+			case MENORQ:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(616);
-				match(OFUNC);
-				setState(617);
-				match(PAR_OPEN);
-				setState(618);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(619);
-				match(COMMA);
-				setState(620);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(621);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new LogicalOrNode(((FuncCallContext)_localctx).e1.node,((FuncCallContext)_localctx).e2.node); 
+				setState(625); match(MENORQ);
+				setState(626); match(PAR_OPEN);
+				setState(627); ((FuncCallContext)_localctx).args = expressionSeries();
+				setState(628); match(PAR_CLOSE);
+				 
+				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "MenorQue?", currentLine());
+				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
+				        ExprNode e2 = ((FuncCallContext)_localctx).args.list.size() > 1 ? ((FuncCallContext)_localctx).args.list.get(1) : new ConstNode(0);
+				        requireNumericArgs(e1, e2, "MenorQue?");
+				        ((FuncCallContext)_localctx).node =  new LessThanNode(e1, e2);  
+				      
 				}
 				break;
-			case 6:
+			case AZAR:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(624);
-				match(MAYORQ);
-				setState(625);
-				match(PAR_OPEN);
-				setState(626);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(627);
-				match(COMMA);
-				setState(628);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(629);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new GreaterThanNode(((FuncCallContext)_localctx).e1.node,((FuncCallContext)_localctx).e2.node);  
+				setState(631); match(AZAR);
+				setState(632); match(PAR_OPEN);
+				setState(633); ((FuncCallContext)_localctx).args = expressionSeries();
+				setState(634); match(PAR_CLOSE);
+				 
+				        requireOneArgument(((FuncCallContext)_localctx).args.list.size(), "AZAR", currentLine());
+				        ExprNode e = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(1);
+				        requireNumericType(e, "AZAR");
+				        ((FuncCallContext)_localctx).node =  new RandomNode(e); 
+				      
 				}
 				break;
-			case 7:
+			case PRODUCTO:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(632);
-				match(MENORQ);
-				setState(633);
-				match(PAR_OPEN);
-				setState(634);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(635);
-				match(COMMA);
-				setState(636);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(637);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new LessThanNode(((FuncCallContext)_localctx).e1.node,((FuncCallContext)_localctx).e2.node);  
-				}
-				break;
-			case 8:
-				enterOuterAlt(_localctx, 8);
-				{
-				setState(640);
-				match(AZAR);
-				setState(641);
-				match(PAR_OPEN);
-				setState(642);
-				((FuncCallContext)_localctx).e = expression();
-				setState(643);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new RandomNode(((FuncCallContext)_localctx).e.node); 
-				}
-				break;
-			case 9:
-				enterOuterAlt(_localctx, 9);
-				{
-				setState(646);
-				match(PRODUCTO);
-				setState(647);
-				match(PAR_OPEN);
-				setState(648);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(653);
+				setState(637); match(PRODUCTO);
+				setState(638); match(PAR_OPEN);
+				setState(639); ((FuncCallContext)_localctx).e1 = expression();
+				setState(644);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(649);
-					match(COMMA);
-					setState(650);
-					((FuncCallContext)_localctx).expression = expression();
+					setState(640); match(COMMA);
+					setState(641); ((FuncCallContext)_localctx).expression = expression();
 					((FuncCallContext)_localctx).rest.add(((FuncCallContext)_localctx).expression);
 					}
 					}
-					setState(655);
+					setState(646);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(656);
-				match(PAR_CLOSE);
+				setState(647); match(PAR_CLOSE);
 
+				        requireNumericType(((FuncCallContext)_localctx).e1.node, "PRODUCTO");
 				        List<ExprNode> restNodes = new ArrayList<>();
 				        if (((FuncCallContext)_localctx).rest != null) {
 				            for (ExpressionContext ctx : ((FuncCallContext)_localctx).rest) {
+				                requireNumericType(ctx.node, "PRODUCTO");
 				                restNodes.add(ctx.node);
 				            }
 				        }
@@ -3383,74 +3203,66 @@ public class LogoTecParser extends Parser {
 				      
 				}
 				break;
-			case 10:
+			case POTENCIA:
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(650); match(POTENCIA);
+				setState(651); match(PAR_OPEN);
+				setState(652); ((FuncCallContext)_localctx).args = expressionSeries();
+				setState(653); match(PAR_CLOSE);
+				 
+				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "POTENCIA", currentLine());
+				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
+				        ExprNode e2 = ((FuncCallContext)_localctx).args.list.size() > 1 ? ((FuncCallContext)_localctx).args.list.get(1) : new ConstNode(0);
+				        requireNumericArgs(e1, e2, "POTENCIA");
+				        ((FuncCallContext)_localctx).node =  new ExponentiationNode(e1, e2); 
+				      
+				}
+				break;
+			case DIVISION:
+				enterOuterAlt(_localctx, 9);
+				{
+				setState(656); match(DIVISION);
+				setState(657); match(PAR_OPEN);
+				setState(658); ((FuncCallContext)_localctx).args = expressionSeries();
+				setState(659); match(PAR_CLOSE);
+				 
+				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "DIVISION", currentLine());
+				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
+				        ExprNode e2 = ((FuncCallContext)_localctx).args.list.size() > 1 ? ((FuncCallContext)_localctx).args.list.get(1) : new ConstNode(1);
+				        requireNumericArgs(e1, e2, "DIVISION");
+				        ((FuncCallContext)_localctx).node =  new DivisionNode(e1, e2); 
+				      
+				}
+				break;
+			case SUMA:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(659);
-				match(POTENCIA);
-				setState(660);
-				match(PAR_OPEN);
-				setState(661);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(662);
-				match(COMMA);
-				setState(663);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(664);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new ExponentiationNode(((FuncCallContext)_localctx).e1.node, ((FuncCallContext)_localctx).e2.node); 
-				}
-				break;
-			case 11:
-				enterOuterAlt(_localctx, 11);
-				{
-				setState(667);
-				match(DIVISION);
-				setState(668);
-				match(PAR_OPEN);
+				setState(662); match(SUMA);
+				setState(663); match(PAR_OPEN);
+				setState(664); ((FuncCallContext)_localctx).e1 = expression();
 				setState(669);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(670);
-				match(COMMA);
-				setState(671);
-				((FuncCallContext)_localctx).e2 = expression();
-				setState(672);
-				match(PAR_CLOSE);
-				 ((FuncCallContext)_localctx).node =  new DivisionNode(((FuncCallContext)_localctx).e1.node, ((FuncCallContext)_localctx).e2.node); 
-				}
-				break;
-			case 12:
-				enterOuterAlt(_localctx, 12);
-				{
-				setState(675);
-				match(SUMA);
-				setState(676);
-				match(PAR_OPEN);
-				setState(677);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(682);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(678);
-					match(COMMA);
-					setState(679);
-					((FuncCallContext)_localctx).expression = expression();
+					setState(665); match(COMMA);
+					setState(666); ((FuncCallContext)_localctx).expression = expression();
 					((FuncCallContext)_localctx).rest.add(((FuncCallContext)_localctx).expression);
 					}
 					}
-					setState(684);
+					setState(671);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(685);
-				match(PAR_CLOSE);
+				setState(672); match(PAR_CLOSE);
 
+				        requireNumericType(((FuncCallContext)_localctx).e1.node, "SUMA");
 				        List<ExprNode> restNodes = new ArrayList<>();
 				        if (((FuncCallContext)_localctx).rest != null) {
 				            for (ExpressionContext ctx : ((FuncCallContext)_localctx).rest) {
+				                requireNumericType(ctx.node, "SUMA");
 				                restNodes.add(ctx.node);
 				            }
 				        }
@@ -3458,38 +3270,34 @@ public class LogoTecParser extends Parser {
 				      
 				}
 				break;
-			case 13:
-				enterOuterAlt(_localctx, 13);
+			case DIFERENCIA:
+				enterOuterAlt(_localctx, 11);
 				{
-				setState(688);
-				match(DIFERENCIA);
-				setState(689);
-				match(PAR_OPEN);
-				setState(690);
-				((FuncCallContext)_localctx).e1 = expression();
-				setState(695);
+				setState(675); match(DIFERENCIA);
+				setState(676); match(PAR_OPEN);
+				setState(677); ((FuncCallContext)_localctx).e1 = expression();
+				setState(682);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(691);
-					match(COMMA);
-					setState(692);
-					((FuncCallContext)_localctx).expression = expression();
+					setState(678); match(COMMA);
+					setState(679); ((FuncCallContext)_localctx).expression = expression();
 					((FuncCallContext)_localctx).rest.add(((FuncCallContext)_localctx).expression);
 					}
 					}
-					setState(697);
+					setState(684);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(698);
-				match(PAR_CLOSE);
+				setState(685); match(PAR_CLOSE);
 
+				        requireNumericType(((FuncCallContext)_localctx).e1.node, "DIFERENCIA");
 				        List<ExprNode> restNodes = new ArrayList<>();
 				        if (((FuncCallContext)_localctx).rest != null) {
 				            for (ExpressionContext ctx : ((FuncCallContext)_localctx).rest) {
+				                requireNumericType(ctx.node, "DIFERENCIA");
 				                restNodes.add(ctx.node);
 				            }
 				        }
@@ -3497,6 +3305,8 @@ public class LogoTecParser extends Parser {
 				      
 				}
 				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3520,15 +3330,15 @@ public class LogoTecParser extends Parser {
 		public Token STRING;
 		public ExpressionContext expression;
 		public TerminalNode DECIMAL() { return getToken(LogoTecParser.DECIMAL, 0); }
-		public TerminalNode NUMBER() { return getToken(LogoTecParser.NUMBER, 0); }
-		public TerminalNode BOOLEAN() { return getToken(LogoTecParser.BOOLEAN, 0); }
 		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public TerminalNode STRING() { return getToken(LogoTecParser.STRING, 0); }
 		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode NUMBER() { return getToken(LogoTecParser.NUMBER, 0); }
+		public TerminalNode BOOLEAN() { return getToken(LogoTecParser.BOOLEAN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public PrimaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3541,36 +3351,29 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitPrimary(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitPrimary(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final PrimaryContext primary() throws RecognitionException {
 		PrimaryContext _localctx = new PrimaryContext(_ctx, getState());
 		enterRule(_localctx, 56, RULE_primary);
 		try {
-			setState(718);
+			setState(705);
 			switch (_input.LA(1)) {
 			case DECIMAL:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(703);
-				((PrimaryContext)_localctx).DECIMAL = match(DECIMAL);
+				setState(690); ((PrimaryContext)_localctx).DECIMAL = match(DECIMAL);
 
 				        double v = Double.parseDouble((((PrimaryContext)_localctx).DECIMAL!=null?((PrimaryContext)_localctx).DECIMAL.getText():null).replace(',', '.'));
 				        ((PrimaryContext)_localctx).node =  new ConstNode(v);
-				        ((PrimaryContext)_localctx).val =  Value.unknown(); // se mantiene inferencia desconocida si no hay soporte de double en Value
+				        ((PrimaryContext)_localctx).val =  Value.unknown();
 				      
 				}
 				break;
 			case NUMBER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(705);
-				((PrimaryContext)_localctx).NUMBER = match(NUMBER);
+				setState(692); ((PrimaryContext)_localctx).NUMBER = match(NUMBER);
 				 
 				        int v = Integer.parseInt((((PrimaryContext)_localctx).NUMBER!=null?((PrimaryContext)_localctx).NUMBER.getText():null));
 				        ((PrimaryContext)_localctx).node =  new ConstNode(v);
@@ -3581,8 +3384,7 @@ public class LogoTecParser extends Parser {
 			case BOOLEAN:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(707);
-				((PrimaryContext)_localctx).BOOLEAN = match(BOOLEAN);
+				setState(694); ((PrimaryContext)_localctx).BOOLEAN = match(BOOLEAN);
 				 
 				        boolean b = Boolean.parseBoolean((((PrimaryContext)_localctx).BOOLEAN!=null?((PrimaryContext)_localctx).BOOLEAN.getText():null));
 				        ((PrimaryContext)_localctx).node =  new ConstNode(b);
@@ -3593,8 +3395,7 @@ public class LogoTecParser extends Parser {
 			case ID:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(709);
-				((PrimaryContext)_localctx).ID = match(ID);
+				setState(696); ((PrimaryContext)_localctx).ID = match(ID);
 				 
 				        ((PrimaryContext)_localctx).node =  new VarRefNode((((PrimaryContext)_localctx).ID!=null?((PrimaryContext)_localctx).ID.getText():null));
 				        ((PrimaryContext)_localctx).val =  Value.unknown();
@@ -3604,8 +3405,7 @@ public class LogoTecParser extends Parser {
 			case STRING:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(711);
-				((PrimaryContext)_localctx).STRING = match(STRING);
+				setState(698); ((PrimaryContext)_localctx).STRING = match(STRING);
 
 				        String s = (((PrimaryContext)_localctx).STRING!=null?((PrimaryContext)_localctx).STRING.getText():null).substring(1,(((PrimaryContext)_localctx).STRING!=null?((PrimaryContext)_localctx).STRING.getText():null).length()-1);
 				        ((PrimaryContext)_localctx).node =  new ConstNode(s);
@@ -3616,12 +3416,9 @@ public class LogoTecParser extends Parser {
 			case PAR_OPEN:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(713);
-				match(PAR_OPEN);
-				setState(714);
-				((PrimaryContext)_localctx).expression = expression();
-				setState(715);
-				match(PAR_CLOSE);
+				setState(700); match(PAR_OPEN);
+				setState(701); ((PrimaryContext)_localctx).expression = expression();
+				setState(702); match(PAR_CLOSE);
 				 
 				        ((PrimaryContext)_localctx).node =  ((PrimaryContext)_localctx).expression.node; 
 				        ((PrimaryContext)_localctx).val =  ((PrimaryContext)_localctx).expression.val; 
@@ -3650,11 +3447,11 @@ public class LogoTecParser extends Parser {
 		public Token NUMBER;
 		public Token BOOLEAN;
 		public Token STRING;
-		public TerminalNode MINUS() { return getToken(LogoTecParser.MINUS, 0); }
 		public TerminalNode DECIMAL() { return getToken(LogoTecParser.DECIMAL, 0); }
+		public TerminalNode MINUS() { return getToken(LogoTecParser.MINUS, 0); }
+		public TerminalNode STRING() { return getToken(LogoTecParser.STRING, 0); }
 		public TerminalNode NUMBER() { return getToken(LogoTecParser.NUMBER, 0); }
 		public TerminalNode BOOLEAN() { return getToken(LogoTecParser.BOOLEAN, 0); }
-		public TerminalNode STRING() { return getToken(LogoTecParser.STRING, 0); }
 		public LiteralOrStringContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3667,26 +3464,19 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitLiteralOrString(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitLiteralOrString(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final LiteralOrStringContext literalOrString() throws RecognitionException {
 		LiteralOrStringContext _localctx = new LiteralOrStringContext(_ctx, getState());
 		enterRule(_localctx, 58, RULE_literalOrString);
 		try {
-			setState(734);
-			switch ( getInterpreter().adaptivePredict(_input,45,_ctx) ) {
+			setState(721);
+			switch ( getInterpreter().adaptivePredict(_input,47,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(720);
-				match(MINUS);
-				setState(721);
-				((LiteralOrStringContext)_localctx).DECIMAL = match(DECIMAL);
+				setState(707); match(MINUS);
+				setState(708); ((LiteralOrStringContext)_localctx).DECIMAL = match(DECIMAL);
 
 				        double v = -Double.parseDouble((((LiteralOrStringContext)_localctx).DECIMAL!=null?((LiteralOrStringContext)_localctx).DECIMAL.getText():null).replace(',', '.'));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3697,8 +3487,7 @@ public class LogoTecParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(723);
-				((LiteralOrStringContext)_localctx).DECIMAL = match(DECIMAL);
+				setState(710); ((LiteralOrStringContext)_localctx).DECIMAL = match(DECIMAL);
 
 				        double v = Double.parseDouble((((LiteralOrStringContext)_localctx).DECIMAL!=null?((LiteralOrStringContext)_localctx).DECIMAL.getText():null).replace(',', '.'));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3709,10 +3498,8 @@ public class LogoTecParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(725);
-				match(MINUS);
-				setState(726);
-				((LiteralOrStringContext)_localctx).NUMBER = match(NUMBER);
+				setState(712); match(MINUS);
+				setState(713); ((LiteralOrStringContext)_localctx).NUMBER = match(NUMBER);
 
 				        int v = -Integer.parseInt((((LiteralOrStringContext)_localctx).NUMBER!=null?((LiteralOrStringContext)_localctx).NUMBER.getText():null));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3723,8 +3510,7 @@ public class LogoTecParser extends Parser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(728);
-				((LiteralOrStringContext)_localctx).NUMBER = match(NUMBER);
+				setState(715); ((LiteralOrStringContext)_localctx).NUMBER = match(NUMBER);
 
 				        int v = Integer.parseInt((((LiteralOrStringContext)_localctx).NUMBER!=null?((LiteralOrStringContext)_localctx).NUMBER.getText():null));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3735,8 +3521,7 @@ public class LogoTecParser extends Parser {
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(730);
-				((LiteralOrStringContext)_localctx).BOOLEAN = match(BOOLEAN);
+				setState(717); ((LiteralOrStringContext)_localctx).BOOLEAN = match(BOOLEAN);
 
 				        boolean v = Boolean.parseBoolean((((LiteralOrStringContext)_localctx).BOOLEAN!=null?((LiteralOrStringContext)_localctx).BOOLEAN.getText():null));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3747,8 +3532,7 @@ public class LogoTecParser extends Parser {
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(732);
-				((LiteralOrStringContext)_localctx).STRING = match(STRING);
+				setState(719); ((LiteralOrStringContext)_localctx).STRING = match(STRING);
 
 				        String s = (((LiteralOrStringContext)_localctx).STRING!=null?((LiteralOrStringContext)_localctx).STRING.getText():null).substring(1, (((LiteralOrStringContext)_localctx).STRING!=null?((LiteralOrStringContext)_localctx).STRING.getText():null).length()-1);
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(s);
@@ -3783,11 +3567,6 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitCmtFirstLine(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitCmtFirstLine(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final CmtFirstLineContext cmtFirstLine() throws RecognitionException {
@@ -3796,8 +3575,7 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(736);
-			match(FIRSTLINE_COMMENT);
+			setState(723); match(FIRSTLINE_COMMENT);
 			 firstLineHasComment = true; 
 			}
 		}
@@ -3812,33 +3590,74 @@ public class LogoTecParser extends Parser {
 		return _localctx;
 	}
 
+	public static class InvalidCommentContext extends ParserRuleContext {
+		public TerminalNode INVALID_COMMENT() { return getToken(LogoTecParser.INVALID_COMMENT, 0); }
+		public InvalidCommentContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_invalidComment; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).enterInvalidComment(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitInvalidComment(this);
+		}
+	}
+
+	public final InvalidCommentContext invalidComment() throws RecognitionException {
+		InvalidCommentContext _localctx = new InvalidCommentContext(_ctx, getState());
+		enterRule(_localctx, 62, RULE_invalidComment);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(726); match(INVALID_COMMENT);
+
+			        errors.add("Error en línea " + currentLine() + ": los comentarios deben empezar con //");
+			        //throw new RuntimeException("Error en línea " + currentLine() + ": los comentarios deben empezar con //");
+			      
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3Q\u02e6\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3S\u02dc\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
-		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \3\2"+
-		"\5\2B\n\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7\3N\n\3\f\3\16\3Q\13"+
-		"\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\7\4[\n\4\f\4\16\4^\13\4\3\4\3\4\3\4"+
-		"\3\4\3\4\3\4\7\4f\n\4\f\4\16\4i\13\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
-		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\u0090\n\5\3\6\3\6\3\6"+
-		"\3\6\5\6\u0096\n\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b"+
-		"\3\b\5\b\u00a6\n\b\3\b\3\b\3\b\7\b\u00ab\n\b\f\b\16\b\u00ae\13\b\5\b\u00b0"+
-		"\n\b\3\b\3\b\3\b\3\b\7\b\u00b6\n\b\f\b\16\b\u00b9\13\b\5\b\u00bb\n\b\3"+
-		"\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u00c8\n\t\3\n\3\n\3\n\5"+
-		"\n\u00cd\n\n\3\n\3\n\3\n\7\n\u00d2\n\n\f\n\16\n\u00d5\13\n\5\n\u00d7\n"+
-		"\n\3\13\3\13\3\13\3\13\3\13\7\13\u00de\n\13\f\13\16\13\u00e1\13\13\3\13"+
-		"\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f\7\f\u00ec\n\f\f\f\16\f\u00ef\13\f\3"+
-		"\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u00fc\n\r\f\r\16\r\u00ff"+
-		"\13\r\3\r\3\r\3\r\3\r\3\r\7\r\u0106\n\r\f\r\16\r\u0109\13\r\3\r\5\r\u010c"+
-		"\n\r\3\r\3\r\3\16\3\16\5\16\u0112\n\16\3\16\3\16\3\16\3\16\7\16\u0118"+
-		"\n\16\f\16\16\16\u011b\13\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\17\3"+
-		"\17\5\17\u0126\n\17\3\17\3\17\3\17\3\17\7\17\u012c\n\17\f\17\16\17\u012f"+
-		"\13\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\3\20"+
-		"\3\20\3\20\7\20\u0140\n\20\f\20\16\20\u0143\13\20\3\20\3\20\3\20\3\21"+
-		"\3\21\3\21\3\21\3\21\3\21\3\21\3\21\7\21\u0150\n\21\f\21\16\21\u0153\13"+
-		"\21\3\21\3\21\3\21\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3"+
+		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \4!"+
+		"\t!\3\2\5\2D\n\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\7\3Q\n\3"+
+		"\f\3\16\3T\13\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\7\4^\n\4\f\4\16\4a\13"+
+		"\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4i\n\4\f\4\16\4l\13\4\3\4\3\4\3\4\3\4\3\5"+
+		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
+		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\u0093\n"+
+		"\5\3\6\3\6\3\6\3\6\5\6\u0099\n\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3"+
+		"\b\3\b\3\b\3\b\3\b\5\b\u00a9\n\b\3\b\3\b\3\b\7\b\u00ae\n\b\f\b\16\b\u00b1"+
+		"\13\b\5\b\u00b3\n\b\3\b\3\b\3\b\3\b\7\b\u00b9\n\b\f\b\16\b\u00bc\13\b"+
+		"\5\b\u00be\n\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u00cb\n"+
+		"\t\3\n\3\n\3\n\5\n\u00d0\n\n\3\n\3\n\3\n\7\n\u00d5\n\n\f\n\16\n\u00d8"+
+		"\13\n\5\n\u00da\n\n\3\13\3\13\3\13\3\13\3\13\7\13\u00e1\n\13\f\13\16\13"+
+		"\u00e4\13\13\3\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f\3\f\7\f\u00f0\n\f"+
+		"\f\f\16\f\u00f3\13\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\7"+
+		"\r\u0101\n\r\f\r\16\r\u0104\13\r\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u010c\n\r"+
+		"\f\r\16\r\u010f\13\r\3\r\7\r\u0112\n\r\f\r\16\r\u0115\13\r\3\r\3\r\3\16"+
+		"\3\16\5\16\u011b\n\16\3\16\3\16\3\16\3\16\7\16\u0121\n\16\f\16\16\16\u0124"+
+		"\13\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\5\16\u012d\n\16\3\16\3\16\3"+
+		"\17\3\17\5\17\u0133\n\17\3\17\3\17\3\17\3\17\7\17\u0139\n\17\f\17\16\17"+
+		"\u013c\13\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\5\17\u0145\n\17\3\17\3"+
+		"\17\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\7\20\u0152\n\20\f\20"+
+		"\16\20\u0155\13\20\3\20\3\20\3\20\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3"+
+		"\21\3\21\7\21\u0163\n\21\f\21\16\21\u0166\13\21\3\21\3\21\3\21\3\22\3"+
 		"\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3"+
 		"\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3"+
 		"\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3"+
@@ -3846,252 +3665,248 @@ public class LogoTecParser extends Parser {
 		"\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3"+
 		"\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3"+
 		"\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3"+
-		"\22\3\22\3\22\5\22\u01c7\n\22\3\23\3\23\3\23\3\23\5\23\u01cd\n\23\3\24"+
-		"\3\24\3\24\3\24\3\24\3\24\7\24\u01d5\n\24\f\24\16\24\u01d8\13\24\3\25"+
-		"\3\25\3\25\3\25\3\25\3\25\7\25\u01e0\n\25\f\25\16\25\u01e3\13\25\3\26"+
-		"\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u01ec\n\26\3\27\3\27\3\27\3\27\3\27"+
+		"\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\5\22\u01da"+
+		"\n\22\3\23\3\23\3\23\3\23\5\23\u01e0\n\23\3\24\3\24\3\24\3\24\3\24\3\24"+
+		"\7\24\u01e8\n\24\f\24\16\24\u01eb\13\24\3\25\3\25\3\25\3\25\3\25\3\25"+
+		"\7\25\u01f3\n\25\f\25\16\25\u01f6\13\25\3\26\3\26\3\26\3\26\3\26\3\26"+
+		"\3\26\5\26\u01ff\n\26\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27"+
 		"\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27"+
-		"\3\27\3\27\3\27\3\27\3\27\3\27\3\27\7\27\u0208\n\27\f\27\16\27\u020b\13"+
-		"\27\3\30\3\30\3\30\3\30\3\30\3\30\3\30\3\30\3\30\3\30\7\30\u0217\n\30"+
-		"\f\30\16\30\u021a\13\30\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3"+
-		"\31\7\31\u0226\n\31\f\31\16\31\u0229\13\31\3\32\3\32\3\32\3\32\3\32\3"+
-		"\32\7\32\u0231\n\32\f\32\16\32\u0234\13\32\3\33\3\33\3\33\3\34\3\34\3"+
-		"\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\5\34\u0247"+
-		"\n\34\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35"+
+		"\3\27\3\27\7\27\u021b\n\27\f\27\16\27\u021e\13\27\3\30\3\30\3\30\3\30"+
+		"\3\30\3\30\3\30\3\30\3\30\3\30\7\30\u022a\n\30\f\30\16\30\u022d\13\30"+
+		"\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\7\31\u0239\n\31\f\31"+
+		"\16\31\u023c\13\31\3\32\3\32\3\32\3\32\3\32\3\32\7\32\u0244\n\32\f\32"+
+		"\16\32\u0247\13\32\3\33\3\33\3\33\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3"+
+		"\34\3\34\3\34\3\34\3\34\3\34\3\34\5\34\u025a\n\34\3\35\3\35\3\35\3\35"+
 		"\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35"+
 		"\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35"+
-		"\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35"+
-		"\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35"+
-		"\7\35\u028e\n\35\f\35\16\35\u0291\13\35\3\35\3\35\3\35\3\35\3\35\3\35"+
-		"\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35"+
-		"\3\35\3\35\3\35\3\35\7\35\u02ab\n\35\f\35\16\35\u02ae\13\35\3\35\3\35"+
-		"\3\35\3\35\3\35\3\35\3\35\3\35\7\35\u02b8\n\35\f\35\16\35\u02bb\13\35"+
-		"\3\35\3\35\3\35\5\35\u02c0\n\35\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36"+
-		"\3\36\3\36\3\36\3\36\3\36\3\36\3\36\5\36\u02d1\n\36\3\37\3\37\3\37\3\37"+
-		"\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\5\37\u02e1\n\37\3 "+
-		"\3 \3 \3 \2\2!\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64"+
-		"\668:<>\2\2\u0333\2A\3\2\2\2\4O\3\2\2\2\6T\3\2\2\2\b\u008f\3\2\2\2\n\u0091"+
-		"\3\2\2\2\f\u0099\3\2\2\2\16\u00a0\3\2\2\2\20\u00c7\3\2\2\2\22\u00d6\3"+
-		"\2\2\2\24\u00d8\3\2\2\2\26\u00e5\3\2\2\2\30\u00f3\3\2\2\2\32\u010f\3\2"+
-		"\2\2\34\u0123\3\2\2\2\36\u0137\3\2\2\2 \u0147\3\2\2\2\"\u01c6\3\2\2\2"+
-		"$\u01cc\3\2\2\2&\u01ce\3\2\2\2(\u01d9\3\2\2\2*\u01eb\3\2\2\2,\u01ed\3"+
-		"\2\2\2.\u020c\3\2\2\2\60\u021b\3\2\2\2\62\u022a\3\2\2\2\64\u0235\3\2\2"+
-		"\2\66\u0246\3\2\2\28\u02bf\3\2\2\2:\u02d0\3\2\2\2<\u02e0\3\2\2\2>\u02e2"+
-		"\3\2\2\2@B\5> \2A@\3\2\2\2AB\3\2\2\2BC\3\2\2\2CD\5\4\3\2DE\7\2\2\3EF\b"+
-		"\2\1\2F\3\3\2\2\2GH\5\6\4\2HI\b\3\1\2IN\3\2\2\2JK\5\b\5\2KL\b\3\1\2LN"+
-		"\3\2\2\2MG\3\2\2\2MJ\3\2\2\2NQ\3\2\2\2OM\3\2\2\2OP\3\2\2\2PR\3\2\2\2Q"+
-		"O\3\2\2\2RS\b\3\1\2S\5\3\2\2\2TU\7\3\2\2UV\7M\2\2VW\b\4\1\2W\\\7B\2\2"+
-		"XY\7M\2\2Y[\b\4\1\2ZX\3\2\2\2[^\3\2\2\2\\Z\3\2\2\2\\]\3\2\2\2]_\3\2\2"+
-		"\2^\\\3\2\2\2_`\7C\2\2`a\b\4\1\2ag\7B\2\2bc\5\b\5\2cd\b\4\1\2df\3\2\2"+
-		"\2eb\3\2\2\2fi\3\2\2\2ge\3\2\2\2gh\3\2\2\2hj\3\2\2\2ig\3\2\2\2jk\7C\2"+
-		"\2kl\7\5\2\2lm\b\4\1\2m\7\3\2\2\2no\5\32\16\2op\b\5\1\2p\u0090\3\2\2\2"+
-		"qr\5\34\17\2rs\b\5\1\2s\u0090\3\2\2\2tu\5\n\6\2uv\b\5\1\2v\u0090\3\2\2"+
-		"\2wx\5\f\7\2xy\b\5\1\2y\u0090\3\2\2\2z{\5\16\b\2{|\b\5\1\2|\u0090\3\2"+
-		"\2\2}~\5\"\22\2~\177\b\5\1\2\177\u0090\3\2\2\2\u0080\u0081\5\30\r\2\u0081"+
-		"\u0082\b\5\1\2\u0082\u0090\3\2\2\2\u0083\u0084\5 \21\2\u0084\u0085\b\5"+
-		"\1\2\u0085\u0090\3\2\2\2\u0086\u0087\5\36\20\2\u0087\u0088\b\5\1\2\u0088"+
-		"\u0090\3\2\2\2\u0089\u008a\5\26\f\2\u008a\u008b\b\5\1\2\u008b\u0090\3"+
-		"\2\2\2\u008c\u008d\5\24\13\2\u008d\u008e\b\5\1\2\u008e\u0090\3\2\2\2\u008f"+
-		"n\3\2\2\2\u008fq\3\2\2\2\u008ft\3\2\2\2\u008fw\3\2\2\2\u008fz\3\2\2\2"+
-		"\u008f}\3\2\2\2\u008f\u0080\3\2\2\2\u008f\u0083\3\2\2\2\u008f\u0086\3"+
-		"\2\2\2\u008f\u0089\3\2\2\2\u008f\u008c\3\2\2\2\u0090\t\3\2\2\2\u0091\u0092"+
-		"\7\4\2\2\u0092\u0093\7M\2\2\u0093\u0095\5<\37\2\u0094\u0096\7F\2\2\u0095"+
-		"\u0094\3\2\2\2\u0095\u0096\3\2\2\2\u0096\u0097\3\2\2\2\u0097\u0098\b\6"+
-		"\1\2\u0098\13\3\2\2\2\u0099\u009a\7\32\2\2\u009a\u009b\7M\2\2\u009b\u009c"+
-		"\7A\2\2\u009c\u009d\5&\24\2\u009d\u009e\7F\2\2\u009e\u009f\b\7\1\2\u009f"+
-		"\r\3\2\2\2\u00a0\u00ba\7M\2\2\u00a1\u00af\7B\2\2\u00a2\u00a3\5&\24\2\u00a3"+
-		"\u00ac\b\b\1\2\u00a4\u00a6\7G\2\2\u00a5\u00a4\3\2\2\2\u00a5\u00a6\3\2"+
-		"\2\2\u00a6\u00a7\3\2\2\2\u00a7\u00a8\5&\24\2\u00a8\u00a9\b\b\1\2\u00a9"+
-		"\u00ab\3\2\2\2\u00aa\u00a5\3\2\2\2\u00ab\u00ae\3\2\2\2\u00ac\u00aa\3\2"+
-		"\2\2\u00ac\u00ad\3\2\2\2\u00ad\u00b0\3\2\2\2\u00ae\u00ac\3\2\2\2\u00af"+
-		"\u00a2\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0\u00b1\3\2\2\2\u00b1\u00bb\7C"+
-		"\2\2\u00b2\u00b3\5\20\t\2\u00b3\u00b4\b\b\1\2\u00b4\u00b6\3\2\2\2\u00b5"+
-		"\u00b2\3\2\2\2\u00b6\u00b9\3\2\2\2\u00b7\u00b5\3\2\2\2\u00b7\u00b8\3\2"+
-		"\2\2\u00b8\u00bb\3\2\2\2\u00b9\u00b7\3\2\2\2\u00ba\u00a1\3\2\2\2\u00ba"+
-		"\u00b7\3\2\2\2\u00bb\u00bc\3\2\2\2\u00bc\u00bd\b\b\1\2\u00bd\17\3\2\2"+
-		"\2\u00be\u00bf\7K\2\2\u00bf\u00c8\b\t\1\2\u00c0\u00c1\7M\2\2\u00c1\u00c8"+
-		"\b\t\1\2\u00c2\u00c3\7D\2\2\u00c3\u00c4\5&\24\2\u00c4\u00c5\7E\2\2\u00c5"+
-		"\u00c6\b\t\1\2\u00c6\u00c8\3\2\2\2\u00c7\u00be\3\2\2\2\u00c7\u00c0\3\2"+
-		"\2\2\u00c7\u00c2\3\2\2\2\u00c8\21\3\2\2\2\u00c9\u00ca\5&\24\2\u00ca\u00d3"+
-		"\b\n\1\2\u00cb\u00cd\7G\2\2\u00cc\u00cb\3\2\2\2\u00cc\u00cd\3\2\2\2\u00cd"+
-		"\u00ce\3\2\2\2\u00ce\u00cf\5&\24\2\u00cf\u00d0\b\n\1\2\u00d0\u00d2\3\2"+
-		"\2\2\u00d1\u00cc\3\2\2\2\u00d2\u00d5\3\2\2\2\u00d3\u00d1\3\2\2\2\u00d3"+
-		"\u00d4\3\2\2\2\u00d4\u00d7\3\2\2\2\u00d5\u00d3\3\2\2\2\u00d6\u00c9\3\2"+
-		"\2\2\u00d6\u00d7\3\2\2\2\u00d7\23\3\2\2\2\u00d8\u00d9\7\6\2\2\u00d9\u00df"+
-		"\7B\2\2\u00da\u00db\5\b\5\2\u00db\u00dc\b\13\1\2\u00dc\u00de\3\2\2\2\u00dd"+
-		"\u00da\3\2\2\2\u00de\u00e1\3\2\2\2\u00df\u00dd\3\2\2\2\u00df\u00e0\3\2"+
-		"\2\2\u00e0\u00e2\3\2\2\2\u00e1\u00df\3\2\2\2\u00e2\u00e3\7C\2\2\u00e3"+
-		"\u00e4\b\13\1\2\u00e4\25\3\2\2\2\u00e5\u00e6\7\7\2\2\u00e6\u00e7\5&\24"+
-		"\2\u00e7\u00ed\7B\2\2\u00e8\u00e9\5\b\5\2\u00e9\u00ea\b\f\1\2\u00ea\u00ec"+
-		"\3\2\2\2\u00eb\u00e8\3\2\2\2\u00ec\u00ef\3\2\2\2\u00ed\u00eb\3\2\2\2\u00ed"+
-		"\u00ee\3\2\2\2\u00ee\u00f0\3\2\2\2\u00ef\u00ed\3\2\2\2\u00f0\u00f1\7C"+
-		"\2\2\u00f1\u00f2\b\f\1\2\u00f2\27\3\2\2\2\u00f3\u00f4\7\27\2\2\u00f4\u00f5"+
-		"\7D\2\2\u00f5\u00f6\5&\24\2\u00f6\u00f7\7E\2\2\u00f7\u00fd\7B\2\2\u00f8"+
-		"\u00f9\5\b\5\2\u00f9\u00fa\b\r\1\2\u00fa\u00fc\3\2\2\2\u00fb\u00f8\3\2"+
-		"\2\2\u00fc\u00ff\3\2\2\2\u00fd\u00fb\3\2\2\2\u00fd\u00fe\3\2\2\2\u00fe"+
-		"\u0100\3\2\2\2\u00ff\u00fd\3\2\2\2\u0100\u010b\7C\2\2\u0101\u0107\7B\2"+
-		"\2\u0102\u0103\5\b\5\2\u0103\u0104\b\r\1\2\u0104\u0106\3\2\2\2\u0105\u0102"+
-		"\3\2\2\2\u0106\u0109\3\2\2\2\u0107\u0105\3\2\2\2\u0107\u0108\3\2\2\2\u0108"+
-		"\u010a\3\2\2\2\u0109\u0107\3\2\2\2\u010a\u010c\7C\2\2\u010b\u0101\3\2"+
-		"\2\2\u010b\u010c\3\2\2\2\u010c\u010d\3\2\2\2\u010d\u010e\b\r\1\2\u010e"+
-		"\31\3\2\2\2\u010f\u0111\7\4\2\2\u0110\u0112\7H\2\2\u0111\u0110\3\2\2\2"+
-		"\u0111\u0112\3\2\2\2\u0112\u0113\3\2\2\2\u0113\u0119\7B\2\2\u0114\u0115"+
-		"\5\b\5\2\u0115\u0116\b\16\1\2\u0116\u0118\3\2\2\2\u0117\u0114\3\2\2\2"+
-		"\u0118\u011b\3\2\2\2\u0119\u0117\3\2\2\2\u0119\u011a\3\2\2\2\u011a\u011c"+
-		"\3\2\2\2\u011b\u0119\3\2\2\2\u011c\u011d\7C\2\2\u011d\u011e\7\30\2\2\u011e"+
-		"\u011f\7D\2\2\u011f\u0120\5&\24\2\u0120\u0121\7E\2\2\u0121\u0122\b\16"+
-		"\1\2\u0122\33\3\2\2\2\u0123\u0125\7\4\2\2\u0124\u0126\7H\2\2\u0125\u0124"+
-		"\3\2\2\2\u0125\u0126\3\2\2\2\u0126\u0127\3\2\2\2\u0127\u012d\7B\2\2\u0128"+
-		"\u0129\5\b\5\2\u0129\u012a\b\17\1\2\u012a\u012c\3\2\2\2\u012b\u0128\3"+
-		"\2\2\2\u012c\u012f\3\2\2\2\u012d\u012b\3\2\2\2\u012d\u012e\3\2\2\2\u012e"+
-		"\u0130\3\2\2\2\u012f\u012d\3\2\2\2\u0130\u0131\7C\2\2\u0131\u0132\7\31"+
-		"\2\2\u0132\u0133\7D\2\2\u0133\u0134\5&\24\2\u0134\u0135\7E\2\2\u0135\u0136"+
-		"\b\17\1\2\u0136\35\3\2\2\2\u0137\u0138\7\31\2\2\u0138\u0139\7D\2\2\u0139"+
-		"\u013a\5&\24\2\u013a\u013b\7E\2\2\u013b\u0141\7B\2\2\u013c\u013d\5\b\5"+
-		"\2\u013d\u013e\b\20\1\2\u013e\u0140\3\2\2\2\u013f\u013c\3\2\2\2\u0140"+
-		"\u0143\3\2\2\2\u0141\u013f\3\2\2\2\u0141\u0142\3\2\2\2\u0142\u0144\3\2"+
-		"\2\2\u0143\u0141\3\2\2\2\u0144\u0145\7C\2\2\u0145\u0146\b\20\1\2\u0146"+
-		"\37\3\2\2\2\u0147\u0148\7\30\2\2\u0148\u0149\7D\2\2\u0149\u014a\5&\24"+
-		"\2\u014a\u014b\7E\2\2\u014b\u0151\7B\2\2\u014c\u014d\5\b\5\2\u014d\u014e"+
-		"\b\21\1\2\u014e\u0150\3\2\2\2\u014f\u014c\3\2\2\2\u0150\u0153\3\2\2\2"+
-		"\u0151\u014f\3\2\2\2\u0151\u0152\3\2\2\2\u0152\u0154\3\2\2\2\u0153\u0151"+
-		"\3\2\2\2\u0154\u0155\7C\2\2\u0155\u0156\b\21\1\2\u0156!\3\2\2\2\u0157"+
-		"\u0158\7\33\2\2\u0158\u0159\5&\24\2\u0159\u015a\b\22\1\2\u015a\u01c7\3"+
-		"\2\2\2\u015b\u015c\7\34\2\2\u015c\u015d\5&\24\2\u015d\u015e\b\22\1\2\u015e"+
-		"\u01c7\3\2\2\2\u015f\u0160\7\35\2\2\u0160\u0161\5&\24\2\u0161\u0162\b"+
-		"\22\1\2\u0162\u01c7\3\2\2\2\u0163\u0164\7\36\2\2\u0164\u0165\5&\24\2\u0165"+
-		"\u0166\b\22\1\2\u0166\u01c7\3\2\2\2\u0167\u0168\7 \2\2\u0168\u0169\5&"+
-		"\24\2\u0169\u016a\b\22\1\2\u016a\u01c7\3\2\2\2\u016b\u016c\7!\2\2\u016c"+
-		"\u016d\5&\24\2\u016d\u016e\b\22\1\2\u016e\u01c7\3\2\2\2\u016f\u0170\7"+
-		"\"\2\2\u0170\u0171\5&\24\2\u0171\u0172\b\22\1\2\u0172\u01c7\3\2\2\2\u0173"+
-		"\u0174\7#\2\2\u0174\u0175\5&\24\2\u0175\u0176\b\22\1\2\u0176\u01c7\3\2"+
-		"\2\2\u0177\u0178\7$\2\2\u0178\u01c7\b\22\1\2\u0179\u017a\7%\2\2\u017a"+
-		"\u01c7\b\22\1\2\u017b\u017c\7\b\2\2\u017c\u01c7\b\22\1\2\u017d\u017e\7"+
-		"\t\2\2\u017e\u01c7\b\22\1\2\u017f\u0180\7\n\2\2\u0180\u0181\7B\2\2\u0181"+
-		"\u0182\5\22\n\2\u0182\u0183\7C\2\2\u0183\u0184\b\22\1\2\u0184\u01c7\3"+
-		"\2\2\2\u0185\u0186\7\13\2\2\u0186\u0187\5&\24\2\u0187\u0188\5&\24\2\u0188"+
-		"\u0189\b\22\1\2\u0189\u01c7\3\2\2\2\u018a\u018b\7\f\2\2\u018b\u018c\5"+
-		"&\24\2\u018c\u018d\b\22\1\2\u018d\u01c7\3\2\2\2\u018e\u018f\7\r\2\2\u018f"+
-		"\u01c7\b\22\1\2\u0190\u0191\7\16\2\2\u0191\u0192\5&\24\2\u0192\u0193\b"+
-		"\22\1\2\u0193\u01c7\3\2\2\2\u0194\u0195\7\17\2\2\u0195\u0196\5&\24\2\u0196"+
-		"\u0197\b\22\1\2\u0197\u01c7\3\2\2\2\u0198\u0199\7\20\2\2\u0199\u01c7\b"+
-		"\22\1\2\u019a\u019b\7\21\2\2\u019b\u01c7\b\22\1\2\u019c\u019d\7\22\2\2"+
-		"\u019d\u01c7\b\22\1\2\u019e\u019f\7\23\2\2\u019f\u01c7\b\22\1\2\u01a0"+
-		"\u01a1\7\24\2\2\u01a1\u01c7\b\22\1\2\u01a2\u01a3\7\25\2\2\u01a3\u01a4"+
-		"\5&\24\2\u01a4\u01a5\b\22\1\2\u01a5\u01c7\3\2\2\2\u01a6\u01a7\7\26\2\2"+
-		"\u01a7\u01a8\7B\2\2\u01a8\u01a9\7M\2\2\u01a9\u01aa\7C\2\2\u01aa\u01c7"+
-		"\b\22\1\2\u01ab\u01ac\7\26\2\2\u01ac\u01ad\7B\2\2\u01ad\u01ae\7M\2\2\u01ae"+
-		"\u01af\5&\24\2\u01af\u01b0\7C\2\2\u01b0\u01b1\b\22\1\2\u01b1\u01c7\3\2"+
-		"\2\2\u01b2\u01b3\7&\2\2\u01b3\u01b4\7B\2\2\u01b4\u01b5\5\22\n\2\u01b5"+
-		"\u01b6\7C\2\2\u01b6\u01b7\b\22\1\2\u01b7\u01c7\3\2\2\2\u01b8\u01b9\7\'"+
-		"\2\2\u01b9\u01ba\7B\2\2\u01ba\u01bb\5\22\n\2\u01bb\u01bc\7C\2\2\u01bc"+
-		"\u01bd\b\22\1\2\u01bd\u01c7\3\2\2\2\u01be\u01bf\7&\2\2\u01bf\u01c0\5$"+
-		"\23\2\u01c0\u01c1\b\22\1\2\u01c1\u01c7\3\2\2\2\u01c2\u01c3\7\'\2\2\u01c3"+
-		"\u01c4\5$\23\2\u01c4\u01c5\b\22\1\2\u01c5\u01c7\3\2\2\2\u01c6\u0157\3"+
-		"\2\2\2\u01c6\u015b\3\2\2\2\u01c6\u015f\3\2\2\2\u01c6\u0163\3\2\2\2\u01c6"+
-		"\u0167\3\2\2\2\u01c6\u016b\3\2\2\2\u01c6\u016f\3\2\2\2\u01c6\u0173\3\2"+
-		"\2\2\u01c6\u0177\3\2\2\2\u01c6\u0179\3\2\2\2\u01c6\u017b\3\2\2\2\u01c6"+
-		"\u017d\3\2\2\2\u01c6\u017f\3\2\2\2\u01c6\u0185\3\2\2\2\u01c6\u018a\3\2"+
-		"\2\2\u01c6\u018e\3\2\2\2\u01c6\u0190\3\2\2\2\u01c6\u0194\3\2\2\2\u01c6"+
-		"\u0198\3\2\2\2\u01c6\u019a\3\2\2\2\u01c6\u019c\3\2\2\2\u01c6\u019e\3\2"+
-		"\2\2\u01c6\u01a0\3\2\2\2\u01c6\u01a2\3\2\2\2\u01c6\u01a6\3\2\2\2\u01c6"+
-		"\u01ab\3\2\2\2\u01c6\u01b2\3\2\2\2\u01c6\u01b8\3\2\2\2\u01c6\u01be\3\2"+
-		"\2\2\u01c6\u01c2\3\2\2\2\u01c7#\3\2\2\2\u01c8\u01c9\7Q\2\2\u01c9\u01cd"+
-		"\b\23\1\2\u01ca\u01cb\7M\2\2\u01cb\u01cd\b\23\1\2\u01cc\u01c8\3\2\2\2"+
-		"\u01cc\u01ca\3\2\2\2\u01cd%\3\2\2\2\u01ce\u01cf\5(\25\2\u01cf\u01d6\b"+
-		"\24\1\2\u01d0\u01d1\79\2\2\u01d1\u01d2\5(\25\2\u01d2\u01d3\b\24\1\2\u01d3"+
-		"\u01d5\3\2\2\2\u01d4\u01d0\3\2\2\2\u01d5\u01d8\3\2\2\2\u01d6\u01d4\3\2"+
-		"\2\2\u01d6\u01d7\3\2\2\2\u01d7\'\3\2\2\2\u01d8\u01d6\3\2\2\2\u01d9\u01da"+
-		"\5*\26\2\u01da\u01e1\b\25\1\2\u01db\u01dc\78\2\2\u01dc\u01dd\5*\26\2\u01dd"+
-		"\u01de\b\25\1\2\u01de\u01e0\3\2\2\2\u01df\u01db\3\2\2\2\u01e0\u01e3\3"+
-		"\2\2\2\u01e1\u01df\3\2\2\2\u01e1\u01e2\3\2\2\2\u01e2)\3\2\2\2\u01e3\u01e1"+
-		"\3\2\2\2\u01e4\u01e5\7:\2\2\u01e5\u01e6\5*\26\2\u01e6\u01e7\b\26\1\2\u01e7"+
-		"\u01ec\3\2\2\2\u01e8\u01e9\5,\27\2\u01e9\u01ea\b\26\1\2\u01ea\u01ec\3"+
-		"\2\2\2\u01eb\u01e4\3\2\2\2\u01eb\u01e8\3\2\2\2\u01ec+\3\2\2\2\u01ed\u01ee"+
-		"\5.\30\2\u01ee\u0209\b\27\1\2\u01ef\u01f0\7;\2\2\u01f0\u01f1\5.\30\2\u01f1"+
-		"\u01f2\b\27\1\2\u01f2\u0208\3\2\2\2\u01f3\u01f4\7<\2\2\u01f4\u01f5\5."+
-		"\30\2\u01f5\u01f6\b\27\1\2\u01f6\u0208\3\2\2\2\u01f7\u01f8\7=\2\2\u01f8"+
-		"\u01f9\5.\30\2\u01f9\u01fa\b\27\1\2\u01fa\u0208\3\2\2\2\u01fb\u01fc\7"+
-		">\2\2\u01fc\u01fd\5.\30\2\u01fd\u01fe\b\27\1\2\u01fe\u0208\3\2\2\2\u01ff"+
-		"\u0200\7?\2\2\u0200\u0201\5.\30\2\u0201\u0202\b\27\1\2\u0202\u0208\3\2"+
-		"\2\2\u0203\u0204\7@\2\2\u0204\u0205\5.\30\2\u0205\u0206\b\27\1\2\u0206"+
-		"\u0208\3\2\2\2\u0207\u01ef\3\2\2\2\u0207\u01f3\3\2\2\2\u0207\u01f7\3\2"+
-		"\2\2\u0207\u01fb\3\2\2\2\u0207\u01ff\3\2\2\2\u0207\u0203\3\2\2\2\u0208"+
-		"\u020b\3\2\2\2\u0209\u0207\3\2\2\2\u0209\u020a\3\2\2\2\u020a-\3\2\2\2"+
-		"\u020b\u0209\3\2\2\2\u020c\u020d\5\60\31\2\u020d\u0218\b\30\1\2\u020e"+
-		"\u020f\7\63\2\2\u020f\u0210\5\60\31\2\u0210\u0211\b\30\1\2\u0211\u0217"+
-		"\3\2\2\2\u0212\u0213\7\64\2\2\u0213\u0214\5\60\31\2\u0214\u0215\b\30\1"+
-		"\2\u0215\u0217\3\2\2\2\u0216\u020e\3\2\2\2\u0216\u0212\3\2\2\2\u0217\u021a"+
-		"\3\2\2\2\u0218\u0216\3\2\2\2\u0218\u0219\3\2\2\2\u0219/\3\2\2\2\u021a"+
-		"\u0218\3\2\2\2\u021b\u021c\5\62\32\2\u021c\u0227\b\31\1\2\u021d\u021e"+
-		"\7\65\2\2\u021e\u021f\5\62\32\2\u021f\u0220\b\31\1\2\u0220\u0226\3\2\2"+
-		"\2\u0221\u0222\7\66\2\2\u0222\u0223\5\62\32\2\u0223\u0224\b\31\1\2\u0224"+
-		"\u0226\3\2\2\2\u0225\u021d\3\2\2\2\u0225\u0221\3\2\2\2\u0226\u0229\3\2"+
-		"\2\2\u0227\u0225\3\2\2\2\u0227\u0228\3\2\2\2\u0228\61\3\2\2\2\u0229\u0227"+
-		"\3\2\2\2\u022a\u022b\5\64\33\2\u022b\u0232\b\32\1\2\u022c\u022d\7\67\2"+
-		"\2\u022d\u022e\5\64\33\2\u022e\u022f\b\32\1\2\u022f\u0231\3\2\2\2\u0230"+
-		"\u022c\3\2\2\2\u0231\u0234\3\2\2\2\u0232\u0230\3\2\2\2\u0232\u0233\3\2"+
-		"\2\2\u0233\63\3\2\2\2\u0234\u0232\3\2\2\2\u0235\u0236\5\66\34\2\u0236"+
-		"\u0237\b\33\1\2\u0237\65\3\2\2\2\u0238\u0239\7\64\2\2\u0239\u023a\5\66"+
-		"\34\2\u023a\u023b\b\34\1\2\u023b\u0247\3\2\2\2\u023c\u023d\7\63\2\2\u023d"+
-		"\u023e\5\66\34\2\u023e\u023f\b\34\1\2\u023f\u0247\3\2\2\2\u0240\u0241"+
-		"\58\35\2\u0241\u0242\b\34\1\2\u0242\u0247\3\2\2\2\u0243\u0244\5:\36\2"+
-		"\u0244\u0245\b\34\1\2\u0245\u0247\3\2\2\2\u0246\u0238\3\2\2\2\u0246\u023c"+
-		"\3\2\2\2\u0246\u0240\3\2\2\2\u0246\u0243\3\2\2\2\u0247\67\3\2\2\2\u0248"+
-		"\u0249\7(\2\2\u0249\u024a\7D\2\2\u024a\u024b\5&\24\2\u024b\u024c\7G\2"+
-		"\2\u024c\u024d\5&\24\2\u024d\u024e\7E\2\2\u024e\u024f\b\35\1\2\u024f\u02c0"+
-		"\3\2\2\2\u0250\u0251\7)\2\2\u0251\u0252\7D\2\2\u0252\u0253\5&\24\2\u0253"+
-		"\u0254\7E\2\2\u0254\u0255\7D\2\2\u0255\u0256\5&\24\2\u0256\u0257\7E\2"+
-		"\2\u0257\u0258\b\35\1\2\u0258\u02c0\3\2\2\2\u0259\u025a\7)\2\2\u025a\u025b"+
-		"\7D\2\2\u025b\u025c\5&\24\2\u025c\u025d\7G\2\2\u025d\u025e\5&\24\2\u025e"+
-		"\u025f\7E\2\2\u025f\u0260\b\35\1\2\u0260\u02c0\3\2\2\2\u0261\u0262\7*"+
-		"\2\2\u0262\u0263\7D\2\2\u0263\u0264\5&\24\2\u0264\u0265\7E\2\2\u0265\u0266"+
-		"\7D\2\2\u0266\u0267\5&\24\2\u0267\u0268\7E\2\2\u0268\u0269\b\35\1\2\u0269"+
-		"\u02c0\3\2\2\2\u026a\u026b\7*\2\2\u026b\u026c\7D\2\2\u026c\u026d\5&\24"+
-		"\2\u026d\u026e\7G\2\2\u026e\u026f\5&\24\2\u026f\u0270\7E\2\2\u0270\u0271"+
-		"\b\35\1\2\u0271\u02c0\3\2\2\2\u0272\u0273\7+\2\2\u0273\u0274\7D\2\2\u0274"+
-		"\u0275\5&\24\2\u0275\u0276\7G\2\2\u0276\u0277\5&\24\2\u0277\u0278\7E\2"+
-		"\2\u0278\u0279\b\35\1\2\u0279\u02c0\3\2\2\2\u027a\u027b\7,\2\2\u027b\u027c"+
-		"\7D\2\2\u027c\u027d\5&\24\2\u027d\u027e\7G\2\2\u027e\u027f\5&\24\2\u027f"+
-		"\u0280\7E\2\2\u0280\u0281\b\35\1\2\u0281\u02c0\3\2\2\2\u0282\u0283\7."+
-		"\2\2\u0283\u0284\7D\2\2\u0284\u0285\5&\24\2\u0285\u0286\7E\2\2\u0286\u0287"+
-		"\b\35\1\2\u0287\u02c0\3\2\2\2\u0288\u0289\7/\2\2\u0289\u028a\7D\2\2\u028a"+
-		"\u028f\5&\24\2\u028b\u028c\7G\2\2\u028c\u028e\5&\24\2\u028d\u028b\3\2"+
-		"\2\2\u028e\u0291\3\2\2\2\u028f\u028d\3\2\2\2\u028f\u0290\3\2\2\2\u0290"+
-		"\u0292\3\2\2\2\u0291\u028f\3\2\2\2\u0292\u0293\7E\2\2\u0293\u0294\b\35"+
-		"\1\2\u0294\u02c0\3\2\2\2\u0295\u0296\7\60\2\2\u0296\u0297\7D\2\2\u0297"+
-		"\u0298\5&\24\2\u0298\u0299\7G\2\2\u0299\u029a\5&\24\2\u029a\u029b\7E\2"+
-		"\2\u029b\u029c\b\35\1\2\u029c\u02c0\3\2\2\2\u029d\u029e\7\61\2\2\u029e"+
-		"\u029f\7D\2\2\u029f\u02a0\5&\24\2\u02a0\u02a1\7G\2\2\u02a1\u02a2\5&\24"+
-		"\2\u02a2\u02a3\7E\2\2\u02a3\u02a4\b\35\1\2\u02a4\u02c0\3\2\2\2\u02a5\u02a6"+
-		"\7\62\2\2\u02a6\u02a7\7D\2\2\u02a7\u02ac\5&\24\2\u02a8\u02a9\7G\2\2\u02a9"+
-		"\u02ab\5&\24\2\u02aa\u02a8\3\2\2\2\u02ab\u02ae\3\2\2\2\u02ac\u02aa\3\2"+
-		"\2\2\u02ac\u02ad\3\2\2\2\u02ad\u02af\3\2\2\2\u02ae\u02ac\3\2\2\2\u02af"+
-		"\u02b0\7E\2\2\u02b0\u02b1\b\35\1\2\u02b1\u02c0\3\2\2\2\u02b2\u02b3\7-"+
-		"\2\2\u02b3\u02b4\7D\2\2\u02b4\u02b9\5&\24\2\u02b5\u02b6\7G\2\2\u02b6\u02b8"+
-		"\5&\24\2\u02b7\u02b5\3\2\2\2\u02b8\u02bb\3\2\2\2\u02b9\u02b7\3\2\2\2\u02b9"+
-		"\u02ba\3\2\2\2\u02ba\u02bc\3\2\2\2\u02bb\u02b9\3\2\2\2\u02bc\u02bd\7E"+
-		"\2\2\u02bd\u02be\b\35\1\2\u02be\u02c0\3\2\2\2\u02bf\u0248\3\2\2\2\u02bf"+
-		"\u0250\3\2\2\2\u02bf\u0259\3\2\2\2\u02bf\u0261\3\2\2\2\u02bf\u026a\3\2"+
-		"\2\2\u02bf\u0272\3\2\2\2\u02bf\u027a\3\2\2\2\u02bf\u0282\3\2\2\2\u02bf"+
-		"\u0288\3\2\2\2\u02bf\u0295\3\2\2\2\u02bf\u029d\3\2\2\2\u02bf\u02a5\3\2"+
-		"\2\2\u02bf\u02b2\3\2\2\2\u02c09\3\2\2\2\u02c1\u02c2\7J\2\2\u02c2\u02d1"+
-		"\b\36\1\2\u02c3\u02c4\7K\2\2\u02c4\u02d1\b\36\1\2\u02c5\u02c6\7I\2\2\u02c6"+
-		"\u02d1\b\36\1\2\u02c7\u02c8\7M\2\2\u02c8\u02d1\b\36\1\2\u02c9\u02ca\7"+
-		"L\2\2\u02ca\u02d1\b\36\1\2\u02cb\u02cc\7D\2\2\u02cc\u02cd\5&\24\2\u02cd"+
-		"\u02ce\7E\2\2\u02ce\u02cf\b\36\1\2\u02cf\u02d1\3\2\2\2\u02d0\u02c1\3\2"+
-		"\2\2\u02d0\u02c3\3\2\2\2\u02d0\u02c5\3\2\2\2\u02d0\u02c7\3\2\2\2\u02d0"+
-		"\u02c9\3\2\2\2\u02d0\u02cb\3\2\2\2\u02d1;\3\2\2\2\u02d2\u02d3\7\64\2\2"+
-		"\u02d3\u02d4\7J\2\2\u02d4\u02e1\b\37\1\2\u02d5\u02d6\7J\2\2\u02d6\u02e1"+
-		"\b\37\1\2\u02d7\u02d8\7\64\2\2\u02d8\u02d9\7K\2\2\u02d9\u02e1\b\37\1\2"+
-		"\u02da\u02db\7K\2\2\u02db\u02e1\b\37\1\2\u02dc\u02dd\7I\2\2\u02dd\u02e1"+
-		"\b\37\1\2\u02de\u02df\7L\2\2\u02df\u02e1\b\37\1\2\u02e0\u02d2\3\2\2\2"+
-		"\u02e0\u02d5\3\2\2\2\u02e0\u02d7\3\2\2\2\u02e0\u02da\3\2\2\2\u02e0\u02dc"+
-		"\3\2\2\2\u02e0\u02de\3\2\2\2\u02e1=\3\2\2\2\u02e2\u02e3\7N\2\2\u02e3\u02e4"+
-		"\b \1\2\u02e4?\3\2\2\2\60AMO\\g\u008f\u0095\u00a5\u00ac\u00af\u00b7\u00ba"+
-		"\u00c7\u00cc\u00d3\u00d6\u00df\u00ed\u00fd\u0107\u010b\u0111\u0119\u0125"+
-		"\u012d\u0141\u0151\u01c6\u01cc\u01d6\u01e1\u01eb\u0207\u0209\u0216\u0218"+
-		"\u0225\u0227\u0232\u0246\u028f\u02ac\u02b9\u02bf\u02d0\u02e0";
+		"\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\7\35\u0285\n\35\f\35\16"+
+		"\35\u0288\13\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35"+
+		"\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\7\35\u029e\n\35\f\35\16"+
+		"\35\u02a1\13\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\7\35\u02ab\n\35"+
+		"\f\35\16\35\u02ae\13\35\3\35\3\35\3\35\5\35\u02b3\n\35\3\36\3\36\3\36"+
+		"\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\5\36\u02c4"+
+		"\n\36\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37"+
+		"\3\37\5\37\u02d4\n\37\3 \3 \3 \3!\3!\3!\3!\2\2\"\2\4\6\b\n\f\16\20\22"+
+		"\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@\2\2\u0329\2C\3\2\2\2\4R\3"+
+		"\2\2\2\6W\3\2\2\2\b\u0092\3\2\2\2\n\u0094\3\2\2\2\f\u009c\3\2\2\2\16\u00a3"+
+		"\3\2\2\2\20\u00ca\3\2\2\2\22\u00d9\3\2\2\2\24\u00db\3\2\2\2\26\u00e8\3"+
+		"\2\2\2\30\u00f7\3\2\2\2\32\u0118\3\2\2\2\34\u0130\3\2\2\2\36\u0148\3\2"+
+		"\2\2 \u0159\3\2\2\2\"\u01d9\3\2\2\2$\u01df\3\2\2\2&\u01e1\3\2\2\2(\u01ec"+
+		"\3\2\2\2*\u01fe\3\2\2\2,\u0200\3\2\2\2.\u021f\3\2\2\2\60\u022e\3\2\2\2"+
+		"\62\u023d\3\2\2\2\64\u0248\3\2\2\2\66\u0259\3\2\2\28\u02b2\3\2\2\2:\u02c3"+
+		"\3\2\2\2<\u02d3\3\2\2\2>\u02d5\3\2\2\2@\u02d8\3\2\2\2BD\5> \2CB\3\2\2"+
+		"\2CD\3\2\2\2DE\3\2\2\2EF\5\4\3\2FG\7\2\2\3GH\b\2\1\2H\3\3\2\2\2IJ\5\6"+
+		"\4\2JK\b\3\1\2KQ\3\2\2\2LM\5\b\5\2MN\b\3\1\2NQ\3\2\2\2OQ\5@!\2PI\3\2\2"+
+		"\2PL\3\2\2\2PO\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2SU\3\2\2\2TR\3\2\2"+
+		"\2UV\b\3\1\2V\5\3\2\2\2WX\7\3\2\2XY\7N\2\2YZ\b\4\1\2Z_\7C\2\2[\\\7N\2"+
+		"\2\\^\b\4\1\2][\3\2\2\2^a\3\2\2\2_]\3\2\2\2_`\3\2\2\2`b\3\2\2\2a_\3\2"+
+		"\2\2bc\7D\2\2cd\b\4\1\2dj\7C\2\2ef\5\b\5\2fg\b\4\1\2gi\3\2\2\2he\3\2\2"+
+		"\2il\3\2\2\2jh\3\2\2\2jk\3\2\2\2km\3\2\2\2lj\3\2\2\2mn\7D\2\2no\7\5\2"+
+		"\2op\b\4\1\2p\7\3\2\2\2qr\5\32\16\2rs\b\5\1\2s\u0093\3\2\2\2tu\5\34\17"+
+		"\2uv\b\5\1\2v\u0093\3\2\2\2wx\5\n\6\2xy\b\5\1\2y\u0093\3\2\2\2z{\5\f\7"+
+		"\2{|\b\5\1\2|\u0093\3\2\2\2}~\5\16\b\2~\177\b\5\1\2\177\u0093\3\2\2\2"+
+		"\u0080\u0081\5\"\22\2\u0081\u0082\b\5\1\2\u0082\u0093\3\2\2\2\u0083\u0084"+
+		"\5\30\r\2\u0084\u0085\b\5\1\2\u0085\u0093\3\2\2\2\u0086\u0087\5 \21\2"+
+		"\u0087\u0088\b\5\1\2\u0088\u0093\3\2\2\2\u0089\u008a\5\36\20\2\u008a\u008b"+
+		"\b\5\1\2\u008b\u0093\3\2\2\2\u008c\u008d\5\26\f\2\u008d\u008e\b\5\1\2"+
+		"\u008e\u0093\3\2\2\2\u008f\u0090\5\24\13\2\u0090\u0091\b\5\1\2\u0091\u0093"+
+		"\3\2\2\2\u0092q\3\2\2\2\u0092t\3\2\2\2\u0092w\3\2\2\2\u0092z\3\2\2\2\u0092"+
+		"}\3\2\2\2\u0092\u0080\3\2\2\2\u0092\u0083\3\2\2\2\u0092\u0086\3\2\2\2"+
+		"\u0092\u0089\3\2\2\2\u0092\u008c\3\2\2\2\u0092\u008f\3\2\2\2\u0093\t\3"+
+		"\2\2\2\u0094\u0095\7\4\2\2\u0095\u0096\7N\2\2\u0096\u0098\5<\37\2\u0097"+
+		"\u0099\7G\2\2\u0098\u0097\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009a\3\2"+
+		"\2\2\u009a\u009b\b\6\1\2\u009b\13\3\2\2\2\u009c\u009d\7\32\2\2\u009d\u009e"+
+		"\7N\2\2\u009e\u009f\7B\2\2\u009f\u00a0\5&\24\2\u00a0\u00a1\7G\2\2\u00a1"+
+		"\u00a2\b\7\1\2\u00a2\r\3\2\2\2\u00a3\u00bd\7N\2\2\u00a4\u00b2\7C\2\2\u00a5"+
+		"\u00a6\5&\24\2\u00a6\u00af\b\b\1\2\u00a7\u00a9\7H\2\2\u00a8\u00a7\3\2"+
+		"\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00aa\3\2\2\2\u00aa\u00ab\5&\24\2\u00ab"+
+		"\u00ac\b\b\1\2\u00ac\u00ae\3\2\2\2\u00ad\u00a8\3\2\2\2\u00ae\u00b1\3\2"+
+		"\2\2\u00af\u00ad\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0\u00b3\3\2\2\2\u00b1"+
+		"\u00af\3\2\2\2\u00b2\u00a5\3\2\2\2\u00b2\u00b3\3\2\2\2\u00b3\u00b4\3\2"+
+		"\2\2\u00b4\u00be\7D\2\2\u00b5\u00b6\5\20\t\2\u00b6\u00b7\b\b\1\2\u00b7"+
+		"\u00b9\3\2\2\2\u00b8\u00b5\3\2\2\2\u00b9\u00bc\3\2\2\2\u00ba\u00b8\3\2"+
+		"\2\2\u00ba\u00bb\3\2\2\2\u00bb\u00be\3\2\2\2\u00bc\u00ba\3\2\2\2\u00bd"+
+		"\u00a4\3\2\2\2\u00bd\u00ba\3\2\2\2\u00be\u00bf\3\2\2\2\u00bf\u00c0\b\b"+
+		"\1\2\u00c0\17\3\2\2\2\u00c1\u00c2\7L\2\2\u00c2\u00cb\b\t\1\2\u00c3\u00c4"+
+		"\7N\2\2\u00c4\u00cb\b\t\1\2\u00c5\u00c6\7E\2\2\u00c6\u00c7\5&\24\2\u00c7"+
+		"\u00c8\7F\2\2\u00c8\u00c9\b\t\1\2\u00c9\u00cb\3\2\2\2\u00ca\u00c1\3\2"+
+		"\2\2\u00ca\u00c3\3\2\2\2\u00ca\u00c5\3\2\2\2\u00cb\21\3\2\2\2\u00cc\u00cd"+
+		"\5&\24\2\u00cd\u00d6\b\n\1\2\u00ce\u00d0\7H\2\2\u00cf\u00ce\3\2\2\2\u00cf"+
+		"\u00d0\3\2\2\2\u00d0\u00d1\3\2\2\2\u00d1\u00d2\5&\24\2\u00d2\u00d3\b\n"+
+		"\1\2\u00d3\u00d5\3\2\2\2\u00d4\u00cf\3\2\2\2\u00d5\u00d8\3\2\2\2\u00d6"+
+		"\u00d4\3\2\2\2\u00d6\u00d7\3\2\2\2\u00d7\u00da\3\2\2\2\u00d8\u00d6\3\2"+
+		"\2\2\u00d9\u00cc\3\2\2\2\u00d9\u00da\3\2\2\2\u00da\23\3\2\2\2\u00db\u00dc"+
+		"\7\6\2\2\u00dc\u00e2\7C\2\2\u00dd\u00de\5\b\5\2\u00de\u00df\b\13\1\2\u00df"+
+		"\u00e1\3\2\2\2\u00e0\u00dd\3\2\2\2\u00e1\u00e4\3\2\2\2\u00e2\u00e0\3\2"+
+		"\2\2\u00e2\u00e3\3\2\2\2\u00e3\u00e5\3\2\2\2\u00e4\u00e2\3\2\2\2\u00e5"+
+		"\u00e6\7D\2\2\u00e6\u00e7\b\13\1\2\u00e7\25\3\2\2\2\u00e8\u00e9\7\7\2"+
+		"\2\u00e9\u00ea\5&\24\2\u00ea\u00eb\b\f\1\2\u00eb\u00f1\7C\2\2\u00ec\u00ed"+
+		"\5\b\5\2\u00ed\u00ee\b\f\1\2\u00ee\u00f0\3\2\2\2\u00ef\u00ec\3\2\2\2\u00f0"+
+		"\u00f3\3\2\2\2\u00f1\u00ef\3\2\2\2\u00f1\u00f2\3\2\2\2\u00f2\u00f4\3\2"+
+		"\2\2\u00f3\u00f1\3\2\2\2\u00f4\u00f5\7D\2\2\u00f5\u00f6\b\f\1\2\u00f6"+
+		"\27\3\2\2\2\u00f7\u00f8\7\27\2\2\u00f8\u00f9\7E\2\2\u00f9\u00fa\5&\24"+
+		"\2\u00fa\u00fb\7F\2\2\u00fb\u00fc\b\r\1\2\u00fc\u0102\7C\2\2\u00fd\u00fe"+
+		"\5\b\5\2\u00fe\u00ff\b\r\1\2\u00ff\u0101\3\2\2\2\u0100\u00fd\3\2\2\2\u0101"+
+		"\u0104\3\2\2\2\u0102\u0100\3\2\2\2\u0102\u0103\3\2\2\2\u0103\u0105\3\2"+
+		"\2\2\u0104\u0102\3\2\2\2\u0105\u0113\7D\2\2\u0106\u0107\7C\2\2\u0107\u010d"+
+		"\b\r\1\2\u0108\u0109\5\b\5\2\u0109\u010a\b\r\1\2\u010a\u010c\3\2\2\2\u010b"+
+		"\u0108\3\2\2\2\u010c\u010f\3\2\2\2\u010d\u010b\3\2\2\2\u010d\u010e\3\2"+
+		"\2\2\u010e\u0110\3\2\2\2\u010f\u010d\3\2\2\2\u0110\u0112\7D\2\2\u0111"+
+		"\u0106\3\2\2\2\u0112\u0115\3\2\2\2\u0113\u0111\3\2\2\2\u0113\u0114\3\2"+
+		"\2\2\u0114\u0116\3\2\2\2\u0115\u0113\3\2\2\2\u0116\u0117\b\r\1\2\u0117"+
+		"\31\3\2\2\2\u0118\u011a\7\4\2\2\u0119\u011b\7I\2\2\u011a\u0119\3\2\2\2"+
+		"\u011a\u011b\3\2\2\2\u011b\u011c\3\2\2\2\u011c\u0122\7C\2\2\u011d\u011e"+
+		"\5\b\5\2\u011e\u011f\b\16\1\2\u011f\u0121\3\2\2\2\u0120\u011d\3\2\2\2"+
+		"\u0121\u0124\3\2\2\2\u0122\u0120\3\2\2\2\u0122\u0123\3\2\2\2\u0123\u0125"+
+		"\3\2\2\2\u0124\u0122\3\2\2\2\u0125\u012c\7D\2\2\u0126\u0127\7\30\2\2\u0127"+
+		"\u0128\7E\2\2\u0128\u0129\5&\24\2\u0129\u012a\7F\2\2\u012a\u012b\b\16"+
+		"\1\2\u012b\u012d\3\2\2\2\u012c\u0126\3\2\2\2\u012c\u012d\3\2\2\2\u012d"+
+		"\u012e\3\2\2\2\u012e\u012f\b\16\1\2\u012f\33\3\2\2\2\u0130\u0132\7\4\2"+
+		"\2\u0131\u0133\7I\2\2\u0132\u0131\3\2\2\2\u0132\u0133\3\2\2\2\u0133\u0134"+
+		"\3\2\2\2\u0134\u013a\7C\2\2\u0135\u0136\5\b\5\2\u0136\u0137\b\17\1\2\u0137"+
+		"\u0139\3\2\2\2\u0138\u0135\3\2\2\2\u0139\u013c\3\2\2\2\u013a\u0138\3\2"+
+		"\2\2\u013a\u013b\3\2\2\2\u013b\u013d\3\2\2\2\u013c\u013a\3\2\2\2\u013d"+
+		"\u0144\7D\2\2\u013e\u013f\7\31\2\2\u013f\u0140\7E\2\2\u0140\u0141\5&\24"+
+		"\2\u0141\u0142\7F\2\2\u0142\u0143\b\17\1\2\u0143\u0145\3\2\2\2\u0144\u013e"+
+		"\3\2\2\2\u0144\u0145\3\2\2\2\u0145\u0146\3\2\2\2\u0146\u0147\b\17\1\2"+
+		"\u0147\35\3\2\2\2\u0148\u0149\7\31\2\2\u0149\u014a\7E\2\2\u014a\u014b"+
+		"\5&\24\2\u014b\u014c\7F\2\2\u014c\u014d\b\20\1\2\u014d\u0153\7C\2\2\u014e"+
+		"\u014f\5\b\5\2\u014f\u0150\b\20\1\2\u0150\u0152\3\2\2\2\u0151\u014e\3"+
+		"\2\2\2\u0152\u0155\3\2\2\2\u0153\u0151\3\2\2\2\u0153\u0154\3\2\2\2\u0154"+
+		"\u0156\3\2\2\2\u0155\u0153\3\2\2\2\u0156\u0157\7D\2\2\u0157\u0158\b\20"+
+		"\1\2\u0158\37\3\2\2\2\u0159\u015a\7\30\2\2\u015a\u015b\7E\2\2\u015b\u015c"+
+		"\5&\24\2\u015c\u015d\7F\2\2\u015d\u015e\b\21\1\2\u015e\u0164\7C\2\2\u015f"+
+		"\u0160\5\b\5\2\u0160\u0161\b\21\1\2\u0161\u0163\3\2\2\2\u0162\u015f\3"+
+		"\2\2\2\u0163\u0166\3\2\2\2\u0164\u0162\3\2\2\2\u0164\u0165\3\2\2\2\u0165"+
+		"\u0167\3\2\2\2\u0166\u0164\3\2\2\2\u0167\u0168\7D\2\2\u0168\u0169\b\21"+
+		"\1\2\u0169!\3\2\2\2\u016a\u016b\7\33\2\2\u016b\u016c\5&\24\2\u016c\u016d"+
+		"\b\22\1\2\u016d\u01da\3\2\2\2\u016e\u016f\7\34\2\2\u016f\u0170\5&\24\2"+
+		"\u0170\u0171\b\22\1\2\u0171\u01da\3\2\2\2\u0172\u0173\7\35\2\2\u0173\u0174"+
+		"\5&\24\2\u0174\u0175\b\22\1\2\u0175\u01da\3\2\2\2\u0176\u0177\7\36\2\2"+
+		"\u0177\u0178\5&\24\2\u0178\u0179\b\22\1\2\u0179\u01da\3\2\2\2\u017a\u017b"+
+		"\7 \2\2\u017b\u017c\5&\24\2\u017c\u017d\b\22\1\2\u017d\u01da\3\2\2\2\u017e"+
+		"\u017f\7!\2\2\u017f\u0180\5&\24\2\u0180\u0181\b\22\1\2\u0181\u01da\3\2"+
+		"\2\2\u0182\u0183\7\"\2\2\u0183\u0184\5&\24\2\u0184\u0185\b\22\1\2\u0185"+
+		"\u01da\3\2\2\2\u0186\u0187\7#\2\2\u0187\u0188\5&\24\2\u0188\u0189\b\22"+
+		"\1\2\u0189\u01da\3\2\2\2\u018a\u018b\7$\2\2\u018b\u01da\b\22\1\2\u018c"+
+		"\u018d\7%\2\2\u018d\u01da\b\22\1\2\u018e\u018f\7\b\2\2\u018f\u01da\b\22"+
+		"\1\2\u0190\u0191\7\t\2\2\u0191\u01da\b\22\1\2\u0192\u0193\7\n\2\2\u0193"+
+		"\u0194\7C\2\2\u0194\u0195\5\22\n\2\u0195\u0196\7D\2\2\u0196\u0197\b\22"+
+		"\1\2\u0197\u01da\3\2\2\2\u0198\u0199\7\13\2\2\u0199\u019a\5&\24\2\u019a"+
+		"\u019b\5&\24\2\u019b\u019c\b\22\1\2\u019c\u01da\3\2\2\2\u019d\u019e\7"+
+		"\f\2\2\u019e\u019f\5&\24\2\u019f\u01a0\b\22\1\2\u01a0\u01da\3\2\2\2\u01a1"+
+		"\u01a2\7\r\2\2\u01a2\u01da\b\22\1\2\u01a3\u01a4\7\16\2\2\u01a4\u01a5\5"+
+		"&\24\2\u01a5\u01a6\b\22\1\2\u01a6\u01da\3\2\2\2\u01a7\u01a8\7\17\2\2\u01a8"+
+		"\u01a9\5&\24\2\u01a9\u01aa\b\22\1\2\u01aa\u01da\3\2\2\2\u01ab\u01ac\7"+
+		"\20\2\2\u01ac\u01da\b\22\1\2\u01ad\u01ae\7\21\2\2\u01ae\u01da\b\22\1\2"+
+		"\u01af\u01b0\7\22\2\2\u01b0\u01da\b\22\1\2\u01b1\u01b2\7\23\2\2\u01b2"+
+		"\u01da\b\22\1\2\u01b3\u01b4\7\24\2\2\u01b4\u01da\b\22\1\2\u01b5\u01b6"+
+		"\7\25\2\2\u01b6\u01b7\5&\24\2\u01b7\u01b8\b\22\1\2\u01b8\u01da\3\2\2\2"+
+		"\u01b9\u01ba\7\26\2\2\u01ba\u01bb\7C\2\2\u01bb\u01bc\7N\2\2\u01bc\u01bd"+
+		"\7D\2\2\u01bd\u01da\b\22\1\2\u01be\u01bf\7\26\2\2\u01bf\u01c0\7C\2\2\u01c0"+
+		"\u01c1\7N\2\2\u01c1\u01c2\5&\24\2\u01c2\u01c3\7D\2\2\u01c3\u01c4\b\22"+
+		"\1\2\u01c4\u01da\3\2\2\2\u01c5\u01c6\7&\2\2\u01c6\u01c7\7C\2\2\u01c7\u01c8"+
+		"\5\22\n\2\u01c8\u01c9\7D\2\2\u01c9\u01ca\b\22\1\2\u01ca\u01da\3\2\2\2"+
+		"\u01cb\u01cc\7(\2\2\u01cc\u01cd\7C\2\2\u01cd\u01ce\5\22\n\2\u01ce\u01cf"+
+		"\7D\2\2\u01cf\u01d0\b\22\1\2\u01d0\u01da\3\2\2\2\u01d1\u01d2\7&\2\2\u01d2"+
+		"\u01d3\5$\23\2\u01d3\u01d4\b\22\1\2\u01d4\u01da\3\2\2\2\u01d5\u01d6\7"+
+		"(\2\2\u01d6\u01d7\5$\23\2\u01d7\u01d8\b\22\1\2\u01d8\u01da\3\2\2\2\u01d9"+
+		"\u016a\3\2\2\2\u01d9\u016e\3\2\2\2\u01d9\u0172\3\2\2\2\u01d9\u0176\3\2"+
+		"\2\2\u01d9\u017a\3\2\2\2\u01d9\u017e\3\2\2\2\u01d9\u0182\3\2\2\2\u01d9"+
+		"\u0186\3\2\2\2\u01d9\u018a\3\2\2\2\u01d9\u018c\3\2\2\2\u01d9\u018e\3\2"+
+		"\2\2\u01d9\u0190\3\2\2\2\u01d9\u0192\3\2\2\2\u01d9\u0198\3\2\2\2\u01d9"+
+		"\u019d\3\2\2\2\u01d9\u01a1\3\2\2\2\u01d9\u01a3\3\2\2\2\u01d9\u01a7\3\2"+
+		"\2\2\u01d9\u01ab\3\2\2\2\u01d9\u01ad\3\2\2\2\u01d9\u01af\3\2\2\2\u01d9"+
+		"\u01b1\3\2\2\2\u01d9\u01b3\3\2\2\2\u01d9\u01b5\3\2\2\2\u01d9\u01b9\3\2"+
+		"\2\2\u01d9\u01be\3\2\2\2\u01d9\u01c5\3\2\2\2\u01d9\u01cb\3\2\2\2\u01d9"+
+		"\u01d1\3\2\2\2\u01d9\u01d5\3\2\2\2\u01da#\3\2\2\2\u01db\u01dc\7S\2\2\u01dc"+
+		"\u01e0\b\23\1\2\u01dd\u01de\7N\2\2\u01de\u01e0\b\23\1\2\u01df\u01db\3"+
+		"\2\2\2\u01df\u01dd\3\2\2\2\u01e0%\3\2\2\2\u01e1\u01e2\5(\25\2\u01e2\u01e9"+
+		"\b\24\1\2\u01e3\u01e4\7:\2\2\u01e4\u01e5\5(\25\2\u01e5\u01e6\b\24\1\2"+
+		"\u01e6\u01e8\3\2\2\2\u01e7\u01e3\3\2\2\2\u01e8\u01eb\3\2\2\2\u01e9\u01e7"+
+		"\3\2\2\2\u01e9\u01ea\3\2\2\2\u01ea\'\3\2\2\2\u01eb\u01e9\3\2\2\2\u01ec"+
+		"\u01ed\5*\26\2\u01ed\u01f4\b\25\1\2\u01ee\u01ef\79\2\2\u01ef\u01f0\5*"+
+		"\26\2\u01f0\u01f1\b\25\1\2\u01f1\u01f3\3\2\2\2\u01f2\u01ee\3\2\2\2\u01f3"+
+		"\u01f6\3\2\2\2\u01f4\u01f2\3\2\2\2\u01f4\u01f5\3\2\2\2\u01f5)\3\2\2\2"+
+		"\u01f6\u01f4\3\2\2\2\u01f7\u01f8\7;\2\2\u01f8\u01f9\5*\26\2\u01f9\u01fa"+
+		"\b\26\1\2\u01fa\u01ff\3\2\2\2\u01fb\u01fc\5,\27\2\u01fc\u01fd\b\26\1\2"+
+		"\u01fd\u01ff\3\2\2\2\u01fe\u01f7\3\2\2\2\u01fe\u01fb\3\2\2\2\u01ff+\3"+
+		"\2\2\2\u0200\u0201\5.\30\2\u0201\u021c\b\27\1\2\u0202\u0203\7<\2\2\u0203"+
+		"\u0204\5.\30\2\u0204\u0205\b\27\1\2\u0205\u021b\3\2\2\2\u0206\u0207\7"+
+		"=\2\2\u0207\u0208\5.\30\2\u0208\u0209\b\27\1\2\u0209\u021b\3\2\2\2\u020a"+
+		"\u020b\7>\2\2\u020b\u020c\5.\30\2\u020c\u020d\b\27\1\2\u020d\u021b\3\2"+
+		"\2\2\u020e\u020f\7?\2\2\u020f\u0210\5.\30\2\u0210\u0211\b\27\1\2\u0211"+
+		"\u021b\3\2\2\2\u0212\u0213\7@\2\2\u0213\u0214\5.\30\2\u0214\u0215\b\27"+
+		"\1\2\u0215\u021b\3\2\2\2\u0216\u0217\7A\2\2\u0217\u0218\5.\30\2\u0218"+
+		"\u0219\b\27\1\2\u0219\u021b\3\2\2\2\u021a\u0202\3\2\2\2\u021a\u0206\3"+
+		"\2\2\2\u021a\u020a\3\2\2\2\u021a\u020e\3\2\2\2\u021a\u0212\3\2\2\2\u021a"+
+		"\u0216\3\2\2\2\u021b\u021e\3\2\2\2\u021c\u021a\3\2\2\2\u021c\u021d\3\2"+
+		"\2\2\u021d-\3\2\2\2\u021e\u021c\3\2\2\2\u021f\u0220\5\60\31\2\u0220\u022b"+
+		"\b\30\1\2\u0221\u0222\7\64\2\2\u0222\u0223\5\60\31\2\u0223\u0224\b\30"+
+		"\1\2\u0224\u022a\3\2\2\2\u0225\u0226\7\65\2\2\u0226\u0227\5\60\31\2\u0227"+
+		"\u0228\b\30\1\2\u0228\u022a\3\2\2\2\u0229\u0221\3\2\2\2\u0229\u0225\3"+
+		"\2\2\2\u022a\u022d\3\2\2\2\u022b\u0229\3\2\2\2\u022b\u022c\3\2\2\2\u022c"+
+		"/\3\2\2\2\u022d\u022b\3\2\2\2\u022e\u022f\5\62\32\2\u022f\u023a\b\31\1"+
+		"\2\u0230\u0231\7\66\2\2\u0231\u0232\5\62\32\2\u0232\u0233\b\31\1\2\u0233"+
+		"\u0239\3\2\2\2\u0234\u0235\7\67\2\2\u0235\u0236\5\62\32\2\u0236\u0237"+
+		"\b\31\1\2\u0237\u0239\3\2\2\2\u0238\u0230\3\2\2\2\u0238\u0234\3\2\2\2"+
+		"\u0239\u023c\3\2\2\2\u023a\u0238\3\2\2\2\u023a\u023b\3\2\2\2\u023b\61"+
+		"\3\2\2\2\u023c\u023a\3\2\2\2\u023d\u023e\5\64\33\2\u023e\u0245\b\32\1"+
+		"\2\u023f\u0240\78\2\2\u0240\u0241\5\64\33\2\u0241\u0242\b\32\1\2\u0242"+
+		"\u0244\3\2\2\2\u0243\u023f\3\2\2\2\u0244\u0247\3\2\2\2\u0245\u0243\3\2"+
+		"\2\2\u0245\u0246\3\2\2\2\u0246\63\3\2\2\2\u0247\u0245\3\2\2\2\u0248\u0249"+
+		"\5\66\34\2\u0249\u024a\b\33\1\2\u024a\65\3\2\2\2\u024b\u024c\7\65\2\2"+
+		"\u024c\u024d\5\66\34\2\u024d\u024e\b\34\1\2\u024e\u025a\3\2\2\2\u024f"+
+		"\u0250\7\64\2\2\u0250\u0251\5\66\34\2\u0251\u0252\b\34\1\2\u0252\u025a"+
+		"\3\2\2\2\u0253\u0254\58\35\2\u0254\u0255\b\34\1\2\u0255\u025a\3\2\2\2"+
+		"\u0256\u0257\5:\36\2\u0257\u0258\b\34\1\2\u0258\u025a\3\2\2\2\u0259\u024b"+
+		"\3\2\2\2\u0259\u024f\3\2\2\2\u0259\u0253\3\2\2\2\u0259\u0256\3\2\2\2\u025a"+
+		"\67\3\2\2\2\u025b\u025c\7)\2\2\u025c\u025d\7E\2\2\u025d\u025e\5\22\n\2"+
+		"\u025e\u025f\7F\2\2\u025f\u0260\b\35\1\2\u0260\u02b3\3\2\2\2\u0261\u0262"+
+		"\7*\2\2\u0262\u0263\7E\2\2\u0263\u0264\5\22\n\2\u0264\u0265\7F\2\2\u0265"+
+		"\u0266\b\35\1\2\u0266\u02b3\3\2\2\2\u0267\u0268\7+\2\2\u0268\u0269\7E"+
+		"\2\2\u0269\u026a\5\22\n\2\u026a\u026b\7F\2\2\u026b\u026c\b\35\1\2\u026c"+
+		"\u02b3\3\2\2\2\u026d\u026e\7,\2\2\u026e\u026f\7E\2\2\u026f\u0270\5\22"+
+		"\n\2\u0270\u0271\7F\2\2\u0271\u0272\b\35\1\2\u0272\u02b3\3\2\2\2\u0273"+
+		"\u0274\7-\2\2\u0274\u0275\7E\2\2\u0275\u0276\5\22\n\2\u0276\u0277\7F\2"+
+		"\2\u0277\u0278\b\35\1\2\u0278\u02b3\3\2\2\2\u0279\u027a\7/\2\2\u027a\u027b"+
+		"\7E\2\2\u027b\u027c\5\22\n\2\u027c\u027d\7F\2\2\u027d\u027e\b\35\1\2\u027e"+
+		"\u02b3\3\2\2\2\u027f\u0280\7\60\2\2\u0280\u0281\7E\2\2\u0281\u0286\5&"+
+		"\24\2\u0282\u0283\7H\2\2\u0283\u0285\5&\24\2\u0284\u0282\3\2\2\2\u0285"+
+		"\u0288\3\2\2\2\u0286\u0284\3\2\2\2\u0286\u0287\3\2\2\2\u0287\u0289\3\2"+
+		"\2\2\u0288\u0286\3\2\2\2\u0289\u028a\7F\2\2\u028a\u028b\b\35\1\2\u028b"+
+		"\u02b3\3\2\2\2\u028c\u028d\7\61\2\2\u028d\u028e\7E\2\2\u028e\u028f\5\22"+
+		"\n\2\u028f\u0290\7F\2\2\u0290\u0291\b\35\1\2\u0291\u02b3\3\2\2\2\u0292"+
+		"\u0293\7\62\2\2\u0293\u0294\7E\2\2\u0294\u0295\5\22\n\2\u0295\u0296\7"+
+		"F\2\2\u0296\u0297\b\35\1\2\u0297\u02b3\3\2\2\2\u0298\u0299\7\63\2\2\u0299"+
+		"\u029a\7E\2\2\u029a\u029f\5&\24\2\u029b\u029c\7H\2\2\u029c\u029e\5&\24"+
+		"\2\u029d\u029b\3\2\2\2\u029e\u02a1\3\2\2\2\u029f\u029d\3\2\2\2\u029f\u02a0"+
+		"\3\2\2\2\u02a0\u02a2\3\2\2\2\u02a1\u029f\3\2\2\2\u02a2\u02a3\7F\2\2\u02a3"+
+		"\u02a4\b\35\1\2\u02a4\u02b3\3\2\2\2\u02a5\u02a6\7.\2\2\u02a6\u02a7\7E"+
+		"\2\2\u02a7\u02ac\5&\24\2\u02a8\u02a9\7H\2\2\u02a9\u02ab\5&\24\2\u02aa"+
+		"\u02a8\3\2\2\2\u02ab\u02ae\3\2\2\2\u02ac\u02aa\3\2\2\2\u02ac\u02ad\3\2"+
+		"\2\2\u02ad\u02af\3\2\2\2\u02ae\u02ac\3\2\2\2\u02af\u02b0\7F\2\2\u02b0"+
+		"\u02b1\b\35\1\2\u02b1\u02b3\3\2\2\2\u02b2\u025b\3\2\2\2\u02b2\u0261\3"+
+		"\2\2\2\u02b2\u0267\3\2\2\2\u02b2\u026d\3\2\2\2\u02b2\u0273\3\2\2\2\u02b2"+
+		"\u0279\3\2\2\2\u02b2\u027f\3\2\2\2\u02b2\u028c\3\2\2\2\u02b2\u0292\3\2"+
+		"\2\2\u02b2\u0298\3\2\2\2\u02b2\u02a5\3\2\2\2\u02b39\3\2\2\2\u02b4\u02b5"+
+		"\7K\2\2\u02b5\u02c4\b\36\1\2\u02b6\u02b7\7L\2\2\u02b7\u02c4\b\36\1\2\u02b8"+
+		"\u02b9\7J\2\2\u02b9\u02c4\b\36\1\2\u02ba\u02bb\7N\2\2\u02bb\u02c4\b\36"+
+		"\1\2\u02bc\u02bd\7M\2\2\u02bd\u02c4\b\36\1\2\u02be\u02bf\7E\2\2\u02bf"+
+		"\u02c0\5&\24\2\u02c0\u02c1\7F\2\2\u02c1\u02c2\b\36\1\2\u02c2\u02c4\3\2"+
+		"\2\2\u02c3\u02b4\3\2\2\2\u02c3\u02b6\3\2\2\2\u02c3\u02b8\3\2\2\2\u02c3"+
+		"\u02ba\3\2\2\2\u02c3\u02bc\3\2\2\2\u02c3\u02be\3\2\2\2\u02c4;\3\2\2\2"+
+		"\u02c5\u02c6\7\65\2\2\u02c6\u02c7\7K\2\2\u02c7\u02d4\b\37\1\2\u02c8\u02c9"+
+		"\7K\2\2\u02c9\u02d4\b\37\1\2\u02ca\u02cb\7\65\2\2\u02cb\u02cc\7L\2\2\u02cc"+
+		"\u02d4\b\37\1\2\u02cd\u02ce\7L\2\2\u02ce\u02d4\b\37\1\2\u02cf\u02d0\7"+
+		"J\2\2\u02d0\u02d4\b\37\1\2\u02d1\u02d2\7M\2\2\u02d2\u02d4\b\37\1\2\u02d3"+
+		"\u02c5\3\2\2\2\u02d3\u02c8\3\2\2\2\u02d3\u02ca\3\2\2\2\u02d3\u02cd\3\2"+
+		"\2\2\u02d3\u02cf\3\2\2\2\u02d3\u02d1\3\2\2\2\u02d4=\3\2\2\2\u02d5\u02d6"+
+		"\7O\2\2\u02d6\u02d7\b \1\2\u02d7?\3\2\2\2\u02d8\u02d9\7Q\2\2\u02d9\u02da"+
+		"\b!\1\2\u02daA\3\2\2\2\62CPR_j\u0092\u0098\u00a8\u00af\u00b2\u00ba\u00bd"+
+		"\u00ca\u00cf\u00d6\u00d9\u00e2\u00f1\u0102\u010d\u0113\u011a\u0122\u012c"+
+		"\u0132\u013a\u0144\u0153\u0164\u01d9\u01df\u01e9\u01f4\u01fe\u021a\u021c"+
+		"\u0229\u022b\u0238\u023a\u0245\u0259\u0286\u029f\u02ac\u02b2\u02c3\u02d3";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -1,0 +1,158 @@
+//Mi primer Comentario - Versión Corregida
+
+
+Para principal []
+[
+// Crea variables
+Haz variable1 5
+Haz variable2 "Hola"
+Haz variable3 TRUE
+Haz mivar 0
+Haz var 0
+Haz var3 0
+Haz numero 0
+Haz salida 0
+Haz var1 0
+Haz bucle 1
+Haz resBool FALSE
+
+
+//Inicializa variables
+INIC mivar = 100;
+INIC mivar = 100 + 45;
+
+
+//Incremento
+INC [var]
+INC [var 5]
+INC [var var3]
+
+
+//Avanza
+AVANZA 10
+AV 5*3
+
+//Retrocede
+Retrocede 10
+RE 5*3
+
+
+//Gira Derecha
+GiraDerecha 90
+GD 45
+
+
+//Gira Izquierda
+GiraIzquierda 90
+GI 45
+
+//Oculta tortuga
+ot
+
+//Posiciones
+PonPOS [ 100 0 ]
+PonXY 0 0
+
+
+//En angulo
+PonRumbo 90
+
+//CoordenadaX
+PonX 100
+
+//CoordenadaY
+PonY 100
+
+//Baja lapiz
+BajaLapiz
+
+//Sube lapiz
+SubeLapiz
+
+//Coloca color - Corregido: usar valores RGB entre corchetes
+PonCL [0 0 255]
+PonColorLapiz [0 0 255]
+
+//En el Centro
+centro
+
+//En Espera
+Espera 10
+
+//Ejecuta
+Ejecuta [AV 10 GD 90]
+
+
+
+//Repite
+REPITE 4 [Avanza 10 GiraDerecha 90]
+
+//Bifurca
+SI (10>2) [RE 10 GD 20]
+
+//Bifurca con Else
+SI (var1==1)
+[RE 10 GD 20]
+[RE 25 GD 10]
+
+
+//Hasta - Corregido: sintaxis correcta de HAZ.HASTA
+HAZ [
+  INIC numero = 0;
+  INIC salida = 0;
+] HASTA (numero==3)
+
+
+//While - Corregido: sintaxis correcta de HAZ.MIENTRAS
+HAZ [
+  INIC numero = 0;
+  INIC salida = 0;
+] MIENTRAS (bucle==1)
+
+
+//Mientras - Corregido: sintaxis correcta
+MIENTRAS (var==3) [
+  INIC salida = 0;
+  INIC var1 = 0;
+]
+
+
+//Devuelve Boolean - Corregido: usar dentro de asignación con variable booleana
+INIC resBool = Iguales? (10, 2*5);
+
+//Devuelve AND - Corregido: usar dentro de asignación con variable booleana
+INIC resBool = Y (10>2, 2>5);
+
+//Devuelve OR - Corregido: usar dentro de asignación con variable booleana
+INIC resBool = O (10>2, 2>5);
+
+//Devuelve Mayor - Corregido: usar dentro de asignación con variable booleana
+INIC resBool = Mayorque? (10, 2*5);
+
+//Devuelve Menor - Corregido: usar dentro de asignación con variable booleana
+INIC resBool = Menorque? (10, 2*5);
+
+//Resta numeros - Corregido: agregar paréntesis
+GiraIzquierda Diferencia(100, 45)
+
+//Numero aleatorio - Corregido: agregar paréntesis
+GiraIzquierda Azar(360)
+
+//Multiplica numeros - Corregido: agregar paréntesis
+INIC variable1 = Producto(1, 2, 3, 4, 5);
+
+//Potencia - Corregido: agregar paréntesis
+INIC variable1 = Potencia(2, 3);
+
+
+//Division - Corregido: agregar paréntesis y nombre correcto
+INIC variable1 = Division(12, 4);
+
+//Suma - Corregido: agregar paréntesis
+INIC variable1 = Suma(1, 2, 3, 4, 5);
+]
+FIN
+
+
+principal
+
