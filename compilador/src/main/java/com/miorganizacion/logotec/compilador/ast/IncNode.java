@@ -22,4 +22,7 @@ public class IncNode implements StmtNode {
         System.out.println("🔼 Incrementar " + var.getName() + " en " + inc + " → " + newVal);
         return newVal;
     }
+    
+    // ← NO AGREGAR generateIR() aquí
+    // ASTtoIRTranslator.generateInc() ya maneja la generación de IR
 }

@@ -434,18 +434,35 @@ public class ASTtoIRTranslator {
     
     private void generateInc(IncNode node) {
         String varName = node.getVar().getName();
-        Operand delta = generateExpr(node.getDelta());
+        
+        // CORRECCIÓN CRÍTICA: Generar 3 temporales ANTES de evaluar expresiones
+        // para evitar reutilización
+        Operand currentVal = tempGen.nextOperand();  // t14 - valor actual
+        Operand deltaTemp = tempGen.nextOperand();   // t15 - incremento
+        Operand newVal = tempGen.nextOperand();      // t16 - resultado
+        
         Operand varOp = Operand.variable(varName);
         
-        // Cargar valor actual
-        Operand currentVal = tempGen.nextOperand();
+        // 1. Cargar valor actual de la variable
         emit(new ThreeAddressInstruction(IROpcode.LOAD_VAR, currentVal, varOp));
         
-        // Sumar delta
-        Operand newVal = tempGen.nextOperand();
-        emit(new ThreeAddressInstruction(IROpcode.ADD, newVal, currentVal, delta));
+        // 2. Evaluar el incremento (puede ser expresión compleja)
+        ExprNode deltaExpr = node.getDelta();
+        if (deltaExpr instanceof ConstNode) {
+            // Si es constante, cargarla directamente
+            Object val = ((ConstNode) deltaExpr).getValue();
+            double numVal = val instanceof Number ? ((Number) val).doubleValue() : 0.0;
+            emit(new ThreeAddressInstruction(IROpcode.LOAD_CONST, deltaTemp, Operand.constant(numVal)));
+        } else {
+            // Si es expresión compleja, evaluarla
+            Operand exprResult = generateExpr(deltaExpr);
+            emit(new ThreeAddressInstruction(IROpcode.MOVE, deltaTemp, exprResult));
+        }
         
-        // Guardar nuevo valor
+        // 3. Sumar: newVal = currentVal + deltaTemp
+        emit(new ThreeAddressInstruction(IROpcode.ADD, newVal, currentVal, deltaTemp));
+        
+        // 4. Guardar nuevo valor
         emit(new ThreeAddressInstruction(IROpcode.STORE, varOp, newVal));
     }
     

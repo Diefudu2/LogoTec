@@ -230,22 +230,20 @@ public class LogoTecCustomVisitor extends LogoTecBaseVisitor<ASTNode> {
         if (ctx.callProc() != null) {
             return visit(ctx.callProc());
         }
-        // Control de flujo (ahora directamente en sentence, no en flowStmt)
+        // Control de flujo (corregido para coincidir con la gramática)
         if (ctx.siStmt() != null) {
             return visit(ctx.siStmt());
         }
         if (ctx.hastaStmt() != null) {
             return visit(ctx.hastaStmt());
         }
-        if (ctx.hazHastaStmt() != null) {
-            return visit(ctx.hazHastaStmt());
+        if (ctx.hazDoStmt() != null) {  // ← CORREGIDO: hazDoStmt en lugar de hazHastaStmt
+            return visit(ctx.hazDoStmt());
         }
         if (ctx.mientrasStmt() != null) {
             return visit(ctx.mientrasStmt());
         }
-        if (ctx.hazMientrasStmt() != null) {
-            return visit(ctx.hazMientrasStmt());
-        }
+        // ← ELIMINADO: hazMientrasStmt() no existe en la gramática
         return null;
     }
 

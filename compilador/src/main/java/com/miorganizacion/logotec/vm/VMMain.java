@@ -224,6 +224,7 @@ public class VMMain extends JFrame {
         try {
             log("🔧 Cargando programa en la VM...");
             BytecodeInterpreter vm = new BytecodeInterpreter();
+            vm.setDebugMode(true);  // ← Activar debug
             vm.loadProgram(compiledCode);
             log("✅ Programa cargado: " + compiledCode.bytecode.size() + " instrucciones");
             

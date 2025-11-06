@@ -210,6 +210,13 @@ public class ObjectCodeGenerator {
                 int dest = parseRegister(operands.get(0));
                 int src1 = parseRegister(operands.get(1));
                 int src2 = parseRegister(operands.get(2));
+                
+                // ← VALIDACIÓN: Detectar si Assembly usa mismo registro
+                if (dest == src1 && src1 == src2) {
+                    System.err.println("⚠️  WARNING: SEQ usa mismo registro para dest/src1/src2: $" + dest);
+                    System.err.println("   Instrucción: " + instr);
+                }
+                
                 return new BytecodeInstruction(BytecodeOpcode.SEQ, dest, src1, src2);
             }
             

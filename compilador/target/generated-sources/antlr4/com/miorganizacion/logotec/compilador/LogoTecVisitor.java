@@ -87,17 +87,11 @@ public interface LogoTecVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSiStmt(LogoTecParser.SiStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogoTecParser#hazHastaStmt}.
+	 * Visit a parse tree produced by {@link LogoTecParser#hazDoStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitHazHastaStmt(LogoTecParser.HazHastaStmtContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LogoTecParser#hazMientrasStmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHazMientrasStmt(LogoTecParser.HazMientrasStmtContext ctx);
+	T visitHazDoStmt(LogoTecParser.HazDoStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LogoTecParser#mientrasStmt}.
 	 * @param ctx the parse tree

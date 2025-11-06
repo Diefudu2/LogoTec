@@ -1,9 +1,8 @@
-//Mi primer Comentario - Versión Corregida
+//Mi primer Comentario - Versión Completa (TESTING LOOPS STEP BY STEP)
 
-
-Para principal []
-[
-// Crea variables
+// ============================================================
+// DECLARACIÓN DE VARIABLES GLOBALES (FUERA DE PROCEDIMIENTOS)
+// ============================================================
 Haz variable1 5
 Haz variable2 "Hola"
 Haz variable3 TRUE
@@ -16,143 +15,103 @@ Haz var1 0
 Haz bucle 1
 Haz resBool FALSE
 
+// ============================================================
+// PROCEDIMIENTO PRINCIPAL (VERSIÓN PARCIAL - SOLO HAZ.HASTA)
+// ============================================================
+Para principal []
+[
+  // ✅ BLOQUE 1: Variables básicas (FUNCIONA)
+  INIC mivar = 100;
+  INIC mivar = 100 + 45;
 
-//Inicializa variables
-INIC mivar = 100;
-INIC mivar = 100 + 45;
+  // ✅ BLOQUE 2: Comandos de Tortuga (FUNCIONA)
+  avanza 10
+  av 15
 
+  retrocede 10
+  re 15
 
-//Incremento
-INC [var]
-INC [var 5]
-INC [var var3]
+  giraderecha 90
+  gd 45
 
+  giraizquierda 90
+  gi 45
 
-//Avanza
-AVANZA 10
-AV 5*3
+  // ✅ BLOQUE 3: Visibilidad y Posición (FUNCIONA)
+  ponpos [100 0]
+  ponxy 0 0
 
-//Retrocede
-Retrocede 10
-RE 5*3
+  ponrumbo 90
 
+  ponx 100
+  pony 100
 
-//Gira Derecha
-GiraDerecha 90
-GD 45
+  // ✅ BLOQUE 4: Control de Lápiz (FUNCIONA)
+  bajalapiz
+  subelapiz
 
+  // ✅ BLOQUE 5: Colores RGB (FUNCIONA)
+  poncl [0 0 255]
+  poncolorlapiz [0 0 255]
 
-//Gira Izquierda
-GiraIzquierda 90
-GI 45
+  // ✅ BLOQUE 6: Colores por Nombre (FUNCIONA)
+  poncl azul
+  poncolorlapiz rojo
 
-//Oculta tortuga
-ot
+  // ✅ BLOQUE 7: Centro y Espera (FUNCIONA)
+  centro
+  espera 10
 
-//Posiciones
-PonPOS [ 100 0 ]
-PonXY 0 0
+  // ✅ BLOQUE 8: Ejecuta (FUNCIONA)
+  ejecuta [av 10 gd 90]
 
+  // ✅ BLOQUE 9: Repite (FUNCIONA)
+  repite 4 [avanza 10 giraderecha 90]
 
-//En angulo
-PonRumbo 90
+  // ✅ BLOQUE 10: SI simple (FUNCIONA)
+  SI (10>2) [re 10 gd 20]
 
-//CoordenadaX
-PonX 100
+  // ✅ BLOQUE 11: SI con ELSE (FUNCIONA)
+  SI (var1==1)
+  [re 10 gd 20]
+  [re 25 gd 10]
 
-//CoordenadaY
-PonY 100
+  // ✅ BLOQUE 12: HAZ.HASTA (FUNCIONA CORRECTAMENTE)
+  INIC numero = 0;
+  INIC salida = 0;
+  HAZ.[
+    INIC numero = numero + 1;
+  ] HASTA (numero==3)
 
-//Baja lapiz
-BajaLapiz
+  // ❌ BLOQUE 13: HAZ.MIENTRAS (DESHABILITADO - LOOP INFINITO)
+  // INIC bucle = 1;
+  // HAZ.[
+  //   INIC numero = numero + 1;
+  //   INIC bucle = 0;
+  // ] MIENTRAS (bucle==1)
 
-//Sube lapiz
-SubeLapiz
+  // ❌ BLOQUE 14: MIENTRAS (DESHABILITADO - LOOP INFINITO)
+  // INIC var = 3;
+  // MIENTRAS (var==3) [
+  //   INIC salida = 0;
+  //   INIC var1 = 0;
+  //   INIC var = 0;
+  // ]
 
-//Coloca color - Corregido: usar valores RGB entre corchetes
-PonCL [0 0 255]
-PonColorLapiz [0 0 255]
+  // ✅ BLOQUE 15: Funciones Booleanas (TESTING)
+  INIC resBool = iguales?(10, 2*5);
+  INIC resBool = Y(10>2, 2>5);
+  INIC resBool = O(10>2, 2>5);
+  INIC resBool = mayorque?(10, 2*5);
+  INIC resBool = menorque?(10, 2*5);
+]
+fin
 
-//En el Centro
+// ============================================================
+// LLAMADA AL PROCEDIMIENTO PRINCIPAL
+// ============================================================
 centro
-
-//En Espera
-Espera 10
-
-//Ejecuta
-Ejecuta [AV 10 GD 90]
-
-
-
-//Repite
-REPITE 4 [Avanza 10 GiraDerecha 90]
-
-//Bifurca
-SI (10>2) [RE 10 GD 20]
-
-//Bifurca con Else
-SI (var1==1)
-[RE 10 GD 20]
-[RE 25 GD 10]
-
-
-//Hasta - Corregido: sintaxis correcta de HAZ.HASTA
-HAZ [
-  INIC numero = 0;
-  INIC salida = 0;
-] HASTA (numero==3)
-
-
-//While - Corregido: sintaxis correcta de HAZ.MIENTRAS
-HAZ [
-  INIC numero = 0;
-  INIC salida = 0;
-] MIENTRAS (bucle==1)
-
-
-//Mientras - Corregido: sintaxis correcta
-MIENTRAS (var==3) [
-  INIC salida = 0;
-  INIC var1 = 0;
-]
-
-
-//Devuelve Boolean - Corregido: usar dentro de asignación con variable booleana
-INIC resBool = Iguales? (10, 2*5);
-
-//Devuelve AND - Corregido: usar dentro de asignación con variable booleana
-INIC resBool = Y (10>2, 2>5);
-
-//Devuelve OR - Corregido: usar dentro de asignación con variable booleana
-INIC resBool = O (10>2, 2>5);
-
-//Devuelve Mayor - Corregido: usar dentro de asignación con variable booleana
-INIC resBool = Mayorque? (10, 2*5);
-
-//Devuelve Menor - Corregido: usar dentro de asignación con variable booleana
-INIC resBool = Menorque? (10, 2*5);
-
-//Resta numeros - Corregido: agregar paréntesis
-GiraIzquierda Diferencia(100, 45)
-
-//Numero aleatorio - Corregido: agregar paréntesis
-GiraIzquierda Azar(360)
-
-//Multiplica numeros - Corregido: agregar paréntesis
-INIC variable1 = Producto(1, 2, 3, 4, 5);
-
-//Potencia - Corregido: agregar paréntesis
-INIC variable1 = Potencia(2, 3);
-
-
-//Division - Corregido: agregar paréntesis y nombre correcto
-INIC variable1 = Division(12, 4);
-
-//Suma - Corregido: agregar paréntesis
-INIC variable1 = Suma(1, 2, 3, 4, 5);
-]
-FIN
-
-
-principal
+bajalapiz
+principal[]
+subelapiz
 

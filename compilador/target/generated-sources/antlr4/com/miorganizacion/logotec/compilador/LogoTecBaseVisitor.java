@@ -105,14 +105,7 @@ public class LogoTecBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitHazHastaStmt(LogoTecParser.HazHastaStmtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitHazMientrasStmt(LogoTecParser.HazMientrasStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitHazDoStmt(LogoTecParser.HazDoStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

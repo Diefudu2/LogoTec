@@ -1,0 +1,21 @@
+// Test minimal de HAZ.MIENTRAS
+
+// Variables globales
+Haz bucle 1
+Haz numero 0
+
+// ============================================================
+// TEST 1: HAZ.MIENTRAS más simple posible
+// ============================================================
+INIC bucle = 1;
+HAZ.[
+  INIC bucle = 0;
+] MIENTRAS (bucle==1)
+
+// ============================================================
+// Resultado esperado:
+// - bucle = 1 al inicio
+// - Ejecuta el cuerpo: bucle = 0
+// - Evalúa condición: bucle == 1 → FALSE (porque bucle = 0)
+// - Sale del loop (ejecuta solo 1 iteración)
+// ============================================================

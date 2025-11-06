@@ -117,13 +117,13 @@ public class LogoTecBaseListener implements LogoTecListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterHazHastaStmt(@NotNull LogoTecParser.HazHastaStmtContext ctx) { }
+	@Override public void enterHazDoStmt(@NotNull LogoTecParser.HazDoStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitHazHastaStmt(@NotNull LogoTecParser.HazHastaStmtContext ctx) { }
+	@Override public void exitHazDoStmt(@NotNull LogoTecParser.HazDoStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -148,18 +148,6 @@ public class LogoTecBaseListener implements LogoTecListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitHastaStmt(@NotNull LogoTecParser.HastaStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterHazMientrasStmt(@NotNull LogoTecParser.HazMientrasStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitHazMientrasStmt(@NotNull LogoTecParser.HazMientrasStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

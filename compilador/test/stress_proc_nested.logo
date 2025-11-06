@@ -1,58 +1,192 @@
-// Stress test: procedimientos + bucles anidados + colores
+// Caso 1: Procedimiento sin parámetros (básico)
+Haz lado 50
 
-Haz ladobase 40
-Haz escala 1
-Haz giros 0
-Haz pasoini 20
+Para cuadrado []
+[
+  avanza lado
+  giraderecha 90
+  avanza lado
+  giraderecha 90
+  avanza lado
+  giraderecha 90
+  avanza lado
+  giraderecha 90
+]
+fin
 
-Para segmentoescalado [reps ang factor] [
-  INIC ladoactual = ladobase * factor;
-  bajalapiz
-  Repite reps [
-    avanza ladoactual
+centro
+bajalapiz
+cuadrado[]
+subelapiz
+
+// Caso 2: Procedimiento con parámetros
+// Test procedimiento con parámetros
+Haz x 10
+
+Para rectangulo [ancho alto]
+[
+  avanza ancho
+  giraderecha 90
+  avanza alto
+  giraderecha 90
+  avanza ancho
+  giraderecha 90
+  avanza alto
+  giraderecha 90
+]
+fin
+
+centro
+bajalapiz
+rectangulo 80 40
+subelapiz
+
+// Caso 3: Ciclo REPITE simple
+// Test ciclo REPITE
+Haz lado 60
+
+centro
+bajalapiz
+repite 6 [
+  avanza lado
+  giraderecha 60
+]
+subelapiz
+
+// Caso 4: HAZ.HASTA
+// Test HAZ.HASTA
+Haz contador 0
+
+centro
+bajalapiz
+HAZ.[
+  avanza 20
+  giraderecha 36
+  INIC contador = contador + 1;
+] HASTA (contador > 9)
+subelapiz
+
+// Caso 5: Procedimiento CON ciclo interno
+// Test procedimiento con ciclo interno
+Haz lado 30
+
+Para triangulos [cantidad]
+[
+  repite cantidad [
+    repite 3 [
+      avanza lado
+      giraderecha 120
+    ]
+    avanza 60
+  ]
+]
+fin
+
+centro
+bajalapiz
+triangulos 4
+subelapiz
+
+// Caso 6: Ciclos REPITE anidados (sin procedimiento)
+// Test ciclos anidados directos
+Haz lado 25
+
+centro
+bajalapiz
+repite 4 [
+  repite 3 [
+    avanza lado
+    giraderecha 120
+  ]
+  giraderecha 90
+  avanza 50
+]
+subelapiz
+
+// Caso 7: Procedimiento llamando a otro procedimiento
+// Test llamada entre procedimientos
+Haz lado 40
+
+Para linea [dist]
+[
+  avanza dist
+]
+fin
+
+Para cuadrado [tam]
+[
+  repite 4 [
+    linea tam
+    giraderecha 90
+  ]
+]
+fin
+
+centro
+bajalapiz
+cuadrado 60
+subelapiz
+
+
+// Caso 8: MIENTRAS simple
+// Test MIENTRAS
+Haz i 0
+
+centro
+bajalapiz
+MIENTRAS (i < 8) [
+  avanza 30
+  giraderecha 45
+  INIC i = i + 1;
+]
+subelapiz
+
+// Caso 9: Procedimiento con INC
+
+// Test procedimiento con INC
+Haz pasos 10
+
+Para espiral [vueltas]
+[
+  repite vueltas [
+    avanza pasos
+    giraderecha 90
+    inc [pasos 5]
+  ]
+]
+fin
+
+centro
+bajalapiz
+espiral 8
+subelapiz
+
+// Caso 10: Stress completo (basado en stress_proc_nested.logo)
+
+// Test stress con validación de nombres
+Haz lado 30
+Haz cont 0
+
+Para forma [lados ang]
+[
+  repite lados [
+    avanza lado
     giraderecha ang
   ]
-  subelapiz
 ]
 fin
 
-Para florcompuesta [capas repint angint] [
-  Repite capas [
-    poncolorlapiz Negro
-    segmentoescalado repint angint escala
-    inc [giros 60]
-    poncolorlapiz Azul
-    segmentoescalado repint angint escala
-    inc [escala 1]
-    giraderecha giros
-  ]
-]
-fin
-
-Para espiralcolor [vueltas incremento] [
-  INIC paso = pasoini;
-  Repite vueltas [
-    poncolorlapiz Rojo
-    segmentoescalado 6 60 escala
-    inc [paso incremento]
-    Repite 6 [
-      avanza paso
-      giraderecha 60
-    ]
+Para patron [reps]
+[
+  repite reps [
+    forma 6 60
+    giraderecha 30
+    inc [cont 1]
   ]
 ]
 fin
 
 centro
 bajalapiz
-florcompuesta 4 6 60
-subelapiz
-espiralcolor 5 5
-centro
-poncolorlapiz Azul
-bajalapiz
-Repite 8 [
-  florcompuesta 2 3 120
-  giraderecha 45
-]
+patron 12
 subelapiz

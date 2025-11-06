@@ -93,15 +93,15 @@ public interface LogoTecListener extends ParseTreeListener {
 	 */
 	void exitExpressionSeries(@NotNull LogoTecParser.ExpressionSeriesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogoTecParser#hazHastaStmt}.
+	 * Enter a parse tree produced by {@link LogoTecParser#hazDoStmt}.
 	 * @param ctx the parse tree
 	 */
-	void enterHazHastaStmt(@NotNull LogoTecParser.HazHastaStmtContext ctx);
+	void enterHazDoStmt(@NotNull LogoTecParser.HazDoStmtContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LogoTecParser#hazHastaStmt}.
+	 * Exit a parse tree produced by {@link LogoTecParser#hazDoStmt}.
 	 * @param ctx the parse tree
 	 */
-	void exitHazHastaStmt(@NotNull LogoTecParser.HazHastaStmtContext ctx);
+	void exitHazDoStmt(@NotNull LogoTecParser.HazDoStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LogoTecParser#siStmt}.
 	 * @param ctx the parse tree
@@ -122,16 +122,6 @@ public interface LogoTecListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitHastaStmt(@NotNull LogoTecParser.HastaStmtContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LogoTecParser#hazMientrasStmt}.
-	 * @param ctx the parse tree
-	 */
-	void enterHazMientrasStmt(@NotNull LogoTecParser.HazMientrasStmtContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LogoTecParser#hazMientrasStmt}.
-	 * @param ctx the parse tree
-	 */
-	void exitHazMientrasStmt(@NotNull LogoTecParser.HazMientrasStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LogoTecParser#varInit}.
 	 * @param ctx the parse tree

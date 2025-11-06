@@ -38,6 +38,12 @@ public class BytecodeInterpreter {
     // Stack para llamadas a funciones
     private Stack<Integer> callStack;
     
+    // ← NUEVO: Stack de argumentos para procedimientos
+    private Stack<Map<String, Integer>> argumentStack;
+    
+    // ← NUEVO: Argumentos actuales del procedimiento en ejecución
+    private Map<String, Integer> currentArgs;
+    
     // === Estado de la Tortuga ===
     
     // Lista de acciones generadas
@@ -74,6 +80,8 @@ public class BytecodeInterpreter {
         this.registers = new int[32];
         this.memory = new int[MEMORY_SIZE];
         this.callStack = new Stack<>();
+        this.argumentStack = new Stack<>();  // ← NUEVO
+        this.currentArgs = new HashMap<>();  // ← NUEVO
         this.acciones = new ArrayList<>();
         this.symbolTable = new HashMap<>();
         this.debugMode = false;
@@ -169,6 +177,17 @@ public class BytecodeInterpreter {
         int op1 = instr.getOperand1();
         int op2 = instr.getOperand2();
         int op3 = instr.getOperand3();
+        
+        // ← NUEVO: Manejar instrucciones especiales de IR
+        String instrStr = instr.toString();
+        if (instrStr.contains("GET_ARG")) {
+            executeGetArg(instr);
+            return true;
+        }
+        if (instrStr.contains("PARAM")) {
+            executeParam(instr);
+            return true;
+        }
         
         switch (opcode) {
             // === Movimiento de datos ===
@@ -615,5 +634,114 @@ public class BytecodeInterpreter {
     private void setColor(int r, int g, int b) {
         System.out.println("   → SET_COLOR RGB(" + r + ", " + g + ", " + b + ")");
         acciones.add(new AccionTortuga(Tipo.CAMBIAR_COLOR, r, g, b));
+    }
+    
+    // ← NUEVO: Implementar GET_ARG
+    private void executeGetArg(BytecodeInstruction instr) {
+        String instrStr = instr.toString();
+        if (debugMode) {
+            System.out.println("   → Procesando GET_ARG: " + instrStr);
+        }
+        
+        // Parsear: "GET_ARG VARIABLE(ancho), CONSTANT(0)"
+        String[] parts = instrStr.split(",");
+        if (parts.length < 2) {
+            System.err.println("⚠️  GET_ARG mal formado: " + instrStr);
+            return;
+        }
+        
+        String varPart = parts[0].trim();
+        String posPart = parts[1].trim();
+        
+        // Extraer nombre de variable: "GET_ARG VARIABLE(ancho)" → "ancho"
+        int start = varPart.indexOf("VARIABLE(");
+        if (start < 0) return;
+        int end = varPart.indexOf(")", start);
+        if (end < 0) return;
+        String varName = varPart.substring(start + 9, end);
+        
+        // Extraer posición: "CONSTANT(0)" → 0
+        start = posPart.indexOf("CONSTANT(");
+        if (start < 0) return;
+        end = posPart.indexOf(")", start);
+        if (end < 0) return;
+        String posStr = posPart.substring(start + 9, end);
+        int argPos = (int) Double.parseDouble(posStr);
+        
+        if (debugMode) {
+            System.out.println("     → GET_ARG: variable='" + varName + "', pos=" + argPos);
+            System.out.println("     → Argumentos actuales: " + currentArgs);
+        }
+        
+        // Obtener el valor del argumento
+        if (currentArgs.containsKey(String.valueOf(argPos))) {
+            int value = currentArgs.get(String.valueOf(argPos));
+            
+            // Guardar directamente en symbol table como valor
+            Integer addr = symbolTable.get(varName);
+            if (addr == null) {
+                addr = symbolTable.size() + 100;
+                symbolTable.put(varName, addr);
+            }
+            writeMemory(addr, value);
+            
+            if (debugMode) {
+                System.out.println("     → Guardado: " + varName + " = " + value + " en addr " + addr);
+            }
+        } else {
+            System.err.println("⚠️  Argumento " + argPos + " no encontrado en currentArgs: " + currentArgs.keySet());
+        }
+    }
+    
+    private void executeParam(BytecodeInstruction instr) {
+        String instrStr = instr.toString();
+        if (debugMode) {
+            System.out.println("   → Procesando PARAM: " + instrStr);
+        }
+        
+        // Parsear: "PARAM CONSTANT(0), TEMP(t5)"
+        String[] parts = instrStr.split(",");
+        if (parts.length < 2) return;
+        
+        String posPart = parts[0].trim();
+        String valuePart = parts[1].trim();
+        
+        // Extraer posición
+        int start = posPart.indexOf("CONSTANT(");
+        if (start < 0) return;
+        int end = posPart.indexOf(")", start);
+        if (end < 0) return;
+        String posStr = posPart.substring(start + 9, end);
+        int argPos = (int) Double.parseDouble(posStr);
+        
+        // Extraer valor desde registro temporal
+        start = valuePart.indexOf("TEMP(t");
+        if (start >= 0) {
+            end = valuePart.indexOf(")", start);
+            String tempStr = valuePart.substring(start + 6, end);
+            int tempNum = Integer.parseInt(tempStr);
+            int reg = 8 + tempNum; // t0 = $8, t1 = $9, etc.
+            int value = registers[reg];
+            
+            currentArgs.put(String.valueOf(argPos), value);
+            
+            if (debugMode) {
+                System.out.println("     → PARAM[" + argPos + "] = " + value + " (desde registro $t" + tempNum + ")");
+            }
+        } else {
+            // Puede ser CONSTANT directo
+            start = valuePart.indexOf("CONSTANT(");
+            if (start >= 0) {
+                end = valuePart.indexOf(")", start);
+                String constStr = valuePart.substring(start + 9, end);
+                int value = (int) Double.parseDouble(constStr);
+                
+                currentArgs.put(String.valueOf(argPos), value);
+                
+                if (debugMode) {
+                    System.out.println("     → PARAM[" + argPos + "] = " + value + " (constante)");
+                }
+            }
+        }
     }
 }

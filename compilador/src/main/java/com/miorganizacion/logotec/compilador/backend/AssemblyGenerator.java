@@ -361,27 +361,40 @@ public class AssemblyGenerator {
         Operand op1 = ir.getOp1();
         Operand op2 = ir.getOp2();
         
-        Register destReg = regAlloc.getRegister(dest.getValue());
+        // ✅ SOLUCIÓN: NO usar registros fijos, usar DIRECTAMENTE los registros asignados
         
-        // Manejar caso donde op1 o op2 son constantes
+        // 1. Obtener/cargar operando 1
         Register src1Reg;
         if (op1.isConstant()) {
-            src1Reg = Register.T8; // Usar temporal
+            src1Reg = Register.T7;  // Usar $t7 solo para constantes
             emit(AssemblyInstruction.li(src1Reg, (int) op1.getNumericValue()));
+        } else if (op1.isVariable()) {
+            src1Reg = Register.T7;  // Usar $t7 solo para variables
+            emit(AssemblyInstruction.lw(src1Reg, op1.getValue()));
         } else {
+            // ✅ CAMBIO: Usar DIRECTAMENTE el registro del temporal (NO moverlo)
             src1Reg = regAlloc.getRegister(op1.getValue());
         }
         
+        // 2. Obtener/cargar operando 2
         Register src2Reg;
         if (op2.isConstant()) {
-            src2Reg = Register.T9; // Usar otro temporal
+            src2Reg = Register.T8;  // Usar $t8 solo para constantes
             emit(AssemblyInstruction.li(src2Reg, (int) op2.getNumericValue()));
+        } else if (op2.isVariable()) {
+            src2Reg = Register.T8;  // Usar $t8 solo para variables
+            emit(AssemblyInstruction.lw(src2Reg, op2.getValue()));
         } else {
+            // ✅ CAMBIO: Usar DIRECTAMENTE el registro del temporal (NO moverlo)
             src2Reg = regAlloc.getRegister(op2.getValue());
         }
         
+        // 3. Obtener registro destino
+        Register resultReg = regAlloc.getRegister(dest.getValue());
+        
+        // 4. Ejecutar operación
         emit(new AssemblyInstruction(asmOp, 
-            Arrays.asList(destReg.getName(), src1Reg.getName(), src2Reg.getName())));
+            Arrays.asList(resultReg.getName(), src1Reg.getName(), src2Reg.getName())));
     }
     
     private void translateComparison(ThreeAddressInstruction ir, String op) {
@@ -391,14 +404,48 @@ public class AssemblyGenerator {
         Operand op1 = ir.getOp1();
         Operand op2 = ir.getOp2();
         
-        Register destReg = regAlloc.getRegister(dest.getValue());
-        Register src1Reg = regAlloc.getRegister(op1.getValue());
-        Register src2Reg = regAlloc.getRegister(op2.getValue());
+        // ✅ SOLUCIÓN: NO usar registros fijos, usar DIRECTAMENTE los registros asignados
         
+        // 1. Obtener/cargar operando 1
+        Register src1Reg;
+        if (op1.isConstant()) {
+            src1Reg = Register.T7;  // Usar $t7 solo para constantes
+            emit(AssemblyInstruction.li(src1Reg, (int) op1.getNumericValue()));
+        } else if (op1.isVariable()) {
+            src1Reg = Register.T7;  // Usar $t7 solo para variables
+            emit(AssemblyInstruction.lw(src1Reg, op1.getValue()));
+        } else {
+            // ✅ CAMBIO: Usar DIRECTAMENTE el registro del temporal (NO moverlo)
+            src1Reg = regAlloc.getRegister(op1.getValue());
+        }
+        
+        // 2. Obtener/cargar operando 2
+        Register src2Reg;
+        if (op2.isConstant()) {
+            src2Reg = Register.T8;  // Usar $t8 solo para constantes
+            emit(AssemblyInstruction.li(src2Reg, (int) op2.getNumericValue()));
+        } else if (op2.isVariable()) {
+            src2Reg = Register.T8;  // Usar $t8 solo para variables
+            emit(AssemblyInstruction.lw(src2Reg, op2.getValue()));
+        } else {
+            // ✅ CAMBIO: Usar DIRECTAMENTE el registro del temporal (NO moverlo)
+            src2Reg = regAlloc.getRegister(op2.getValue());
+        }
+        
+        // 3. Obtener registro destino
+        Register destReg = regAlloc.getRegister(dest.getValue());
+        
+        // 4. Ejecutar comparación
         emit(new AssemblyInstruction(
             AssemblyOpcode.valueOf(op.toUpperCase()),
             Arrays.asList(destReg.getName(), src1Reg.getName(), src2Reg.getName())
         ));
+        
+        // 4. Guardar resultado en el registro del temporal destino
+        Register finalDestReg = regAlloc.getRegister(dest.getValue());
+        if (!destReg.equals(finalDestReg)) {
+            emit(AssemblyInstruction.move(finalDestReg, destReg));
+        }
     }
     
     private void translatePow(ThreeAddressInstruction ir) {
@@ -586,9 +633,7 @@ public class AssemblyGenerator {
         
         emit(AssemblyInstruction.comment("Get arg[" + index + "] -> " + dest.getValue()));
         
-        Register destReg = regAlloc.getRegister(dest.getValue());
-        
-        // Según el índice, copiar desde $a0, $a1, $a2 o $a3
+        // Registro fuente del argumento
         Register argReg;
         switch (index) {
             case 0: argReg = Register.A0; break;
@@ -596,12 +641,20 @@ public class AssemblyGenerator {
             case 2: argReg = Register.A2; break;
             case 3: argReg = Register.A3; break;
             default:
-                // Si el argumento está en el stack
                 emit(AssemblyInstruction.comment("TODO: Load from stack for arg > 3"));
                 return;
         }
         
-        emit(AssemblyInstruction.move(destReg, argReg));
+        // ← CAMBIO: Guardar DIRECTAMENTE en memoria en lugar de moverlo a un registro temporal
+        // El destino es una variable, así que guardarlo en su dirección de memoria
+        if (dest.isVariable()) {
+            String varName = dest.getValue();
+            emit(AssemblyInstruction.sw(argReg, varName));  // sw $aX, varName
+        } else {
+            // Si es un temporal, moverlo al registro correspondiente
+            Register destReg = regAlloc.getRegister(dest.getValue());
+            emit(AssemblyInstruction.move(destReg, argReg));
+        }
     }
     
     /**

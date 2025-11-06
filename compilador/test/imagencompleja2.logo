@@ -1,0 +1,65 @@
+// Roseta de cuadrados usando funciones SUMA y PRODUCTO
+// Versión compacta con aritmética avanzada
+
+Haz lado1 50
+Haz incremento 20
+Haz rotacion 24
+Haz contador 0
+
+// Procedimiento que recibe tamaño calculado
+Para cuadrado [tam]
+[
+  repite 4 [
+    avanza tam
+    giraderecha 90
+  ]
+  giraderecha rotacion
+]
+fin
+
+// Programa principal
+centro
+bajalapiz
+
+// Patrón usando SUMA y PRODUCTO para calcular tamaños
+// Tamaño = 50 + (0*20), 50 + (1*20), 50 + (2*20), 50 + (3*20)
+
+// Ciclo 1: usar variables directas
+Haz tam1 0
+Haz tam2 0
+Haz tam3 0
+Haz tam4 0
+
+// tam1 = 50 + (0 * 20) = 50
+INIC tam1 = lado1 + 0 * incremento;
+
+// tam2 = 50 + (1 * 20) = 70
+INIC tam2 = lado1 + 1 * incremento;
+
+// tam3 = 50 + (2 * 20) = 90
+INIC tam3 = lado1 + 2 * incremento;
+
+// tam4 = 50 + (3 * 20) = 110
+INIC tam4 = lado1 + 3 * incremento;
+
+// Dibujar 15 cuadrados
+cuadrado[tam1]
+cuadrado[tam2]
+cuadrado[tam3]
+cuadrado[tam4]
+
+cuadrado[tam1]
+cuadrado[tam2]
+cuadrado[tam3]
+cuadrado[tam4]
+
+cuadrado[tam1]
+cuadrado[tam2]
+cuadrado[tam3]
+cuadrado[tam4]
+
+cuadrado[tam1]
+cuadrado[tam2]
+cuadrado[tam3]
+
+subelapiz

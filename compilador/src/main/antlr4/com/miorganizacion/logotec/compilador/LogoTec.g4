@@ -280,12 +280,6 @@ grammar LogoTec;
 
 /* ------------------- Programa ------------------- */
 program returns [ProgramNode node]
-    @init {
-        // Validar comentario ANTES de procesar
-        if (!firstLineHasComment) {
-            errors.add("Error en línea 1: el programa debe iniciar con un comentario (// ...).");
-        }
-    }
     : cmtFirstLine? p=proceduresBlock EOF
       {
         ensureProgramConstraints();
@@ -303,7 +297,7 @@ proceduresBlock returns [ProgramNode node]
        | invalidComment
       )*
       { $node = new ProgramNode(decls, mainBody); }
-   ;
+ ;
 
 /* ------------------- Procedimientos ------------------- */
 procedureDecl returns [ProcDeclNode node]
@@ -316,13 +310,19 @@ procedureDecl returns [ProcDeclNode node]
         validateIdentifierLength($procName.text, $procName.line);
         predeclareProcedure($procName.text); 
       }
-      BRACKET_OPEN (param=ID { 
+      // Primer bloque: parámetros
+      BRACKET_OPEN 
+        (param=ID { 
           validateIdentifierLength($param.text, $param.line);
           params.add($param.getText()); 
           declareOrAssign($param.text, ValueType.UNKNOWN, null);
-      })* BRACKET_CLOSE
+        })* 
+      BRACKET_CLOSE
       { declareProcedure($procName.text, params.size()); }
-      BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
+      // Segundo bloque: cuerpo
+      BRACKET_OPEN 
+        ( sentence {body.add($sentence.node);} )* 
+      BRACKET_CLOSE
       FIN
       {
         if (!params.isEmpty()) atLeastOneVariable = true;
@@ -332,17 +332,16 @@ procedureDecl returns [ProcDeclNode node]
 
 /* ------------------- Sentencias ------------------- */
 sentence returns [StmtNode node]
-    : hazHastaStmt      { $node = $hazHastaStmt.node; }
-    | hazMientrasStmt   { $node = $hazMientrasStmt.node; }
-    | varDecl           { $node = $varDecl.node; }
+    : varDecl           { $node = $varDecl.node; }
     | varInit           { $node = $varInit.node; }
-    | callProc          { $node = $callProc.node; }
-    | turtleCmd         { $node = $turtleCmd.node; }
+    | hazDoStmt         { $node = $hazDoStmt.node; }
     | siStmt            { $node = $siStmt.node; }
     | hastaStmt         { $node = $hastaStmt.node; }
     | mientrasStmt      { $node = $mientrasStmt.node; }
     | repiteBlock       { $node = $repiteBlock.node; }
     | execBlock         { $node = $execBlock.node; }
+    | turtleCmd         { $node = $turtleCmd.node; }
+    | callProc          { $node = $callProc.node; }
     ;
 
 varDecl returns [StmtNode node]
@@ -371,14 +370,19 @@ callProc returns [StmtNode node]
         validateIdentifierLength($proc.text, $proc.line);
       }
       (
+        // Sintaxis con corchetes: proc[arg1, arg2]
         BRACKET_OPEN
             ( expression { args.add($expression.node); }
               ( (COMMA)? expression { args.add($expression.node); } )*
             )?
         BRACKET_CLOSE
         |
-        ( primaryArg { args.add($primaryArg.node); } )*
-      )
+        // Sintaxis sin corchetes: proc arg1 arg2 (solo para argumentos simples)
+        // Usar lookahead para evitar capturar comandos turtle
+        { _input.LA(1) != BRACKET_OPEN && 
+          (_input.LA(1) == NUMBER || _input.LA(1) == ID || _input.LA(1) == PAR_OPEN) }?
+        ( primaryArg { args.add($primaryArg.node); } )+
+      )?
       {
         validateProcedureCall($proc.text, args.size());
         $node = new ProcCallNode($proc.text, args);
@@ -413,14 +417,14 @@ repiteBlock returns [StmtNode node]
       }
       BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
       { $node = new RepeatNode($times.node, body); }
-   ;
+ ;
 
 /* ------------------- Control de flujo ------------------- */
 siStmt returns [StmtNode node]
     @init { 
         List<StmtNode> thenBody = new ArrayList<>(); 
         List<StmtNode> elseBody = new ArrayList<>();
-        int elseCount = 0;  // ← NUEVO: contador de bloques ELSE
+        int elseCount = 0;
     }
     : SI PAR_OPEN cond=expression PAR_CLOSE
       {
@@ -429,51 +433,50 @@ siStmt returns [StmtNode node]
       BRACKET_OPEN ( sentence {thenBody.add($sentence.node);} )* BRACKET_CLOSE
       ( 
         BRACKET_OPEN 
-        { elseCount++; }  // ← NUEVO: incrementar contador
+        { elseCount++; }
         ( sentence {elseBody.add($sentence.node);} )* 
         BRACKET_CLOSE 
-      )*  // ← CAMBIO: permitir múltiples bloques para detectar error
+      )*
       {
-        validateSingleElse(elseCount, "SI");  // ← NUEVO: validar
+        validateSingleElse(elseCount, "SI");
         $node = new IfNode($cond.node, thenBody, elseBody.isEmpty()? null : elseBody);
       }
     ;
 
-hazHastaStmt returns [StmtNode node]
+hazDoStmt returns [StmtNode node]
     @init { 
         List<StmtNode> body = new ArrayList<>(); 
         ExprNode condition = null;
-        int line = currentLine();
+        boolean isUntil = false;
+        boolean isWhile = false;
     }
-    : HAZ (DOT)?
+    : HAZ DOT                                            // ← DOT obligatorio
       BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
-      (HASTA PAR_OPEN cond=expression PAR_CLOSE { condition = $cond.node; })?
-      {
-        requireCondition(condition, "HAZ.HASTA");
-        requireNonEmptyBlock(body, "HAZ.HASTA");
-        if (condition != null) {
-            requireBooleanType(condition, "condición de HAZ.HASTA");
+      ( HASTA PAR_OPEN cond=expression PAR_CLOSE 
+        { 
+          condition = $cond.node; 
+          isUntil = true; 
         }
-        $node = new DoUntilNode(body, condition);
-      }
-    ;
-
-hazMientrasStmt returns [StmtNode node]
-    @init { 
-        List<StmtNode> body = new ArrayList<>(); 
-        ExprNode condition = null;
-        int line = currentLine();
-    }
-    : HAZ (DOT)?
-      BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
-      (MIENTRAS PAR_OPEN cond=expression PAR_CLOSE { condition = $cond.node; })?
-      {
-        requireCondition(condition, "HAZ.MIENTRAS");
-        requireNonEmptyBlock(body, "HAZ.MIENTRAS");
-        if (condition != null) {
-            requireBooleanType(condition, "condición de HAZ.MIENTRAS");
+      | MIENTRAS PAR_OPEN cond=expression PAR_CLOSE 
+        { 
+          condition = $cond.node; 
+          isWhile = true; 
         }
-        $node = new DoWhileNode(body, condition);
+      )
+      {
+        if (condition == null) {
+            errors.add("Error en línea " + currentLine() + 
+                       ": HAZ requiere HASTA o MIENTRAS con condición.");
+        } else {
+            requireNonEmptyBlock(body, isUntil ? "HAZ.HASTA" : "HAZ.MIENTRAS");
+            requireBooleanType(condition, isUntil ? "condición de HAZ.HASTA" : "condición de HAZ.MIENTRAS");
+            
+            if (isUntil) {
+                $node = new DoUntilNode(body, condition);
+            } else {
+                $node = new DoWhileNode(body, condition);
+            }
+        }
       }
     ;
 
@@ -485,7 +488,7 @@ mientrasStmt returns [StmtNode node]
       }
       BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
       {
-        requireNonEmptyBlock(body, "MIENTRAS");  // ← NUEVO: validar bloque no vacío
+        requireNonEmptyBlock(body, "MIENTRAS");
         $node = new WhileNode($cond.node, body);
       }
     ;
@@ -498,7 +501,7 @@ hastaStmt returns [StmtNode node]
       }
       BRACKET_OPEN ( sentence {body.add($sentence.node);} )* BRACKET_CLOSE
       {
-        requireNonEmptyBlock(body, "HASTA");  // ← NUEVO: validar bloque no vacío
+        requireNonEmptyBlock(body, "HASTA");
         $node = new UntilNode($cond.node, body);
       }
     ;
