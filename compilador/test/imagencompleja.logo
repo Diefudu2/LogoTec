@@ -1,0 +1,52 @@
+// Roseta de cuadrados con tamaños variables (Versión Optimizada v2)
+// Usa REPITE y procedimientos anidados para generar el patrón
+
+Haz lado1 50
+Haz lado2 70
+Haz lado3 90
+Haz lado4 110
+Haz rotacion 24
+
+// Procedimiento para dibujar un cuadrado
+Para cuadrado [tam]
+[
+  repite 4 [
+    avanza tam
+    giraderecha 90
+  ]
+  giraderecha rotacion
+]
+fin
+
+// Procedimiento para dibujar roseta de N cuadrados con un tamaño
+Para roseta [tam veces]
+[
+  repite veces [
+    cuadrado[tam]
+  ]
+]
+fin
+
+//NUEVO: Procedimiento para patrón de 4 tamaños alternados
+Para rosetafull [reps]
+[
+  repite reps [
+    cuadrado[lado1]
+    cuadrado[lado2]
+    cuadrado[lado3]
+    cuadrado[lado4]
+  ]
+]
+fin
+
+// Programa principal
+centro
+bajalapiz
+
+// Opción 1: Usar roseta completa (3 ciclos completos + 3 finales)
+rosetafull[3]
+cuadrado[lado1]
+cuadrado[lado2]
+cuadrado[lado3]
+
+subelapiz

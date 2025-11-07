@@ -1,4 +1,4 @@
-// Generated from LogoTec.g4 by ANTLR 4.4
+// Generated from com\miorganizacion\logotec\compilador\LogoTec.g4 by ANTLR 4.5.1
 package com.miorganizacion.logotec.compilador;
 
     import java.util.*;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LogoTecParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -33,19 +33,6 @@ public class LogoTecParser extends Parser {
 		BRACKET_CLOSE=66, PAR_OPEN=67, PAR_CLOSE=68, SEMICOLON=69, COMMA=70, DOT=71, 
 		BOOLEAN=72, DECIMAL=73, NUMBER=74, STRING=75, ID=76, FIRSTLINE_COMMENT=77, 
 		COMMENT_LINE=78, INVALID_COMMENT=79, WS=80, COLOR=81;
-	public static final String[] tokenNames = {
-		"<INVALID>", "PARA", "HAZ", "FIN", "EJECUTA", "REPITE", "APARECETORTUGA", 
-		"AT", "PONPOS", "PONXY", "PONRUMBO", "RUMBO", "PONX", "PONY", "BAJALAPIZ", 
-		"BL", "SUBELAPIZ", "SB", "CENTRO", "ESPERA", "INC", "'SI'", "'HASTA'", 
-		"'MIENTRAS'", "'INIC'", "AVANZA", "AV", "RETROCEDE", "RE", "'atras'", 
-		"GIRADERECHA", "GD", "GIRAIZQUIERDA", "GI", "'ocultatortuga'", "'ot'", 
-		"PONCOLORLAPIZ", "'ponCL'", "PONCL", "IGUALESQ", "'Y'", "'O'", "MAYORQ", 
-		"MENORQ", "DIFERENCIA", "AZAR", "PRODUCTO", "POTENCIA", "DIVISION", "SUMA", 
-		"'+'", "'-'", "'*'", "'/'", "'^'", "'&&'", "'||'", "'!'", "'>'", "'<'", 
-		"'>='", "'<='", "'=='", "'!='", "'='", "BRACKET_OPEN", "BRACKET_CLOSE", 
-		"'('", "')'", "';'", "COMMA", "'.'", "BOOLEAN", "DECIMAL", "NUMBER", "STRING", 
-		"ID", "FIRSTLINE_COMMENT", "COMMENT_LINE", "INVALID_COMMENT", "WS", "COLOR"
-	};
 	public static final int
 		RULE_program = 0, RULE_proceduresBlock = 1, RULE_procedureDecl = 2, RULE_sentence = 3, 
 		RULE_varDecl = 4, RULE_varInit = 5, RULE_callProc = 6, RULE_primaryArg = 7, 
@@ -65,11 +52,63 @@ public class LogoTecParser extends Parser {
 		"cmtFirstLine", "invalidComment"
 	};
 
-	@Override
-	public String getGrammarFileName() { return "LogoTec.g4"; }
+	private static final String[] _LITERAL_NAMES = {
+		null, null, null, null, null, null, null, null, null, null, null, null, 
+		null, null, null, null, null, null, null, null, null, "'SI'", "'HASTA'", 
+		"'MIENTRAS'", "'INIC'", null, null, null, null, "'atras'", null, null, 
+		null, null, "'ocultatortuga'", "'ot'", null, "'ponCL'", null, null, "'Y'", 
+		"'O'", null, null, null, null, null, null, null, null, "'+'", "'-'", "'*'", 
+		"'/'", "'^'", "'&&'", "'||'", "'!'", "'>'", "'<'", "'>='", "'<='", "'=='", 
+		"'!='", "'='", null, null, "'('", "')'", "';'", null, "'.'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, "PARA", "HAZ", "FIN", "EJECUTA", "REPITE", "APARECETORTUGA", "AT", 
+		"PONPOS", "PONXY", "PONRUMBO", "RUMBO", "PONX", "PONY", "BAJALAPIZ", "BL", 
+		"SUBELAPIZ", "SB", "CENTRO", "ESPERA", "INC", "SI", "HASTA", "MIENTRAS", 
+		"INIC", "AVANZA", "AV", "RETROCEDE", "RE", "ATRAS", "GIRADERECHA", "GD", 
+		"GIRAIZQUIERDA", "GI", "OCULTATORTUGA", "OT", "PONCOLORLAPIZ", "PONCL_ALIAS", 
+		"PONCL", "IGUALESQ", "YFUNC", "OFUNC", "MAYORQ", "MENORQ", "DIFERENCIA", 
+		"AZAR", "PRODUCTO", "POTENCIA", "DIVISION", "SUMA", "PLUS", "MINUS", "MULT", 
+		"DIV", "EXP", "AND", "OR", "NOT", "GT", "LT", "GEQ", "LEQ", "EQ", "NEQ", 
+		"ASSIGN", "BRACKET_OPEN", "BRACKET_CLOSE", "PAR_OPEN", "PAR_CLOSE", "SEMICOLON", 
+		"COMMA", "DOT", "BOOLEAN", "DECIMAL", "NUMBER", "STRING", "ID", "FIRSTLINE_COMMENT", 
+		"COMMENT_LINE", "INVALID_COMMENT", "WS", "COLOR"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
 
 	@Override
-	public String[] getTokenNames() { return tokenNames; }
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
+
+	@Override
+	public String getGrammarFileName() { return "LogoTec.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -87,7 +126,7 @@ public class LogoTecParser extends Parser {
 	    boolean firstLineHasComment = false;
 	    boolean atLeastOneVariable = false;
 
-	/* 3 ------------------- Utilidad para l√≠nea actual ------------------- */
+	/* 3 ------------------- Utilidad para lÌnea actual ------------------- */
 	    int currentLine() {
 	        return getCurrentToken() != null ? getCurrentToken().getLine() : -1;
 	    }
@@ -105,10 +144,10 @@ public class LogoTecParser extends Parser {
 	    }
 	    List<PendingCall> pendingCalls = new ArrayList<>();
 
-	/* 5 ------------------- Validaci√≥n de restricciones del programa ------------------- */
+	/* 5 ------------------- ValidaciÛn de restricciones del programa ------------------- */
 	    void ensureProgramConstraints() {
 	        if (!firstLineHasComment) {
-	            errors.add("Error en l√≠nea 1: el programa debe iniciar con un comentario (// ...).");
+	            errors.add("Error en lÌnea 1: el programa debe iniciar con un comentario (// ...).");
 	        }
 	        if (!atLeastOneVariable) {
 	            errors.add("Error: el programa debe definir al menos una variable con 'Haz' o 'INIC'.");
@@ -116,14 +155,14 @@ public class LogoTecParser extends Parser {
 	        for (PendingCall pc : pendingCalls) {
 	            Symbol s = symbols.get(pc.name);
 	            if (s == null) {
-	                errors.add("Error en l√≠nea " + pc.line + ": procedimiento '" + pc.name + "' no est√° definido.");
+	                errors.add("Error en lÌnea " + pc.line + ": procedimiento '" + pc.name + "' no est· definido.");
 	            } else if (s.type != ValueType.PROCEDURE) {
-	                errors.add("Error en l√≠nea " + pc.line + ": '" + pc.name + "' no es un procedimiento.");
+	                errors.add("Error en lÌnea " + pc.line + ": '" + pc.name + "' no es un procedimiento.");
 	            } else {
 	                int expectedParams = (Integer) s.value;
 	                if (pc.argCount != expectedParams) {
-	                    errors.add("Error en l√≠nea " + pc.line + ": procedimiento '" + pc.name + "' espera " + expectedParams +
-	                               " par√°metros, pero se llam√≥ con " + pc.argCount + ".");
+	                    errors.add("Error en lÌnea " + pc.line + ": procedimiento '" + pc.name + "' espera " + expectedParams +
+	                               " par·metros, pero se llamÛ con " + pc.argCount + ".");
 	                }
 	            }
 	        }
@@ -133,7 +172,7 @@ public class LogoTecParser extends Parser {
 	        }
 	    }
 
-	/* 6 ------------------- Validaci√≥n de nombres de variables ------------------- */
+	/* 6 ------------------- ValidaciÛn de nombres de variables ------------------- */
 	    boolean isValidVarName(String id) {
 	        if (id.length() == 0 || id.length() > 10) return false;
 	        if (!Character.isLowerCase(id.charAt(0))) return false;
@@ -145,19 +184,19 @@ public class LogoTecParser extends Parser {
 	    
 	    /**
 	     * Valida longitud de identificador en cualquier contexto.
-	     * Restricci√≥n #3
+	     * RestricciÛn #3
 	     */
 	    void validateIdentifierLength(String id, int line) {
 	        if (id.length() > 10) {
-	            errors.add("Error en l√≠nea " + line + 
-	                       ": identificador '" + id + "' excede el l√≠mite de 10 caracteres (tiene " + id.length() + ").");
+	            errors.add("Error en lÌnea " + line + 
+	                       ": identificador '" + id + "' excede el lÌmite de 10 caracteres (tiene " + id.length() + ").");
 	        }
 	    }
 
-	/* 7 ------------------- Declaraci√≥n y asignaci√≥n de variables ------------------- */
+	/* 7 ------------------- DeclaraciÛn y asignaciÛn de variables ------------------- */
 	    void declareOrAssign(String name, ValueType type, Object value) {
 	        if (!isValidVarName(name)) {
-	            errors.add("Error en l√≠nea " + currentLine() + ": identificador inv√°lido '" + name + "'.");
+	            errors.add("Error en lÌnea " + currentLine() + ": identificador inv·lido '" + name + "'.");
 	            return;
 	        }
 	        Symbol s = symbols.get(name);
@@ -166,7 +205,7 @@ public class LogoTecParser extends Parser {
 	            atLeastOneVariable = true;
 	        } else {
 	            if (s.type != type) {
-	                errors.add("Error en l√≠nea " + currentLine() + ": intento de asignar " + type +
+	                errors.add("Error en lÌnea " + currentLine() + ": intento de asignar " + type +
 	                           " a variable '" + name + "' de tipo " + s.type + ".");
 	            } else {
 	                s.value = value;
@@ -178,17 +217,17 @@ public class LogoTecParser extends Parser {
 	    void assignInitOnlyIfDeclared(String name, ValueType valueType, ExprNode exprNode) {
 	        int line = currentLine();
 	        if (!isValidVarName(name)) {
-	            errors.add("Error en l√≠nea " + line + ": identificador inv√°lido '" + name + "'.");
+	            errors.add("Error en lÌnea " + line + ": identificador inv·lido '" + name + "'.");
 	            return;
 	        }
 	        Symbol s = symbols.get(name);
 	        if (s == null) {
-	            errors.add("Error en l√≠nea " + line +
+	            errors.add("Error en lÌnea " + line +
 	                       ": variable '" + name + "' no ha sido declarada antes de inicializar.");
 	            return;
 	        }
 	        if (s.type != valueType) {
-	            errors.add("Error en l√≠nea " + line +
+	            errors.add("Error en lÌnea " + line +
 	                       ": intento de asignar " + valueType + " a variable '" + name +
 	                       "' de tipo " + s.type + ".");
 	            return;
@@ -196,15 +235,15 @@ public class LogoTecParser extends Parser {
 	        s.value = exprNode;
 	    }
 
-	/* 9 ------------------- Declaraci√≥n de procedimientos ------------------- */
+	/* 9 ------------------- DeclaraciÛn de procedimientos ------------------- */
 	    void predeclareProcedure(String name) {
 	        Symbol s = symbols.get(name);
 	        if (s == null) {
 	            symbols.put(name, new Symbol(name, ValueType.PROCEDURE, null));
 	        } else if (s.type == ValueType.PROCEDURE && s.value == null) {
-	            errors.add("Error en l√≠nea " + currentLine() + ": procedimiento '" + name + "' ya est√° en proceso de definici√≥n.");
+	            errors.add("Error en lÌnea " + currentLine() + ": procedimiento '" + name + "' ya est· en proceso de definiciÛn.");
 	        } else {
-	            errors.add("Error en l√≠nea " + currentLine() + ": s√≠mbolo '" + name + "' ya est√° definido y no puede declararse como procedimiento.");
+	            errors.add("Error en lÌnea " + currentLine() + ": sÌmbolo '" + name + "' ya est· definido y no puede declararse como procedimiento.");
 	        }
 	    }
 
@@ -213,19 +252,19 @@ public class LogoTecParser extends Parser {
 	        if (s == null) {
 	            symbols.put(name, new Symbol(name, ValueType.PROCEDURE, paramCount));
 	        } else if (s.type != ValueType.PROCEDURE) {
-	            errors.add("Error en l√≠nea " + currentLine() + ": s√≠mbolo '" + name + "' ya est√° definido y no es un procedimiento.");
+	            errors.add("Error en lÌnea " + currentLine() + ": sÌmbolo '" + name + "' ya est· definido y no es un procedimiento.");
 	        } else if (s.value == null) {
 	            s.value = paramCount;
 	        } else {
 	            int expectedParams = (Integer) s.value;
 	            if (expectedParams != paramCount) {
-	                errors.add("Error en l√≠nea " + currentLine() + ": procedimiento '" + name +
-	                           "' ya est√° definido con " + expectedParams + " par√°metros.");
+	                errors.add("Error en lÌnea " + currentLine() + ": procedimiento '" + name +
+	                           "' ya est· definido con " + expectedParams + " par·metros.");
 	            }
 	        }
 	    }
 
-	/* 10 ------------------- Validaci√≥n de llamadas a procedimientos ------------------- */
+	/* 10 ------------------- ValidaciÛn de llamadas a procedimientos ------------------- */
 	    void validateProcedureCall(String name, int argCount) {
 	        Symbol s = symbols.get(name);
 	        int line = currentLine();
@@ -234,30 +273,30 @@ public class LogoTecParser extends Parser {
 	            return;
 	        }
 	        if (s.type != ValueType.PROCEDURE) {
-	            errors.add("Error en l√≠nea " + line + ": '" + name + "' no es un procedimiento.");
+	            errors.add("Error en lÌnea " + line + ": '" + name + "' no es un procedimiento.");
 	        } else {
 	            int expectedParams = (Integer) s.value;
 	            if (argCount != expectedParams) {
-	                errors.add("Error en l√≠nea " + line + ": procedimiento '" + name + "' espera " +
-	                           expectedParams + " par√°metros, pero se llam√≥ con " + argCount + ".");
+	                errors.add("Error en lÌnea " + line + ": procedimiento '" + name + "' espera " +
+	                           expectedParams + " par·metros, pero se llamÛ con " + argCount + ".");
 	            }
 	        }
 	    }
 
-	/* 11 ------------------- GRUPO 1: Validaci√≥n de tipos en expresiones ------------------- */
+	/* 11 ------------------- GRUPO 1: ValidaciÛn de tipos en expresiones ------------------- */
 	    void requireNumericType(ExprNode expr, String commandName) {
 	        ValueType t = ValueType.infer(expr, symbols);
 	        if (t != ValueType.INT && t != ValueType.UNKNOWN) {
-	            errors.add("Error en l√≠nea " + currentLine() + 
-	                       ": comando '" + commandName + "' requiere argumento num√©rico, recibi√≥ " + t + ".");
+	            errors.add("Error en lÌnea " + currentLine() + 
+	                       ": comando '" + commandName + "' requiere argumento numÈrico, recibiÛ " + t + ".");
 	        }
 	    }
 
 	    void requireBooleanType(ExprNode expr, String context) {
 	        ValueType t = ValueType.infer(expr, symbols);
 	        if (t != ValueType.BOOL && t != ValueType.UNKNOWN) {
-	            errors.add("Error en l√≠nea " + currentLine() + 
-	                       ": " + context + " requiere expresi√≥n booleana, recibi√≥ " + t + ".");
+	            errors.add("Error en lÌnea " + currentLine() + 
+	                       ": " + context + " requiere expresiÛn booleana, recibiÛ " + t + ".");
 	        }
 	    }
 
@@ -265,19 +304,19 @@ public class LogoTecParser extends Parser {
 	        int line = currentLine();
 	        Symbol s = symbols.get(varName);
 	        if (s == null) {
-	            errors.add("Error en l√≠nea " + line + 
+	            errors.add("Error en lÌnea " + line + 
 	                       ": variable '" + varName + "' no declarada.");
 	            return;
 	        }
 	        if (s.type != ValueType.INT) {
-	            errors.add("Error en l√≠nea " + line + 
-	                       ": INC solo puede incrementar variables num√©ricas, '" + varName + 
+	            errors.add("Error en lÌnea " + line + 
+	                       ": INC solo puede incrementar variables numÈricas, '" + varName + 
 	                       "' es de tipo " + s.type + ".");
 	        }
 	        ValueType incType = ValueType.infer(incrementExpr, symbols);
 	        if (incType != ValueType.INT && incType != ValueType.UNKNOWN) {
-	            errors.add("Error en l√≠nea " + line + 
-	                       ": INC requiere incremento num√©rico, recibi√≥ " + incType + ".");
+	            errors.add("Error en lÌnea " + line + 
+	                       ": INC requiere incremento numÈrico, recibiÛ " + incType + ".");
 	        }
 	    }
 
@@ -286,58 +325,58 @@ public class LogoTecParser extends Parser {
 	        ValueType t1 = ValueType.infer(arg1, symbols);
 	        ValueType t2 = arg2 != null ? ValueType.infer(arg2, symbols) : ValueType.INT;
 	        if (t1 != ValueType.INT && t1 != ValueType.UNKNOWN) {
-	            errors.add("Error en l√≠nea " + line + 
-	                       ": funci√≥n '" + funcName + "' requiere argumentos num√©ricos, primer argumento es " + t1 + ".");
+	            errors.add("Error en lÌnea " + line + 
+	                       ": funciÛn '" + funcName + "' requiere argumentos numÈricos, primer argumento es " + t1 + ".");
 	        }
 	        if (arg2 != null && t2 != ValueType.INT && t2 != ValueType.UNKNOWN) {
-	            errors.add("Error en l√≠nea " + line + 
-	                       ": funci√≥n '" + funcName + "' requiere argumentos num√©ricos, segundo argumento es " + t2 + ".");
+	            errors.add("Error en lÌnea " + line + 
+	                       ": funciÛn '" + funcName + "' requiere argumentos numÈricos, segundo argumento es " + t2 + ".");
 	        }
 	    }
 	    
-	/* GRUPO 3: Validaci√≥n de bloques de control de flujo */
+	/* GRUPO 3: ValidaciÛn de bloques de control de flujo */
 	    
 	    /**
-	     * Valida que un bloque de sentencias no est√© vac√≠o.
+	     * Valida que un bloque de sentencias no estÈ vacÌo.
 	     * Restricciones #37, #39
 	     */
 	    void requireNonEmptyBlock(List<StmtNode> body, String blockType) {
 	        if (body == null || body.isEmpty()) {
-	            errors.add("Error en l√≠nea " + currentLine() + 
-	                       ": bloque de '" + blockType + "' no puede estar vac√≠o.");
+	            errors.add("Error en lÌnea " + currentLine() + 
+	                       ": bloque de '" + blockType + "' no puede estar vacÌo.");
 	        }
 	    }
 
 	    /**
-	     * Valida que un SI solo tenga un bloque ELSE (m√°ximo).
-	     * Restricci√≥n #36
+	     * Valida que un SI solo tenga un bloque ELSE (m·ximo).
+	     * RestricciÛn #36
 	     */
 	    void validateSingleElse(int elseBlockCount, String context) {
 	        if (elseBlockCount > 1) {
-	            errors.add("Error en l√≠nea " + currentLine() + 
+	            errors.add("Error en lÌnea " + currentLine() + 
 	                       ": " + context + " solo puede tener un bloque ELSE, se encontraron " + elseBlockCount + ".");
 	        }
 	    }
 
 	    /**
-	     * Valida que HAZ.HASTA/HAZ.MIENTRAS tenga condici√≥n.
-	     * Restricci√≥n #38, #40
+	     * Valida que HAZ.HASTA/HAZ.MIENTRAS tenga condiciÛn.
+	     * RestricciÛn #38, #40
 	     */
 	    void requireCondition(ExprNode condition, String loopType) {
 	        if (condition == null) {
-	            errors.add("Error en l√≠nea " + currentLine() + 
-	                       ": '" + loopType + "' requiere una condici√≥n entre par√©ntesis.");
+	            errors.add("Error en lÌnea " + currentLine() + 
+	                       ": '" + loopType + "' requiere una condiciÛn entre parÈntesis.");
 	        }
 	    }
 
 	    /**
 	     * Valida que funciones binarias tengan exactamente 2 argumentos.
-	     * Restricci√≥n #44
+	     * RestricciÛn #44
 	     */
 	    void requireTwoArguments(int argCount, String funcName, int line) {
 	        if (argCount != 2) {
-	            errors.add("Error en l√≠nea " + line + 
-	                       ": funci√≥n '" + funcName + "' requiere exactamente 2 argumentos, recibi√≥ " + argCount + ".");
+	            errors.add("Error en lÌnea " + line + 
+	                       ": funciÛn '" + funcName + "' requiere exactamente 2 argumentos, recibiÛ " + argCount + ".");
 	        }
 	    }
 
@@ -346,8 +385,8 @@ public class LogoTecParser extends Parser {
 	     */
 	    void requireOneArgument(int argCount, String funcName, int line) {
 	        if (argCount != 1) {
-	            errors.add("Error en l√≠nea " + line + 
-	                       ": funci√≥n '" + funcName + "' requiere exactamente 1 argumento, recibi√≥ " + argCount + ".");
+	            errors.add("Error en lÌnea " + line + 
+	                       ": funciÛn '" + funcName + "' requiere exactamente 1 argumento, recibiÛ " + argCount + ".");
 	        }
 	    }
 
@@ -358,10 +397,10 @@ public class LogoTecParser extends Parser {
 	public static class ProgramContext extends ParserRuleContext {
 		public ProgramNode node;
 		public ProceduresBlockContext p;
+		public TerminalNode EOF() { return getToken(LogoTecParser.EOF, 0); }
 		public ProceduresBlockContext proceduresBlock() {
 			return getRuleContext(ProceduresBlockContext.class,0);
 		}
-		public TerminalNode EOF() { return getToken(LogoTecParser.EOF, 0); }
 		public CmtFirstLineContext cmtFirstLine() {
 			return getRuleContext(CmtFirstLineContext.class,0);
 		}
@@ -377,6 +416,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitProgram(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitProgram(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -390,12 +434,15 @@ public class LogoTecParser extends Parser {
 			_la = _input.LA(1);
 			if (_la==FIRSTLINE_COMMENT) {
 				{
-				setState(62); cmtFirstLine();
+				setState(62);
+				cmtFirstLine();
 				}
 			}
 
-			setState(65); ((ProgramContext)_localctx).p = proceduresBlock();
-			setState(66); match(EOF);
+			setState(65);
+			((ProgramContext)_localctx).p = proceduresBlock();
+			setState(66);
+			match(EOF);
 
 			        ensureProgramConstraints();
 			        ((ProgramContext)_localctx).node =  ((ProgramContext)_localctx).p.node;
@@ -417,11 +464,14 @@ public class LogoTecParser extends Parser {
 		public ProgramNode node;
 		public ProcedureDeclContext procedureDecl;
 		public SentenceContext sentence;
-		public InvalidCommentContext invalidComment(int i) {
-			return getRuleContext(InvalidCommentContext.class,i);
-		}
 		public List<ProcedureDeclContext> procedureDecl() {
 			return getRuleContexts(ProcedureDeclContext.class);
+		}
+		public ProcedureDeclContext procedureDecl(int i) {
+			return getRuleContext(ProcedureDeclContext.class,i);
+		}
+		public List<SentenceContext> sentence() {
+			return getRuleContexts(SentenceContext.class);
 		}
 		public SentenceContext sentence(int i) {
 			return getRuleContext(SentenceContext.class,i);
@@ -429,11 +479,8 @@ public class LogoTecParser extends Parser {
 		public List<InvalidCommentContext> invalidComment() {
 			return getRuleContexts(InvalidCommentContext.class);
 		}
-		public ProcedureDeclContext procedureDecl(int i) {
-			return getRuleContext(ProcedureDeclContext.class,i);
-		}
-		public List<SentenceContext> sentence() {
-			return getRuleContexts(SentenceContext.class);
+		public InvalidCommentContext invalidComment(int i) {
+			return getRuleContext(InvalidCommentContext.class,i);
 		}
 		public ProceduresBlockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -446,6 +493,11 @@ public class LogoTecParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitProceduresBlock(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitProceduresBlock(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -469,7 +521,8 @@ public class LogoTecParser extends Parser {
 				switch (_input.LA(1)) {
 				case PARA:
 					{
-					setState(69); ((ProceduresBlockContext)_localctx).procedureDecl = procedureDecl();
+					setState(69);
+					((ProceduresBlockContext)_localctx).procedureDecl = procedureDecl();
 					 decls.add(((ProceduresBlockContext)_localctx).procedureDecl.node); 
 					}
 					break;
@@ -509,13 +562,15 @@ public class LogoTecParser extends Parser {
 				case PONCL:
 				case ID:
 					{
-					setState(72); ((ProceduresBlockContext)_localctx).sentence = sentence();
+					setState(72);
+					((ProceduresBlockContext)_localctx).sentence = sentence();
 					 mainBody.add(((ProceduresBlockContext)_localctx).sentence.node); 
 					}
 					break;
 				case INVALID_COMMENT:
 					{
-					setState(75); invalidComment();
+					setState(75);
+					invalidComment();
 					}
 					break;
 				default:
@@ -545,25 +600,25 @@ public class LogoTecParser extends Parser {
 		public Token procName;
 		public Token param;
 		public SentenceContext sentence;
-		public List<TerminalNode> ID() { return getTokens(LogoTecParser.ID); }
 		public TerminalNode PARA() { return getToken(LogoTecParser.PARA, 0); }
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
-		}
-		public List<TerminalNode> BRACKET_CLOSE() { return getTokens(LogoTecParser.BRACKET_CLOSE); }
-		public TerminalNode ID(int i) {
-			return getToken(LogoTecParser.ID, i);
-		}
 		public List<TerminalNode> BRACKET_OPEN() { return getTokens(LogoTecParser.BRACKET_OPEN); }
 		public TerminalNode BRACKET_OPEN(int i) {
 			return getToken(LogoTecParser.BRACKET_OPEN, i);
 		}
+		public List<TerminalNode> BRACKET_CLOSE() { return getTokens(LogoTecParser.BRACKET_CLOSE); }
 		public TerminalNode BRACKET_CLOSE(int i) {
 			return getToken(LogoTecParser.BRACKET_CLOSE, i);
 		}
 		public TerminalNode FIN() { return getToken(LogoTecParser.FIN, 0); }
+		public List<TerminalNode> ID() { return getTokens(LogoTecParser.ID); }
+		public TerminalNode ID(int i) {
+			return getToken(LogoTecParser.ID, i);
+		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
+		}
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
 		}
 		public ProcedureDeclContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -576,6 +631,11 @@ public class LogoTecParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitProcedureDecl(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitProcedureDecl(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -590,20 +650,24 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(83); match(PARA);
-			setState(84); ((ProcedureDeclContext)_localctx).procName = match(ID);
+			setState(83);
+			match(PARA);
+			setState(84);
+			((ProcedureDeclContext)_localctx).procName = match(ID);
 			 
 			        validateIdentifierLength((((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getText():null), (((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getLine():0));
 			        predeclareProcedure((((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getText():null)); 
 			      
-			setState(86); match(BRACKET_OPEN);
+			setState(86);
+			match(BRACKET_OPEN);
 			setState(91);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==ID) {
 				{
 				{
-				setState(87); ((ProcedureDeclContext)_localctx).param = match(ID);
+				setState(87);
+				((ProcedureDeclContext)_localctx).param = match(ID);
 				 
 				          validateIdentifierLength((((ProcedureDeclContext)_localctx).param!=null?((ProcedureDeclContext)_localctx).param.getText():null), (((ProcedureDeclContext)_localctx).param!=null?((ProcedureDeclContext)_localctx).param.getLine():0));
 				          params.add(((ProcedureDeclContext)_localctx).param.getText()); 
@@ -615,16 +679,19 @@ public class LogoTecParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(94); match(BRACKET_CLOSE);
+			setState(94);
+			match(BRACKET_CLOSE);
 			 declareProcedure((((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getText():null), params.size()); 
-			setState(96); match(BRACKET_OPEN);
+			setState(96);
+			match(BRACKET_OPEN);
 			setState(102);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(97); ((ProcedureDeclContext)_localctx).sentence = sentence();
+				setState(97);
+				((ProcedureDeclContext)_localctx).sentence = sentence();
 				body.add(((ProcedureDeclContext)_localctx).sentence.node);
 				}
 				}
@@ -632,8 +699,10 @@ public class LogoTecParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(105); match(BRACKET_CLOSE);
-			setState(106); match(FIN);
+			setState(105);
+			match(BRACKET_CLOSE);
+			setState(106);
+			match(FIN);
 
 			        if (!params.isEmpty()) atLeastOneVariable = true;
 			        ((ProcedureDeclContext)_localctx).node =  new ProcDeclNode((((ProcedureDeclContext)_localctx).procName!=null?((ProcedureDeclContext)_localctx).procName.getText():null), params, body);
@@ -663,8 +732,11 @@ public class LogoTecParser extends Parser {
 		public ExecBlockContext execBlock;
 		public TurtleCmdContext turtleCmd;
 		public CallProcContext callProc;
-		public HastaStmtContext hastaStmt() {
-			return getRuleContext(HastaStmtContext.class,0);
+		public VarDeclContext varDecl() {
+			return getRuleContext(VarDeclContext.class,0);
+		}
+		public VarInitContext varInit() {
+			return getRuleContext(VarInitContext.class,0);
 		}
 		public HazDoStmtContext hazDoStmt() {
 			return getRuleContext(HazDoStmtContext.class,0);
@@ -672,23 +744,20 @@ public class LogoTecParser extends Parser {
 		public SiStmtContext siStmt() {
 			return getRuleContext(SiStmtContext.class,0);
 		}
-		public VarInitContext varInit() {
-			return getRuleContext(VarInitContext.class,0);
-		}
-		public VarDeclContext varDecl() {
-			return getRuleContext(VarDeclContext.class,0);
+		public HastaStmtContext hastaStmt() {
+			return getRuleContext(HastaStmtContext.class,0);
 		}
 		public MientrasStmtContext mientrasStmt() {
 			return getRuleContext(MientrasStmtContext.class,0);
-		}
-		public TurtleCmdContext turtleCmd() {
-			return getRuleContext(TurtleCmdContext.class,0);
 		}
 		public RepiteBlockContext repiteBlock() {
 			return getRuleContext(RepiteBlockContext.class,0);
 		}
 		public ExecBlockContext execBlock() {
 			return getRuleContext(ExecBlockContext.class,0);
+		}
+		public TurtleCmdContext turtleCmd() {
+			return getRuleContext(TurtleCmdContext.class,0);
 		}
 		public CallProcContext callProc() {
 			return getRuleContext(CallProcContext.class,0);
@@ -705,6 +774,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitSentence(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitSentence(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final SentenceContext sentence() throws RecognitionException {
@@ -716,70 +790,80 @@ public class LogoTecParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(109); ((SentenceContext)_localctx).varDecl = varDecl();
+				setState(109);
+				((SentenceContext)_localctx).varDecl = varDecl();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).varDecl.node; 
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(112); ((SentenceContext)_localctx).varInit = varInit();
+				setState(112);
+				((SentenceContext)_localctx).varInit = varInit();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).varInit.node; 
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(115); ((SentenceContext)_localctx).hazDoStmt = hazDoStmt();
+				setState(115);
+				((SentenceContext)_localctx).hazDoStmt = hazDoStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).hazDoStmt.node; 
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(118); ((SentenceContext)_localctx).siStmt = siStmt();
+				setState(118);
+				((SentenceContext)_localctx).siStmt = siStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).siStmt.node; 
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(121); ((SentenceContext)_localctx).hastaStmt = hastaStmt();
+				setState(121);
+				((SentenceContext)_localctx).hastaStmt = hastaStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).hastaStmt.node; 
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(124); ((SentenceContext)_localctx).mientrasStmt = mientrasStmt();
+				setState(124);
+				((SentenceContext)_localctx).mientrasStmt = mientrasStmt();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).mientrasStmt.node; 
 				}
 				break;
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(127); ((SentenceContext)_localctx).repiteBlock = repiteBlock();
+				setState(127);
+				((SentenceContext)_localctx).repiteBlock = repiteBlock();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).repiteBlock.node; 
 				}
 				break;
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(130); ((SentenceContext)_localctx).execBlock = execBlock();
+				setState(130);
+				((SentenceContext)_localctx).execBlock = execBlock();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).execBlock.node; 
 				}
 				break;
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(133); ((SentenceContext)_localctx).turtleCmd = turtleCmd();
+				setState(133);
+				((SentenceContext)_localctx).turtleCmd = turtleCmd();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).turtleCmd.node; 
 				}
 				break;
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(136); ((SentenceContext)_localctx).callProc = callProc();
+				setState(136);
+				((SentenceContext)_localctx).callProc = callProc();
 				 ((SentenceContext)_localctx).node =  ((SentenceContext)_localctx).callProc.node; 
 				}
 				break;
@@ -800,12 +884,12 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public Token name;
 		public LiteralOrStringContext value;
+		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
 		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
 		public LiteralOrStringContext literalOrString() {
 			return getRuleContext(LiteralOrStringContext.class,0);
 		}
 		public TerminalNode SEMICOLON() { return getToken(LogoTecParser.SEMICOLON, 0); }
-		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
 		public VarDeclContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -818,6 +902,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitVarDecl(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitVarDecl(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final VarDeclContext varDecl() throws RecognitionException {
@@ -827,14 +916,18 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(141); match(HAZ);
-			setState(142); ((VarDeclContext)_localctx).name = match(ID);
-			setState(143); ((VarDeclContext)_localctx).value = literalOrString();
+			setState(141);
+			match(HAZ);
+			setState(142);
+			((VarDeclContext)_localctx).name = match(ID);
+			setState(143);
+			((VarDeclContext)_localctx).value = literalOrString();
 			setState(145);
 			_la = _input.LA(1);
 			if (_la==SEMICOLON) {
 				{
-				setState(144); match(SEMICOLON);
+				setState(144);
+				match(SEMICOLON);
 				}
 			}
 
@@ -860,13 +953,13 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public Token name;
 		public ExpressionContext expression;
-		public TerminalNode ASSIGN() { return getToken(LogoTecParser.ASSIGN, 0); }
-		public TerminalNode SEMICOLON() { return getToken(LogoTecParser.SEMICOLON, 0); }
-		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
 		public TerminalNode INIC() { return getToken(LogoTecParser.INIC, 0); }
+		public TerminalNode ASSIGN() { return getToken(LogoTecParser.ASSIGN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode SEMICOLON() { return getToken(LogoTecParser.SEMICOLON, 0); }
+		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
 		public VarInitContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -879,6 +972,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitVarInit(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitVarInit(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final VarInitContext varInit() throws RecognitionException {
@@ -887,11 +985,16 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(149); match(INIC);
-			setState(150); ((VarInitContext)_localctx).name = match(ID);
-			setState(151); match(ASSIGN);
-			setState(152); ((VarInitContext)_localctx).expression = expression();
-			setState(153); match(SEMICOLON);
+			setState(149);
+			match(INIC);
+			setState(150);
+			((VarInitContext)_localctx).name = match(ID);
+			setState(151);
+			match(ASSIGN);
+			setState(152);
+			((VarInitContext)_localctx).expression = expression();
+			setState(153);
+			match(SEMICOLON);
 
 			        validateIdentifierLength((((VarInitContext)_localctx).name!=null?((VarInitContext)_localctx).name.getText():null), (((VarInitContext)_localctx).name!=null?((VarInitContext)_localctx).name.getLine():0));
 			        ValueType t = ValueType.infer(((VarInitContext)_localctx).expression.node, symbols);
@@ -917,6 +1020,14 @@ public class LogoTecParser extends Parser {
 		public ExpressionContext expression;
 		public PrimaryArgContext primaryArg;
 		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
 		public List<PrimaryArgContext> primaryArg() {
 			return getRuleContexts(PrimaryArgContext.class);
 		}
@@ -924,14 +1035,6 @@ public class LogoTecParser extends Parser {
 			return getRuleContext(PrimaryArgContext.class,i);
 		}
 		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
 		public TerminalNode COMMA(int i) {
 			return getToken(LogoTecParser.COMMA, i);
 		}
@@ -947,6 +1050,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitCallProc(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitCallProc(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CallProcContext callProc() throws RecognitionException {
@@ -958,7 +1066,8 @@ public class LogoTecParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(156); ((CallProcContext)_localctx).proc = match(ID);
+			setState(156);
+			((CallProcContext)_localctx).proc = match(ID);
 
 			        validateIdentifierLength((((CallProcContext)_localctx).proc!=null?((CallProcContext)_localctx).proc.getText():null), (((CallProcContext)_localctx).proc!=null?((CallProcContext)_localctx).proc.getLine():0));
 			      
@@ -966,12 +1075,14 @@ public class LogoTecParser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
 			case 1:
 				{
-				setState(158); match(BRACKET_OPEN);
+				setState(158);
+				match(BRACKET_OPEN);
 				setState(172);
 				_la = _input.LA(1);
 				if (((((_la - 39)) & ~0x3f) == 0 && ((1L << (_la - 39)) & ((1L << (IGUALESQ - 39)) | (1L << (YFUNC - 39)) | (1L << (OFUNC - 39)) | (1L << (MAYORQ - 39)) | (1L << (MENORQ - 39)) | (1L << (DIFERENCIA - 39)) | (1L << (AZAR - 39)) | (1L << (PRODUCTO - 39)) | (1L << (POTENCIA - 39)) | (1L << (DIVISION - 39)) | (1L << (SUMA - 39)) | (1L << (PLUS - 39)) | (1L << (MINUS - 39)) | (1L << (NOT - 39)) | (1L << (PAR_OPEN - 39)) | (1L << (BOOLEAN - 39)) | (1L << (DECIMAL - 39)) | (1L << (NUMBER - 39)) | (1L << (STRING - 39)) | (1L << (ID - 39)))) != 0)) {
 					{
-					setState(159); ((CallProcContext)_localctx).expression = expression();
+					setState(159);
+					((CallProcContext)_localctx).expression = expression();
 					 args.add(((CallProcContext)_localctx).expression.node); 
 					setState(169);
 					_errHandler.sync(this);
@@ -983,11 +1094,13 @@ public class LogoTecParser extends Parser {
 						_la = _input.LA(1);
 						if (_la==COMMA) {
 							{
-							setState(161); match(COMMA);
+							setState(161);
+							match(COMMA);
 							}
 						}
 
-						setState(164); ((CallProcContext)_localctx).expression = expression();
+						setState(164);
+						((CallProcContext)_localctx).expression = expression();
 						 args.add(((CallProcContext)_localctx).expression.node); 
 						}
 						}
@@ -998,7 +1111,8 @@ public class LogoTecParser extends Parser {
 					}
 				}
 
-				setState(174); match(BRACKET_CLOSE);
+				setState(174);
+				match(BRACKET_CLOSE);
 				}
 				break;
 			case 2:
@@ -1014,7 +1128,8 @@ public class LogoTecParser extends Parser {
 					case 1:
 						{
 						{
-						setState(176); ((CallProcContext)_localctx).primaryArg = primaryArg();
+						setState(176);
+						((CallProcContext)_localctx).primaryArg = primaryArg();
 						 args.add(((CallProcContext)_localctx).primaryArg.node); 
 						}
 						}
@@ -1051,13 +1166,13 @@ public class LogoTecParser extends Parser {
 		public Token NUMBER;
 		public Token ID;
 		public ExpressionContext expression;
-		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
-		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode NUMBER() { return getToken(LogoTecParser.NUMBER, 0); }
+		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public PrimaryArgContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1070,6 +1185,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitPrimaryArg(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitPrimaryArg(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PrimaryArgContext primaryArg() throws RecognitionException {
@@ -1081,23 +1201,28 @@ public class LogoTecParser extends Parser {
 			case NUMBER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(187); ((PrimaryArgContext)_localctx).NUMBER = match(NUMBER);
+				setState(187);
+				((PrimaryArgContext)_localctx).NUMBER = match(NUMBER);
 				 ((PrimaryArgContext)_localctx).node =  new ConstNode(Integer.parseInt((((PrimaryArgContext)_localctx).NUMBER!=null?((PrimaryArgContext)_localctx).NUMBER.getText():null))); 
 				}
 				break;
 			case ID:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(189); ((PrimaryArgContext)_localctx).ID = match(ID);
+				setState(189);
+				((PrimaryArgContext)_localctx).ID = match(ID);
 				 ((PrimaryArgContext)_localctx).node =  new VarRefNode((((PrimaryArgContext)_localctx).ID!=null?((PrimaryArgContext)_localctx).ID.getText():null)); 
 				}
 				break;
 			case PAR_OPEN:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(191); match(PAR_OPEN);
-				setState(192); ((PrimaryArgContext)_localctx).expression = expression();
-				setState(193); match(PAR_CLOSE);
+				setState(191);
+				match(PAR_OPEN);
+				setState(192);
+				((PrimaryArgContext)_localctx).expression = expression();
+				setState(193);
+				match(PAR_CLOSE);
 				 ((PrimaryArgContext)_localctx).node =  ((PrimaryArgContext)_localctx).expression.node; 
 				}
 				break;
@@ -1119,13 +1244,13 @@ public class LogoTecParser extends Parser {
 	public static class ExpressionSeriesContext extends ParserRuleContext {
 		public List<ExprNode> list;
 		public ExpressionContext expression;
-		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
 		public TerminalNode COMMA(int i) {
 			return getToken(LogoTecParser.COMMA, i);
 		}
@@ -1141,6 +1266,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitExpressionSeries(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitExpressionSeries(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionSeriesContext expressionSeries() throws RecognitionException {
@@ -1155,7 +1285,8 @@ public class LogoTecParser extends Parser {
 			_la = _input.LA(1);
 			if (((((_la - 39)) & ~0x3f) == 0 && ((1L << (_la - 39)) & ((1L << (IGUALESQ - 39)) | (1L << (YFUNC - 39)) | (1L << (OFUNC - 39)) | (1L << (MAYORQ - 39)) | (1L << (MENORQ - 39)) | (1L << (DIFERENCIA - 39)) | (1L << (AZAR - 39)) | (1L << (PRODUCTO - 39)) | (1L << (POTENCIA - 39)) | (1L << (DIVISION - 39)) | (1L << (SUMA - 39)) | (1L << (PLUS - 39)) | (1L << (MINUS - 39)) | (1L << (NOT - 39)) | (1L << (PAR_OPEN - 39)) | (1L << (BOOLEAN - 39)) | (1L << (DECIMAL - 39)) | (1L << (NUMBER - 39)) | (1L << (STRING - 39)) | (1L << (ID - 39)))) != 0)) {
 				{
-				setState(198); ((ExpressionSeriesContext)_localctx).expression = expression();
+				setState(198);
+				((ExpressionSeriesContext)_localctx).expression = expression();
 				 _localctx.list.add(((ExpressionSeriesContext)_localctx).expression.node); 
 				setState(208);
 				_errHandler.sync(this);
@@ -1167,11 +1298,13 @@ public class LogoTecParser extends Parser {
 					_la = _input.LA(1);
 					if (_la==COMMA) {
 						{
-						setState(200); match(COMMA);
+						setState(200);
+						match(COMMA);
 						}
 					}
 
-					setState(203); ((ExpressionSeriesContext)_localctx).expression = expression();
+					setState(203);
+					((ExpressionSeriesContext)_localctx).expression = expression();
 					 _localctx.list.add(((ExpressionSeriesContext)_localctx).expression.node); 
 					}
 					}
@@ -1199,13 +1332,13 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public SentenceContext sentence;
 		public TerminalNode EJECUTA() { return getToken(LogoTecParser.EJECUTA, 0); }
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
-		}
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
 		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
+		}
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
 		}
 		public ExecBlockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1219,6 +1352,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitExecBlock(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitExecBlock(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExecBlockContext execBlock() throws RecognitionException {
@@ -1229,15 +1367,18 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(213); match(EJECUTA);
-			setState(214); match(BRACKET_OPEN);
+			setState(213);
+			match(EJECUTA);
+			setState(214);
+			match(BRACKET_OPEN);
 			setState(220);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(215); ((ExecBlockContext)_localctx).sentence = sentence();
+				setState(215);
+				((ExecBlockContext)_localctx).sentence = sentence();
 				body.add(((ExecBlockContext)_localctx).sentence.node);
 				}
 				}
@@ -1245,7 +1386,8 @@ public class LogoTecParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(223); match(BRACKET_CLOSE);
+			setState(223);
+			match(BRACKET_CLOSE);
 			 ((ExecBlockContext)_localctx).node =  new ExecBlockNode(body); 
 			}
 		}
@@ -1265,16 +1407,16 @@ public class LogoTecParser extends Parser {
 		public ExpressionContext times;
 		public SentenceContext sentence;
 		public TerminalNode REPITE() { return getToken(LogoTecParser.REPITE, 0); }
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
-		}
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
 		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
+		}
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
 		}
 		public RepiteBlockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1288,6 +1430,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitRepiteBlock(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitRepiteBlock(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final RepiteBlockContext repiteBlock() throws RecognitionException {
@@ -1298,19 +1445,23 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(226); match(REPITE);
-			setState(227); ((RepiteBlockContext)_localctx).times = expression();
+			setState(226);
+			match(REPITE);
+			setState(227);
+			((RepiteBlockContext)_localctx).times = expression();
 
 			        requireNumericType(((RepiteBlockContext)_localctx).times.node, "REPITE");
 			      
-			setState(229); match(BRACKET_OPEN);
+			setState(229);
+			match(BRACKET_OPEN);
 			setState(235);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(230); ((RepiteBlockContext)_localctx).sentence = sentence();
+				setState(230);
+				((RepiteBlockContext)_localctx).sentence = sentence();
 				body.add(((RepiteBlockContext)_localctx).sentence.node);
 				}
 				}
@@ -1318,7 +1469,8 @@ public class LogoTecParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(238); match(BRACKET_CLOSE);
+			setState(238);
+			match(BRACKET_CLOSE);
 			 ((RepiteBlockContext)_localctx).node =  new RepeatNode(((RepiteBlockContext)_localctx).times.node, body); 
 			}
 		}
@@ -1337,25 +1489,25 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public ExpressionContext cond;
 		public SentenceContext sentence;
-		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
-		}
-		public List<TerminalNode> BRACKET_CLOSE() { return getTokens(LogoTecParser.BRACKET_CLOSE); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode SI() { return getToken(LogoTecParser.SI, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public List<TerminalNode> BRACKET_OPEN() { return getTokens(LogoTecParser.BRACKET_OPEN); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
 		public TerminalNode BRACKET_OPEN(int i) {
 			return getToken(LogoTecParser.BRACKET_OPEN, i);
 		}
+		public List<TerminalNode> BRACKET_CLOSE() { return getTokens(LogoTecParser.BRACKET_CLOSE); }
 		public TerminalNode BRACKET_CLOSE(int i) {
 			return getToken(LogoTecParser.BRACKET_CLOSE, i);
 		}
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
+		}
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
 		}
 		public SiStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1368,6 +1520,11 @@ public class LogoTecParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitSiStmt(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitSiStmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1383,21 +1540,27 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(241); match(SI);
-			setState(242); match(PAR_OPEN);
-			setState(243); ((SiStmtContext)_localctx).cond = expression();
-			setState(244); match(PAR_CLOSE);
+			setState(241);
+			match(SI);
+			setState(242);
+			match(PAR_OPEN);
+			setState(243);
+			((SiStmtContext)_localctx).cond = expression();
+			setState(244);
+			match(PAR_CLOSE);
 
-			        requireBooleanType(((SiStmtContext)_localctx).cond.node, "condici√≥n de SI");
+			        requireBooleanType(((SiStmtContext)_localctx).cond.node, "condiciÛn de SI");
 			      
-			setState(246); match(BRACKET_OPEN);
+			setState(246);
+			match(BRACKET_OPEN);
 			setState(252);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(247); ((SiStmtContext)_localctx).sentence = sentence();
+				setState(247);
+				((SiStmtContext)_localctx).sentence = sentence();
 				thenBody.add(((SiStmtContext)_localctx).sentence.node);
 				}
 				}
@@ -1405,14 +1568,16 @@ public class LogoTecParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(255); match(BRACKET_CLOSE);
+			setState(255);
+			match(BRACKET_CLOSE);
 			setState(269);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==BRACKET_OPEN) {
 				{
 				{
-				setState(256); match(BRACKET_OPEN);
+				setState(256);
+				match(BRACKET_OPEN);
 				 elseCount++; 
 				setState(263);
 				_errHandler.sync(this);
@@ -1420,7 +1585,8 @@ public class LogoTecParser extends Parser {
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 					{
 					{
-					setState(258); ((SiStmtContext)_localctx).sentence = sentence();
+					setState(258);
+					((SiStmtContext)_localctx).sentence = sentence();
 					elseBody.add(((SiStmtContext)_localctx).sentence.node);
 					}
 					}
@@ -1428,7 +1594,8 @@ public class LogoTecParser extends Parser {
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(266); match(BRACKET_CLOSE);
+				setState(266);
+				match(BRACKET_CLOSE);
 				}
 				}
 				setState(271);
@@ -1456,22 +1623,22 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public SentenceContext sentence;
 		public ExpressionContext cond;
+		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
 		public TerminalNode DOT() { return getToken(LogoTecParser.DOT, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
+		public TerminalNode HASTA() { return getToken(LogoTecParser.HASTA, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public TerminalNode MIENTRAS() { return getToken(LogoTecParser.MIENTRAS, 0); }
-		public TerminalNode HAZ() { return getToken(LogoTecParser.HAZ, 0); }
+		public List<SentenceContext> sentence() {
+			return getRuleContexts(SentenceContext.class);
+		}
 		public SentenceContext sentence(int i) {
 			return getRuleContext(SentenceContext.class,i);
 		}
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
-		public TerminalNode HASTA() { return getToken(LogoTecParser.HASTA, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
-		}
-		public List<SentenceContext> sentence() {
-			return getRuleContexts(SentenceContext.class);
 		}
 		public HazDoStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1484,6 +1651,11 @@ public class LogoTecParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitHazDoStmt(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitHazDoStmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1500,16 +1672,20 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(274); match(HAZ);
-			setState(275); match(DOT);
-			setState(276); match(BRACKET_OPEN);
+			setState(274);
+			match(HAZ);
+			setState(275);
+			match(DOT);
+			setState(276);
+			match(BRACKET_OPEN);
 			setState(282);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(277); ((HazDoStmtContext)_localctx).sentence = sentence();
+				setState(277);
+				((HazDoStmtContext)_localctx).sentence = sentence();
 				body.add(((HazDoStmtContext)_localctx).sentence.node);
 				}
 				}
@@ -1517,15 +1693,20 @@ public class LogoTecParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(285); match(BRACKET_CLOSE);
+			setState(285);
+			match(BRACKET_CLOSE);
 			setState(298);
 			switch (_input.LA(1)) {
 			case HASTA:
 				{
-				setState(286); match(HASTA);
-				setState(287); match(PAR_OPEN);
-				setState(288); ((HazDoStmtContext)_localctx).cond = expression();
-				setState(289); match(PAR_CLOSE);
+				setState(286);
+				match(HASTA);
+				setState(287);
+				match(PAR_OPEN);
+				setState(288);
+				((HazDoStmtContext)_localctx).cond = expression();
+				setState(289);
+				match(PAR_CLOSE);
 				 
 				          condition = ((HazDoStmtContext)_localctx).cond.node; 
 				          isUntil = true; 
@@ -1534,10 +1715,14 @@ public class LogoTecParser extends Parser {
 				break;
 			case MIENTRAS:
 				{
-				setState(292); match(MIENTRAS);
-				setState(293); match(PAR_OPEN);
-				setState(294); ((HazDoStmtContext)_localctx).cond = expression();
-				setState(295); match(PAR_CLOSE);
+				setState(292);
+				match(MIENTRAS);
+				setState(293);
+				match(PAR_OPEN);
+				setState(294);
+				((HazDoStmtContext)_localctx).cond = expression();
+				setState(295);
+				match(PAR_CLOSE);
 				 
 				          condition = ((HazDoStmtContext)_localctx).cond.node; 
 				          isWhile = true; 
@@ -1549,11 +1734,11 @@ public class LogoTecParser extends Parser {
 			}
 
 			        if (condition == null) {
-			            errors.add("Error en l√≠nea " + currentLine() + 
-			                       ": HAZ requiere HASTA o MIENTRAS con condici√≥n.");
+			            errors.add("Error en lÌnea " + currentLine() + 
+			                       ": HAZ requiere HASTA o MIENTRAS con condiciÛn.");
 			        } else {
 			            requireNonEmptyBlock(body, isUntil ? "HAZ.HASTA" : "HAZ.MIENTRAS");
-			            requireBooleanType(condition, isUntil ? "condici√≥n de HAZ.HASTA" : "condici√≥n de HAZ.MIENTRAS");
+			            requireBooleanType(condition, isUntil ? "condiciÛn de HAZ.HASTA" : "condiciÛn de HAZ.MIENTRAS");
 			            
 			            if (isUntil) {
 			                ((HazDoStmtContext)_localctx).node =  new DoUntilNode(body, condition);
@@ -1580,18 +1765,18 @@ public class LogoTecParser extends Parser {
 		public ExpressionContext cond;
 		public SentenceContext sentence;
 		public TerminalNode MIENTRAS() { return getToken(LogoTecParser.MIENTRAS, 0); }
-		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
-		}
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
 		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
+		}
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
 		}
 		public MientrasStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1605,6 +1790,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitMientrasStmt(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitMientrasStmt(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MientrasStmtContext mientrasStmt() throws RecognitionException {
@@ -1615,21 +1805,27 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(302); match(MIENTRAS);
-			setState(303); match(PAR_OPEN);
-			setState(304); ((MientrasStmtContext)_localctx).cond = expression();
-			setState(305); match(PAR_CLOSE);
+			setState(302);
+			match(MIENTRAS);
+			setState(303);
+			match(PAR_OPEN);
+			setState(304);
+			((MientrasStmtContext)_localctx).cond = expression();
+			setState(305);
+			match(PAR_CLOSE);
 
-			        requireBooleanType(((MientrasStmtContext)_localctx).cond.node, "condici√≥n de MIENTRAS");
+			        requireBooleanType(((MientrasStmtContext)_localctx).cond.node, "condiciÛn de MIENTRAS");
 			      
-			setState(307); match(BRACKET_OPEN);
+			setState(307);
+			match(BRACKET_OPEN);
 			setState(313);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(308); ((MientrasStmtContext)_localctx).sentence = sentence();
+				setState(308);
+				((MientrasStmtContext)_localctx).sentence = sentence();
 				body.add(((MientrasStmtContext)_localctx).sentence.node);
 				}
 				}
@@ -1637,7 +1833,8 @@ public class LogoTecParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(316); match(BRACKET_CLOSE);
+			setState(316);
+			match(BRACKET_CLOSE);
 
 			        requireNonEmptyBlock(body, "MIENTRAS");
 			        ((MientrasStmtContext)_localctx).node =  new WhileNode(((MientrasStmtContext)_localctx).cond.node, body);
@@ -1659,19 +1856,19 @@ public class LogoTecParser extends Parser {
 		public StmtNode node;
 		public ExpressionContext cond;
 		public SentenceContext sentence;
-		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public SentenceContext sentence(int i) {
-			return getRuleContext(SentenceContext.class,i);
-		}
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode HASTA() { return getToken(LogoTecParser.HASTA, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public List<SentenceContext> sentence() {
 			return getRuleContexts(SentenceContext.class);
+		}
+		public SentenceContext sentence(int i) {
+			return getRuleContext(SentenceContext.class,i);
 		}
 		public HastaStmtContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1685,6 +1882,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitHastaStmt(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitHastaStmt(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final HastaStmtContext hastaStmt() throws RecognitionException {
@@ -1695,21 +1897,27 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(319); match(HASTA);
-			setState(320); match(PAR_OPEN);
-			setState(321); ((HastaStmtContext)_localctx).cond = expression();
-			setState(322); match(PAR_CLOSE);
+			setState(319);
+			match(HASTA);
+			setState(320);
+			match(PAR_OPEN);
+			setState(321);
+			((HastaStmtContext)_localctx).cond = expression();
+			setState(322);
+			match(PAR_CLOSE);
 
-			        requireBooleanType(((HastaStmtContext)_localctx).cond.node, "condici√≥n de HASTA");
+			        requireBooleanType(((HastaStmtContext)_localctx).cond.node, "condiciÛn de HASTA");
 			      
-			setState(324); match(BRACKET_OPEN);
+			setState(324);
+			match(BRACKET_OPEN);
 			setState(330);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << HAZ) | (1L << EJECUTA) | (1L << REPITE) | (1L << APARECETORTUGA) | (1L << AT) | (1L << PONPOS) | (1L << PONXY) | (1L << PONRUMBO) | (1L << RUMBO) | (1L << PONX) | (1L << PONY) | (1L << BAJALAPIZ) | (1L << BL) | (1L << SUBELAPIZ) | (1L << SB) | (1L << CENTRO) | (1L << ESPERA) | (1L << INC) | (1L << SI) | (1L << HASTA) | (1L << MIENTRAS) | (1L << INIC) | (1L << AVANZA) | (1L << AV) | (1L << RETROCEDE) | (1L << RE) | (1L << GIRADERECHA) | (1L << GD) | (1L << GIRAIZQUIERDA) | (1L << GI) | (1L << OCULTATORTUGA) | (1L << OT) | (1L << PONCOLORLAPIZ) | (1L << PONCL))) != 0) || _la==ID) {
 				{
 				{
-				setState(325); ((HastaStmtContext)_localctx).sentence = sentence();
+				setState(325);
+				((HastaStmtContext)_localctx).sentence = sentence();
 				body.add(((HastaStmtContext)_localctx).sentence.node);
 				}
 				}
@@ -1717,7 +1925,8 @@ public class LogoTecParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(333); match(BRACKET_CLOSE);
+			setState(333);
+			match(BRACKET_CLOSE);
 
 			        requireNonEmptyBlock(body, "HASTA");
 			        ((HastaStmtContext)_localctx).node =  new UntilNode(((HastaStmtContext)_localctx).cond.node, body);
@@ -1744,47 +1953,47 @@ public class LogoTecParser extends Parser {
 		public Token id;
 		public ExpressionContext n;
 		public ColorNameContext c;
-		public TerminalNode AT() { return getToken(LogoTecParser.AT, 0); }
-		public TerminalNode CENTRO() { return getToken(LogoTecParser.CENTRO, 0); }
 		public TerminalNode AVANZA() { return getToken(LogoTecParser.AVANZA, 0); }
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode PONXY() { return getToken(LogoTecParser.PONXY, 0); }
-		public TerminalNode SB() { return getToken(LogoTecParser.SB, 0); }
-		public TerminalNode PONRUMBO() { return getToken(LogoTecParser.PONRUMBO, 0); }
-		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
-		public TerminalNode PONX() { return getToken(LogoTecParser.PONX, 0); }
-		public TerminalNode ESPERA() { return getToken(LogoTecParser.ESPERA, 0); }
-		public TerminalNode INC() { return getToken(LogoTecParser.INC, 0); }
-		public TerminalNode PONY() { return getToken(LogoTecParser.PONY, 0); }
-		public TerminalNode GD() { return getToken(LogoTecParser.GD, 0); }
-		public TerminalNode BAJALAPIZ() { return getToken(LogoTecParser.BAJALAPIZ, 0); }
-		public TerminalNode PONCOLORLAPIZ() { return getToken(LogoTecParser.PONCOLORLAPIZ, 0); }
-		public TerminalNode AV() { return getToken(LogoTecParser.AV, 0); }
-		public TerminalNode APARECETORTUGA() { return getToken(LogoTecParser.APARECETORTUGA, 0); }
-		public TerminalNode SUBELAPIZ() { return getToken(LogoTecParser.SUBELAPIZ, 0); }
-		public TerminalNode GIRADERECHA() { return getToken(LogoTecParser.GIRADERECHA, 0); }
-		public TerminalNode OT() { return getToken(LogoTecParser.OT, 0); }
-		public ColorNameContext colorName() {
-			return getRuleContext(ColorNameContext.class,0);
-		}
-		public TerminalNode OCULTATORTUGA() { return getToken(LogoTecParser.OCULTATORTUGA, 0); }
-		public TerminalNode RETROCEDE() { return getToken(LogoTecParser.RETROCEDE, 0); }
-		public TerminalNode PONPOS() { return getToken(LogoTecParser.PONPOS, 0); }
-		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
-		public TerminalNode GIRAIZQUIERDA() { return getToken(LogoTecParser.GIRAIZQUIERDA, 0); }
-		public TerminalNode RE() { return getToken(LogoTecParser.RE, 0); }
-		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
-		public TerminalNode BL() { return getToken(LogoTecParser.BL, 0); }
-		public TerminalNode GI() { return getToken(LogoTecParser.GI, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
-		public TerminalNode RUMBO() { return getToken(LogoTecParser.RUMBO, 0); }
-		public TerminalNode PONCL() { return getToken(LogoTecParser.PONCL, 0); }
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode AV() { return getToken(LogoTecParser.AV, 0); }
+		public TerminalNode RETROCEDE() { return getToken(LogoTecParser.RETROCEDE, 0); }
+		public TerminalNode RE() { return getToken(LogoTecParser.RE, 0); }
+		public TerminalNode GIRADERECHA() { return getToken(LogoTecParser.GIRADERECHA, 0); }
+		public TerminalNode GD() { return getToken(LogoTecParser.GD, 0); }
+		public TerminalNode GIRAIZQUIERDA() { return getToken(LogoTecParser.GIRAIZQUIERDA, 0); }
+		public TerminalNode GI() { return getToken(LogoTecParser.GI, 0); }
+		public TerminalNode OCULTATORTUGA() { return getToken(LogoTecParser.OCULTATORTUGA, 0); }
+		public TerminalNode OT() { return getToken(LogoTecParser.OT, 0); }
+		public TerminalNode APARECETORTUGA() { return getToken(LogoTecParser.APARECETORTUGA, 0); }
+		public TerminalNode AT() { return getToken(LogoTecParser.AT, 0); }
+		public TerminalNode PONPOS() { return getToken(LogoTecParser.PONPOS, 0); }
+		public TerminalNode BRACKET_OPEN() { return getToken(LogoTecParser.BRACKET_OPEN, 0); }
+		public TerminalNode BRACKET_CLOSE() { return getToken(LogoTecParser.BRACKET_CLOSE, 0); }
 		public ExpressionSeriesContext expressionSeries() {
 			return getRuleContext(ExpressionSeriesContext.class,0);
+		}
+		public TerminalNode PONXY() { return getToken(LogoTecParser.PONXY, 0); }
+		public TerminalNode PONRUMBO() { return getToken(LogoTecParser.PONRUMBO, 0); }
+		public TerminalNode RUMBO() { return getToken(LogoTecParser.RUMBO, 0); }
+		public TerminalNode PONX() { return getToken(LogoTecParser.PONX, 0); }
+		public TerminalNode PONY() { return getToken(LogoTecParser.PONY, 0); }
+		public TerminalNode BAJALAPIZ() { return getToken(LogoTecParser.BAJALAPIZ, 0); }
+		public TerminalNode BL() { return getToken(LogoTecParser.BL, 0); }
+		public TerminalNode SUBELAPIZ() { return getToken(LogoTecParser.SUBELAPIZ, 0); }
+		public TerminalNode SB() { return getToken(LogoTecParser.SB, 0); }
+		public TerminalNode CENTRO() { return getToken(LogoTecParser.CENTRO, 0); }
+		public TerminalNode ESPERA() { return getToken(LogoTecParser.ESPERA, 0); }
+		public TerminalNode INC() { return getToken(LogoTecParser.INC, 0); }
+		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode PONCOLORLAPIZ() { return getToken(LogoTecParser.PONCOLORLAPIZ, 0); }
+		public TerminalNode PONCL() { return getToken(LogoTecParser.PONCL, 0); }
+		public ColorNameContext colorName() {
+			return getRuleContext(ColorNameContext.class,0);
 		}
 		public TurtleCmdContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1798,6 +2007,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitTurtleCmd(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitTurtleCmd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TurtleCmdContext turtleCmd() throws RecognitionException {
@@ -1809,8 +2023,10 @@ public class LogoTecParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(336); match(AVANZA);
-				setState(337); ((TurtleCmdContext)_localctx).e = expression();
+				setState(336);
+				match(AVANZA);
+				setState(337);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "AVANZA");
 				        ((TurtleCmdContext)_localctx).node =  new ForwardNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1820,8 +2036,10 @@ public class LogoTecParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(340); match(AV);
-				setState(341); ((TurtleCmdContext)_localctx).e = expression();
+				setState(340);
+				match(AV);
+				setState(341);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "AV");
 				        ((TurtleCmdContext)_localctx).node =  new ForwardNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1831,8 +2049,10 @@ public class LogoTecParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(344); match(RETROCEDE);
-				setState(345); ((TurtleCmdContext)_localctx).e = expression();
+				setState(344);
+				match(RETROCEDE);
+				setState(345);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "RETROCEDE");
 				        ((TurtleCmdContext)_localctx).node =  new BackwardNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1842,8 +2062,10 @@ public class LogoTecParser extends Parser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(348); match(RE);
-				setState(349); ((TurtleCmdContext)_localctx).e = expression();
+				setState(348);
+				match(RE);
+				setState(349);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "RE");
 				        ((TurtleCmdContext)_localctx).node =  new BackwardNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1853,8 +2075,10 @@ public class LogoTecParser extends Parser {
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(352); match(GIRADERECHA);
-				setState(353); ((TurtleCmdContext)_localctx).e = expression();
+				setState(352);
+				match(GIRADERECHA);
+				setState(353);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "GIRADERECHA");
 				        ((TurtleCmdContext)_localctx).node =  new TurnRightNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1864,8 +2088,10 @@ public class LogoTecParser extends Parser {
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(356); match(GD);
-				setState(357); ((TurtleCmdContext)_localctx).e = expression();
+				setState(356);
+				match(GD);
+				setState(357);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "GD");
 				        ((TurtleCmdContext)_localctx).node =  new TurnRightNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1875,8 +2101,10 @@ public class LogoTecParser extends Parser {
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(360); match(GIRAIZQUIERDA);
-				setState(361); ((TurtleCmdContext)_localctx).e = expression();
+				setState(360);
+				match(GIRAIZQUIERDA);
+				setState(361);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "GIRAIZQUIERDA");
 				        ((TurtleCmdContext)_localctx).node =  new TurnLeftNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1886,8 +2114,10 @@ public class LogoTecParser extends Parser {
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(364); match(GI);
-				setState(365); ((TurtleCmdContext)_localctx).e = expression();
+				setState(364);
+				match(GI);
+				setState(365);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "GI");
 				        ((TurtleCmdContext)_localctx).node =  new TurnLeftNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1897,42 +2127,50 @@ public class LogoTecParser extends Parser {
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(368); match(OCULTATORTUGA);
+				setState(368);
+				match(OCULTATORTUGA);
 				 ((TurtleCmdContext)_localctx).node =  new HideTurtleNode(); 
 				}
 				break;
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(370); match(OT);
+				setState(370);
+				match(OT);
 				 ((TurtleCmdContext)_localctx).node =  new HideTurtleNode(); 
 				}
 				break;
 			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(372); match(APARECETORTUGA);
+				setState(372);
+				match(APARECETORTUGA);
 				 ((TurtleCmdContext)_localctx).node =  new ShowTurtleNode(); 
 				}
 				break;
 			case 12:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(374); match(AT);
+				setState(374);
+				match(AT);
 				 ((TurtleCmdContext)_localctx).node =  new ShowTurtleNode(); 
 				}
 				break;
 			case 13:
 				enterOuterAlt(_localctx, 13);
 				{
-				setState(376); match(PONPOS);
-				setState(377); match(BRACKET_OPEN);
-				setState(378); ((TurtleCmdContext)_localctx).coords = expressionSeries();
-				setState(379); match(BRACKET_CLOSE);
+				setState(376);
+				match(PONPOS);
+				setState(377);
+				match(BRACKET_OPEN);
+				setState(378);
+				((TurtleCmdContext)_localctx).coords = expressionSeries();
+				setState(379);
+				match(BRACKET_CLOSE);
 
 				        List<ExprNode> coordsList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (coordsList.size() != 2) {
-				            errors.add("Error en l√≠nea " + currentLine() + ": 'PONPOS' requiere exactamente dos expresiones para X e Y.");
+				            errors.add("Error en lÌnea " + currentLine() + ": 'PONPOS' requiere exactamente dos expresiones para X e Y.");
 				        }
 				        ExprNode xNode = coordsList.size() > 0 ? coordsList.get(0) : new ConstNode(0);
 				        ExprNode yNode = coordsList.size() > 1 ? coordsList.get(1) : new ConstNode(0);
@@ -1945,9 +2183,12 @@ public class LogoTecParser extends Parser {
 			case 14:
 				enterOuterAlt(_localctx, 14);
 				{
-				setState(382); match(PONXY);
-				setState(383); ((TurtleCmdContext)_localctx).x = expression();
-				setState(384); ((TurtleCmdContext)_localctx).y = expression();
+				setState(382);
+				match(PONXY);
+				setState(383);
+				((TurtleCmdContext)_localctx).x = expression();
+				setState(384);
+				((TurtleCmdContext)_localctx).y = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).x.node, "PONXY (coordenada X)");
 				        requireNumericType(((TurtleCmdContext)_localctx).y.node, "PONXY (coordenada Y)");
@@ -1958,8 +2199,10 @@ public class LogoTecParser extends Parser {
 			case 15:
 				enterOuterAlt(_localctx, 15);
 				{
-				setState(387); match(PONRUMBO);
-				setState(388); ((TurtleCmdContext)_localctx).e = expression();
+				setState(387);
+				match(PONRUMBO);
+				setState(388);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "PONRUMBO");
 				        ((TurtleCmdContext)_localctx).node =  new SetHeadingNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1969,15 +2212,18 @@ public class LogoTecParser extends Parser {
 			case 16:
 				enterOuterAlt(_localctx, 16);
 				{
-				setState(391); match(RUMBO);
+				setState(391);
+				match(RUMBO);
 				 ((TurtleCmdContext)_localctx).node =  new ShowHeadingNode(); 
 				}
 				break;
 			case 17:
 				enterOuterAlt(_localctx, 17);
 				{
-				setState(393); match(PONX);
-				setState(394); ((TurtleCmdContext)_localctx).e = expression();
+				setState(393);
+				match(PONX);
+				setState(394);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "PONX");
 				        ((TurtleCmdContext)_localctx).node =  new SetXNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1987,8 +2233,10 @@ public class LogoTecParser extends Parser {
 			case 18:
 				enterOuterAlt(_localctx, 18);
 				{
-				setState(397); match(PONY);
-				setState(398); ((TurtleCmdContext)_localctx).e = expression();
+				setState(397);
+				match(PONY);
+				setState(398);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "PONY");
 				        ((TurtleCmdContext)_localctx).node =  new SetYNode(((TurtleCmdContext)_localctx).e.node); 
@@ -1998,43 +2246,50 @@ public class LogoTecParser extends Parser {
 			case 19:
 				enterOuterAlt(_localctx, 19);
 				{
-				setState(401); match(BAJALAPIZ);
+				setState(401);
+				match(BAJALAPIZ);
 				 ((TurtleCmdContext)_localctx).node =  new PenDownNode(); 
 				}
 				break;
 			case 20:
 				enterOuterAlt(_localctx, 20);
 				{
-				setState(403); match(BL);
+				setState(403);
+				match(BL);
 				 ((TurtleCmdContext)_localctx).node =  new PenDownNode(); 
 				}
 				break;
 			case 21:
 				enterOuterAlt(_localctx, 21);
 				{
-				setState(405); match(SUBELAPIZ);
+				setState(405);
+				match(SUBELAPIZ);
 				 ((TurtleCmdContext)_localctx).node =  new PenUpNode(); 
 				}
 				break;
 			case 22:
 				enterOuterAlt(_localctx, 22);
 				{
-				setState(407); match(SB);
+				setState(407);
+				match(SB);
 				 ((TurtleCmdContext)_localctx).node =  new PenUpNode(); 
 				}
 				break;
 			case 23:
 				enterOuterAlt(_localctx, 23);
 				{
-				setState(409); match(CENTRO);
+				setState(409);
+				match(CENTRO);
 				 ((TurtleCmdContext)_localctx).node =  new CenterNode(); 
 				}
 				break;
 			case 24:
 				enterOuterAlt(_localctx, 24);
 				{
-				setState(411); match(ESPERA);
-				setState(412); ((TurtleCmdContext)_localctx).e = expression();
+				setState(411);
+				match(ESPERA);
+				setState(412);
+				((TurtleCmdContext)_localctx).e = expression();
 				 
 				        requireNumericType(((TurtleCmdContext)_localctx).e.node, "ESPERA");
 				        ((TurtleCmdContext)_localctx).node =  new WaitNode(((TurtleCmdContext)_localctx).e.node); 
@@ -2044,10 +2299,14 @@ public class LogoTecParser extends Parser {
 			case 25:
 				enterOuterAlt(_localctx, 25);
 				{
-				setState(415); match(INC);
-				setState(416); match(BRACKET_OPEN);
-				setState(417); ((TurtleCmdContext)_localctx).id = match(ID);
-				setState(418); match(BRACKET_CLOSE);
+				setState(415);
+				match(INC);
+				setState(416);
+				match(BRACKET_OPEN);
+				setState(417);
+				((TurtleCmdContext)_localctx).id = match(ID);
+				setState(418);
+				match(BRACKET_CLOSE);
 				 
 				        validateIncrement((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null), new ConstNode(1));
 				        ((TurtleCmdContext)_localctx).node =  new IncNode(new VarRefNode((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null)), new ConstNode(1)); 
@@ -2057,11 +2316,16 @@ public class LogoTecParser extends Parser {
 			case 26:
 				enterOuterAlt(_localctx, 26);
 				{
-				setState(420); match(INC);
-				setState(421); match(BRACKET_OPEN);
-				setState(422); ((TurtleCmdContext)_localctx).id = match(ID);
-				setState(423); ((TurtleCmdContext)_localctx).n = expression();
-				setState(424); match(BRACKET_CLOSE);
+				setState(420);
+				match(INC);
+				setState(421);
+				match(BRACKET_OPEN);
+				setState(422);
+				((TurtleCmdContext)_localctx).id = match(ID);
+				setState(423);
+				((TurtleCmdContext)_localctx).n = expression();
+				setState(424);
+				match(BRACKET_CLOSE);
 				 
 				        validateIncrement((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null), ((TurtleCmdContext)_localctx).n.node);
 				        ((TurtleCmdContext)_localctx).node =  new IncNode(new VarRefNode((((TurtleCmdContext)_localctx).id!=null?((TurtleCmdContext)_localctx).id.getText():null)), ((TurtleCmdContext)_localctx).n.node); 
@@ -2071,14 +2335,18 @@ public class LogoTecParser extends Parser {
 			case 27:
 				enterOuterAlt(_localctx, 27);
 				{
-				setState(427); match(PONCOLORLAPIZ);
-				setState(428); match(BRACKET_OPEN);
-				setState(429); ((TurtleCmdContext)_localctx).coords = expressionSeries();
-				setState(430); match(BRACKET_CLOSE);
+				setState(427);
+				match(PONCOLORLAPIZ);
+				setState(428);
+				match(BRACKET_OPEN);
+				setState(429);
+				((TurtleCmdContext)_localctx).coords = expressionSeries();
+				setState(430);
+				match(BRACKET_CLOSE);
 
 				        List<ExprNode> colorList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (colorList.size() != 3) {
-				            errors.add("Error en l√≠nea " + currentLine() + ": 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
+				            errors.add("Error en lÌnea " + currentLine() + ": 'PONCOLORLAPIZ' requiere exactamente tres valores RGB.");
 				        }
 				        ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
 				        ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
@@ -2093,14 +2361,18 @@ public class LogoTecParser extends Parser {
 			case 28:
 				enterOuterAlt(_localctx, 28);
 				{
-				setState(433); match(PONCL);
-				setState(434); match(BRACKET_OPEN);
-				setState(435); ((TurtleCmdContext)_localctx).coords = expressionSeries();
-				setState(436); match(BRACKET_CLOSE);
+				setState(433);
+				match(PONCL);
+				setState(434);
+				match(BRACKET_OPEN);
+				setState(435);
+				((TurtleCmdContext)_localctx).coords = expressionSeries();
+				setState(436);
+				match(BRACKET_CLOSE);
 
 				        List<ExprNode> colorList = ((TurtleCmdContext)_localctx).coords.list;
 				        if (colorList.size() != 3) {
-				            errors.add("Error en l√≠nea " + currentLine() + ": 'PONCL' requiere exactamente tres valores RGB.");
+				            errors.add("Error en lÌnea " + currentLine() + ": 'PONCL' requiere exactamente tres valores RGB.");
 				        }
 				        ExprNode rNode = colorList.size() > 0 ? colorList.get(0) : new ConstNode(0);
 				        ExprNode gNode = colorList.size() > 1 ? colorList.get(1) : new ConstNode(0);
@@ -2115,16 +2387,20 @@ public class LogoTecParser extends Parser {
 			case 29:
 				enterOuterAlt(_localctx, 29);
 				{
-				setState(439); match(PONCOLORLAPIZ);
-				setState(440); ((TurtleCmdContext)_localctx).c = colorName();
+				setState(439);
+				match(PONCOLORLAPIZ);
+				setState(440);
+				((TurtleCmdContext)_localctx).c = colorName();
 				 ((TurtleCmdContext)_localctx).node =  new SetPenColorNode(((TurtleCmdContext)_localctx).c.value); 
 				}
 				break;
 			case 30:
 				enterOuterAlt(_localctx, 30);
 				{
-				setState(443); match(PONCL);
-				setState(444); ((TurtleCmdContext)_localctx).c = colorName();
+				setState(443);
+				match(PONCL);
+				setState(444);
+				((TurtleCmdContext)_localctx).c = colorName();
 				 ((TurtleCmdContext)_localctx).node =  new SetPenColorNode(((TurtleCmdContext)_localctx).c.value); 
 				}
 				break;
@@ -2159,6 +2435,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitColorName(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitColorName(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ColorNameContext colorName() throws RecognitionException {
@@ -2170,14 +2451,16 @@ public class LogoTecParser extends Parser {
 			case COLOR:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(449); ((ColorNameContext)_localctx).c = match(COLOR);
+				setState(449);
+				((ColorNameContext)_localctx).c = match(COLOR);
 				 ((ColorNameContext)_localctx).value =  ((ColorNameContext)_localctx).c.getText().toLowerCase(); 
 				}
 				break;
 			case ID:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(451); ((ColorNameContext)_localctx).id = match(ID);
+				setState(451);
+				((ColorNameContext)_localctx).id = match(ID);
 				 ((ColorNameContext)_localctx).value =  ((ColorNameContext)_localctx).id.getText().toLowerCase(); 
 				}
 				break;
@@ -2223,6 +2506,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitExpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -2232,7 +2520,8 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(455); ((ExpressionContext)_localctx).t1 = logicTerm();
+			setState(455);
+			((ExpressionContext)_localctx).t1 = logicTerm();
 			 ((ExpressionContext)_localctx).node =  ((ExpressionContext)_localctx).t1.node; ((ExpressionContext)_localctx).val =  ((ExpressionContext)_localctx).t1.val; 
 			setState(463);
 			_errHandler.sync(this);
@@ -2240,8 +2529,10 @@ public class LogoTecParser extends Parser {
 			while (_la==OR) {
 				{
 				{
-				setState(457); match(OR);
-				setState(458); ((ExpressionContext)_localctx).t2 = logicTerm();
+				setState(457);
+				match(OR);
+				setState(458);
+				((ExpressionContext)_localctx).t2 = logicTerm();
 				 ((ExpressionContext)_localctx).node =  new LogicalOrNode(_localctx.node, ((ExpressionContext)_localctx).t2.node); 
 				}
 				}
@@ -2267,15 +2558,15 @@ public class LogoTecParser extends Parser {
 		public Value val;
 		public LogicFactorContext f1;
 		public LogicFactorContext f2;
-		public TerminalNode AND(int i) {
-			return getToken(LogoTecParser.AND, i);
+		public List<LogicFactorContext> logicFactor() {
+			return getRuleContexts(LogicFactorContext.class);
 		}
 		public LogicFactorContext logicFactor(int i) {
 			return getRuleContext(LogicFactorContext.class,i);
 		}
 		public List<TerminalNode> AND() { return getTokens(LogoTecParser.AND); }
-		public List<LogicFactorContext> logicFactor() {
-			return getRuleContexts(LogicFactorContext.class);
+		public TerminalNode AND(int i) {
+			return getToken(LogoTecParser.AND, i);
 		}
 		public LogicTermContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2289,6 +2580,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitLogicTerm(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitLogicTerm(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LogicTermContext logicTerm() throws RecognitionException {
@@ -2298,7 +2594,8 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(466); ((LogicTermContext)_localctx).f1 = logicFactor();
+			setState(466);
+			((LogicTermContext)_localctx).f1 = logicFactor();
 			 ((LogicTermContext)_localctx).node =  ((LogicTermContext)_localctx).f1.node; ((LogicTermContext)_localctx).val =  ((LogicTermContext)_localctx).f1.val; 
 			setState(474);
 			_errHandler.sync(this);
@@ -2306,8 +2603,10 @@ public class LogoTecParser extends Parser {
 			while (_la==AND) {
 				{
 				{
-				setState(468); match(AND);
-				setState(469); ((LogicTermContext)_localctx).f2 = logicFactor();
+				setState(468);
+				match(AND);
+				setState(469);
+				((LogicTermContext)_localctx).f2 = logicFactor();
 				 ((LogicTermContext)_localctx).node =  new LogicalAndNode(_localctx.node, ((LogicTermContext)_localctx).f2.node); 
 				}
 				}
@@ -2334,11 +2633,11 @@ public class LogoTecParser extends Parser {
 		public LogicFactorContext lf;
 		public RelationalContext r;
 		public TerminalNode NOT() { return getToken(LogoTecParser.NOT, 0); }
-		public RelationalContext relational() {
-			return getRuleContext(RelationalContext.class,0);
-		}
 		public LogicFactorContext logicFactor() {
 			return getRuleContext(LogicFactorContext.class,0);
+		}
+		public RelationalContext relational() {
+			return getRuleContext(RelationalContext.class,0);
 		}
 		public LogicFactorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2352,6 +2651,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitLogicFactor(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitLogicFactor(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LogicFactorContext logicFactor() throws RecognitionException {
@@ -2363,8 +2667,10 @@ public class LogoTecParser extends Parser {
 			case NOT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(477); match(NOT);
-				setState(478); ((LogicFactorContext)_localctx).lf = logicFactor();
+				setState(477);
+				match(NOT);
+				setState(478);
+				((LogicFactorContext)_localctx).lf = logicFactor();
 				 ((LogicFactorContext)_localctx).node =  new LogicalNotNode(((LogicFactorContext)_localctx).lf.node);
 				}
 				break;
@@ -2389,7 +2695,8 @@ public class LogoTecParser extends Parser {
 			case ID:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(481); ((LogicFactorContext)_localctx).r = relational();
+				setState(481);
+				((LogicFactorContext)_localctx).r = relational();
 				 ((LogicFactorContext)_localctx).node =  ((LogicFactorContext)_localctx).r.node; ((LogicFactorContext)_localctx).val =  ((LogicFactorContext)_localctx).r.val; 
 				}
 				break;
@@ -2413,35 +2720,35 @@ public class LogoTecParser extends Parser {
 		public Value val;
 		public ArithExprContext a1;
 		public ArithExprContext a2;
-		public List<TerminalNode> NEQ() { return getTokens(LogoTecParser.NEQ); }
-		public TerminalNode EQ(int i) {
-			return getToken(LogoTecParser.EQ, i);
-		}
-		public List<TerminalNode> LT() { return getTokens(LogoTecParser.LT); }
 		public List<ArithExprContext> arithExpr() {
 			return getRuleContexts(ArithExprContext.class);
 		}
-		public List<TerminalNode> GT() { return getTokens(LogoTecParser.GT); }
-		public TerminalNode NEQ(int i) {
-			return getToken(LogoTecParser.NEQ, i);
-		}
-		public List<TerminalNode> GEQ() { return getTokens(LogoTecParser.GEQ); }
 		public ArithExprContext arithExpr(int i) {
 			return getRuleContext(ArithExprContext.class,i);
+		}
+		public List<TerminalNode> GT() { return getTokens(LogoTecParser.GT); }
+		public TerminalNode GT(int i) {
+			return getToken(LogoTecParser.GT, i);
+		}
+		public List<TerminalNode> LT() { return getTokens(LogoTecParser.LT); }
+		public TerminalNode LT(int i) {
+			return getToken(LogoTecParser.LT, i);
+		}
+		public List<TerminalNode> GEQ() { return getTokens(LogoTecParser.GEQ); }
+		public TerminalNode GEQ(int i) {
+			return getToken(LogoTecParser.GEQ, i);
 		}
 		public List<TerminalNode> LEQ() { return getTokens(LogoTecParser.LEQ); }
 		public TerminalNode LEQ(int i) {
 			return getToken(LogoTecParser.LEQ, i);
 		}
 		public List<TerminalNode> EQ() { return getTokens(LogoTecParser.EQ); }
-		public TerminalNode GT(int i) {
-			return getToken(LogoTecParser.GT, i);
+		public TerminalNode EQ(int i) {
+			return getToken(LogoTecParser.EQ, i);
 		}
-		public TerminalNode LT(int i) {
-			return getToken(LogoTecParser.LT, i);
-		}
-		public TerminalNode GEQ(int i) {
-			return getToken(LogoTecParser.GEQ, i);
+		public List<TerminalNode> NEQ() { return getTokens(LogoTecParser.NEQ); }
+		public TerminalNode NEQ(int i) {
+			return getToken(LogoTecParser.NEQ, i);
 		}
 		public RelationalContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2455,6 +2762,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitRelational(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitRelational(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final RelationalContext relational() throws RecognitionException {
@@ -2464,7 +2776,8 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(486); ((RelationalContext)_localctx).a1 = arithExpr();
+			setState(486);
+			((RelationalContext)_localctx).a1 = arithExpr();
 			 ((RelationalContext)_localctx).node =  ((RelationalContext)_localctx).a1.node; ((RelationalContext)_localctx).val =  ((RelationalContext)_localctx).a1.val; 
 			setState(514);
 			_errHandler.sync(this);
@@ -2475,43 +2788,55 @@ public class LogoTecParser extends Parser {
 				switch (_input.LA(1)) {
 				case GT:
 					{
-					setState(488); match(GT);
-					setState(489); ((RelationalContext)_localctx).a2 = arithExpr();
+					setState(488);
+					match(GT);
+					setState(489);
+					((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new GreaterThanNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case LT:
 					{
-					setState(492); match(LT);
-					setState(493); ((RelationalContext)_localctx).a2 = arithExpr();
+					setState(492);
+					match(LT);
+					setState(493);
+					((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new LessThanNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case GEQ:
 					{
-					setState(496); match(GEQ);
-					setState(497); ((RelationalContext)_localctx).a2 = arithExpr();
+					setState(496);
+					match(GEQ);
+					setState(497);
+					((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new GreaterEqualNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case LEQ:
 					{
-					setState(500); match(LEQ);
-					setState(501); ((RelationalContext)_localctx).a2 = arithExpr();
+					setState(500);
+					match(LEQ);
+					setState(501);
+					((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new LessEqualNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case EQ:
 					{
-					setState(504); match(EQ);
-					setState(505); ((RelationalContext)_localctx).a2 = arithExpr();
+					setState(504);
+					match(EQ);
+					setState(505);
+					((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new EqualsNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
 				case NEQ:
 					{
-					setState(508); match(NEQ);
-					setState(509); ((RelationalContext)_localctx).a2 = arithExpr();
+					setState(508);
+					match(NEQ);
+					setState(509);
+					((RelationalContext)_localctx).a2 = arithExpr();
 					 ((RelationalContext)_localctx).node =  new NotEqualsNode(_localctx.node, ((RelationalContext)_localctx).a2.node); 
 					}
 					break;
@@ -2541,9 +2866,6 @@ public class LogoTecParser extends Parser {
 		public Value val;
 		public TermContext t1;
 		public TermContext t2;
-		public TerminalNode MINUS(int i) {
-			return getToken(LogoTecParser.MINUS, i);
-		}
 		public List<TermContext> term() {
 			return getRuleContexts(TermContext.class);
 		}
@@ -2551,9 +2873,12 @@ public class LogoTecParser extends Parser {
 			return getRuleContext(TermContext.class,i);
 		}
 		public List<TerminalNode> PLUS() { return getTokens(LogoTecParser.PLUS); }
-		public List<TerminalNode> MINUS() { return getTokens(LogoTecParser.MINUS); }
 		public TerminalNode PLUS(int i) {
 			return getToken(LogoTecParser.PLUS, i);
+		}
+		public List<TerminalNode> MINUS() { return getTokens(LogoTecParser.MINUS); }
+		public TerminalNode MINUS(int i) {
+			return getToken(LogoTecParser.MINUS, i);
 		}
 		public ArithExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2567,6 +2892,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitArithExpr(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitArithExpr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ArithExprContext arithExpr() throws RecognitionException {
@@ -2576,7 +2906,8 @@ public class LogoTecParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(517); ((ArithExprContext)_localctx).t1 = term();
+			setState(517);
+			((ArithExprContext)_localctx).t1 = term();
 			 ((ArithExprContext)_localctx).node =  ((ArithExprContext)_localctx).t1.node; ((ArithExprContext)_localctx).val =  ((ArithExprContext)_localctx).t1.val; 
 			setState(529);
 			_errHandler.sync(this);
@@ -2588,15 +2919,19 @@ public class LogoTecParser extends Parser {
 					switch (_input.LA(1)) {
 					case PLUS:
 						{
-						setState(519); match(PLUS);
-						setState(520); ((ArithExprContext)_localctx).t2 = term();
+						setState(519);
+						match(PLUS);
+						setState(520);
+						((ArithExprContext)_localctx).t2 = term();
 						 ((ArithExprContext)_localctx).node =  new AdditionNode(_localctx.node, ((ArithExprContext)_localctx).t2.node); 
 						}
 						break;
 					case MINUS:
 						{
-						setState(523); match(MINUS);
-						setState(524); ((ArithExprContext)_localctx).t2 = term();
+						setState(523);
+						match(MINUS);
+						setState(524);
+						((ArithExprContext)_localctx).t2 = term();
 						 ((ArithExprContext)_localctx).node =  new SubtractionNode(_localctx.node, ((ArithExprContext)_localctx).t2.node);  
 						}
 						break;
@@ -2627,9 +2962,6 @@ public class LogoTecParser extends Parser {
 		public Value val;
 		public FactorContext f1;
 		public FactorContext f2;
-		public TerminalNode MULT(int i) {
-			return getToken(LogoTecParser.MULT, i);
-		}
 		public List<FactorContext> factor() {
 			return getRuleContexts(FactorContext.class);
 		}
@@ -2637,6 +2969,9 @@ public class LogoTecParser extends Parser {
 			return getRuleContext(FactorContext.class,i);
 		}
 		public List<TerminalNode> MULT() { return getTokens(LogoTecParser.MULT); }
+		public TerminalNode MULT(int i) {
+			return getToken(LogoTecParser.MULT, i);
+		}
 		public List<TerminalNode> DIV() { return getTokens(LogoTecParser.DIV); }
 		public TerminalNode DIV(int i) {
 			return getToken(LogoTecParser.DIV, i);
@@ -2653,6 +2988,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitTerm(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitTerm(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TermContext term() throws RecognitionException {
@@ -2662,7 +3002,8 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(532); ((TermContext)_localctx).f1 = factor();
+			setState(532);
+			((TermContext)_localctx).f1 = factor();
 			 ((TermContext)_localctx).node =  ((TermContext)_localctx).f1.node; ((TermContext)_localctx).val =  ((TermContext)_localctx).f1.val; 
 			setState(544);
 			_errHandler.sync(this);
@@ -2673,15 +3014,19 @@ public class LogoTecParser extends Parser {
 				switch (_input.LA(1)) {
 				case MULT:
 					{
-					setState(534); match(MULT);
-					setState(535); ((TermContext)_localctx).f2 = factor();
+					setState(534);
+					match(MULT);
+					setState(535);
+					((TermContext)_localctx).f2 = factor();
 					 ((TermContext)_localctx).node =  new MultiplicationNode(_localctx.node, ((TermContext)_localctx).f2.node);  
 					}
 					break;
 				case DIV:
 					{
-					setState(538); match(DIV);
-					setState(539); ((TermContext)_localctx).f2 = factor();
+					setState(538);
+					match(DIV);
+					setState(539);
+					((TermContext)_localctx).f2 = factor();
 					 ((TermContext)_localctx).node =  new DivisionNode(_localctx.node, ((TermContext)_localctx).f2.node); 
 					}
 					break;
@@ -2714,13 +3059,13 @@ public class LogoTecParser extends Parser {
 		public List<ExponentContext> exponent() {
 			return getRuleContexts(ExponentContext.class);
 		}
-		public TerminalNode EXP(int i) {
-			return getToken(LogoTecParser.EXP, i);
-		}
 		public ExponentContext exponent(int i) {
 			return getRuleContext(ExponentContext.class,i);
 		}
 		public List<TerminalNode> EXP() { return getTokens(LogoTecParser.EXP); }
+		public TerminalNode EXP(int i) {
+			return getToken(LogoTecParser.EXP, i);
+		}
 		public FactorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2733,6 +3078,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitFactor(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitFactor(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FactorContext factor() throws RecognitionException {
@@ -2742,7 +3092,8 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(547); ((FactorContext)_localctx).e1 = exponent();
+			setState(547);
+			((FactorContext)_localctx).e1 = exponent();
 			 ((FactorContext)_localctx).node =  ((FactorContext)_localctx).e1.node; ((FactorContext)_localctx).val =  ((FactorContext)_localctx).e1.val; 
 			setState(555);
 			_errHandler.sync(this);
@@ -2750,8 +3101,10 @@ public class LogoTecParser extends Parser {
 			while (_la==EXP) {
 				{
 				{
-				setState(549); match(EXP);
-				setState(550); ((FactorContext)_localctx).e2 = exponent();
+				setState(549);
+				match(EXP);
+				setState(550);
+				((FactorContext)_localctx).e2 = exponent();
 				 ((FactorContext)_localctx).node =  new ExponentiationNode(_localctx.node, ((FactorContext)_localctx).e2.node);  
 				}
 				}
@@ -2791,6 +3144,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitExponent(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitExponent(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExponentContext exponent() throws RecognitionException {
@@ -2799,7 +3157,8 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(558); ((ExponentContext)_localctx).unary = unary();
+			setState(558);
+			((ExponentContext)_localctx).unary = unary();
 			 ((ExponentContext)_localctx).node =  ((ExponentContext)_localctx).unary.node; ((ExponentContext)_localctx).val =  ((ExponentContext)_localctx).unary.val; 
 			}
 		}
@@ -2820,17 +3179,17 @@ public class LogoTecParser extends Parser {
 		public UnaryContext u;
 		public FuncCallContext funcCall;
 		public PrimaryContext primary;
-		public FuncCallContext funcCall() {
-			return getRuleContext(FuncCallContext.class,0);
-		}
+		public TerminalNode MINUS() { return getToken(LogoTecParser.MINUS, 0); }
 		public UnaryContext unary() {
 			return getRuleContext(UnaryContext.class,0);
+		}
+		public TerminalNode PLUS() { return getToken(LogoTecParser.PLUS, 0); }
+		public FuncCallContext funcCall() {
+			return getRuleContext(FuncCallContext.class,0);
 		}
 		public PrimaryContext primary() {
 			return getRuleContext(PrimaryContext.class,0);
 		}
-		public TerminalNode MINUS() { return getToken(LogoTecParser.MINUS, 0); }
-		public TerminalNode PLUS() { return getToken(LogoTecParser.PLUS, 0); }
 		public UnaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2843,6 +3202,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitUnary(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitUnary(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final UnaryContext unary() throws RecognitionException {
@@ -2854,16 +3218,20 @@ public class LogoTecParser extends Parser {
 			case MINUS:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(561); match(MINUS);
-				setState(562); ((UnaryContext)_localctx).u = unary();
+				setState(561);
+				match(MINUS);
+				setState(562);
+				((UnaryContext)_localctx).u = unary();
 				 ((UnaryContext)_localctx).node =  new SubtractionNode(new ConstNode(0), ((UnaryContext)_localctx).u.node); ((UnaryContext)_localctx).val =  Value.unknown(); 
 				}
 				break;
 			case PLUS:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(565); match(PLUS);
-				setState(566); ((UnaryContext)_localctx).u = unary();
+				setState(565);
+				match(PLUS);
+				setState(566);
+				((UnaryContext)_localctx).u = unary();
 				 ((UnaryContext)_localctx).node =  ((UnaryContext)_localctx).u.node; ((UnaryContext)_localctx).val =  ((UnaryContext)_localctx).u.val; 
 				}
 				break;
@@ -2880,7 +3248,8 @@ public class LogoTecParser extends Parser {
 			case SUMA:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(569); ((UnaryContext)_localctx).funcCall = funcCall();
+				setState(569);
+				((UnaryContext)_localctx).funcCall = funcCall();
 				 ((UnaryContext)_localctx).node =  ((UnaryContext)_localctx).funcCall.node; ((UnaryContext)_localctx).val =  ((UnaryContext)_localctx).funcCall.val; 
 				}
 				break;
@@ -2892,7 +3261,8 @@ public class LogoTecParser extends Parser {
 			case ID:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(572); ((UnaryContext)_localctx).primary = primary();
+				setState(572);
+				((UnaryContext)_localctx).primary = primary();
 				 ((UnaryContext)_localctx).node =  ((UnaryContext)_localctx).primary.node; ((UnaryContext)_localctx).val =  ((UnaryContext)_localctx).primary.val; 
 				}
 				break;
@@ -2919,31 +3289,31 @@ public class LogoTecParser extends Parser {
 		public ExpressionContext expression;
 		public List<ExpressionContext> rest = new ArrayList<ExpressionContext>();
 		public TerminalNode IGUALESQ() { return getToken(LogoTecParser.IGUALESQ, 0); }
-		public TerminalNode DIVISION() { return getToken(LogoTecParser.DIVISION, 0); }
-		public TerminalNode POTENCIA() { return getToken(LogoTecParser.POTENCIA, 0); }
-		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public TerminalNode MENORQ() { return getToken(LogoTecParser.MENORQ, 0); }
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
 		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
-		public TerminalNode MAYORQ() { return getToken(LogoTecParser.MAYORQ, 0); }
-		public TerminalNode COMMA(int i) {
-			return getToken(LogoTecParser.COMMA, i);
-		}
-		public TerminalNode OFUNC() { return getToken(LogoTecParser.OFUNC, 0); }
-		public TerminalNode PRODUCTO() { return getToken(LogoTecParser.PRODUCTO, 0); }
-		public TerminalNode AZAR() { return getToken(LogoTecParser.AZAR, 0); }
-		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
-		public TerminalNode YFUNC() { return getToken(LogoTecParser.YFUNC, 0); }
-		public TerminalNode DIFERENCIA() { return getToken(LogoTecParser.DIFERENCIA, 0); }
-		public TerminalNode SUMA() { return getToken(LogoTecParser.SUMA, 0); }
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public ExpressionSeriesContext expressionSeries() {
 			return getRuleContext(ExpressionSeriesContext.class,0);
 		}
+		public TerminalNode YFUNC() { return getToken(LogoTecParser.YFUNC, 0); }
+		public TerminalNode OFUNC() { return getToken(LogoTecParser.OFUNC, 0); }
+		public TerminalNode MAYORQ() { return getToken(LogoTecParser.MAYORQ, 0); }
+		public TerminalNode MENORQ() { return getToken(LogoTecParser.MENORQ, 0); }
+		public TerminalNode AZAR() { return getToken(LogoTecParser.AZAR, 0); }
+		public TerminalNode PRODUCTO() { return getToken(LogoTecParser.PRODUCTO, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(LogoTecParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(LogoTecParser.COMMA, i);
+		}
+		public TerminalNode POTENCIA() { return getToken(LogoTecParser.POTENCIA, 0); }
+		public TerminalNode DIVISION() { return getToken(LogoTecParser.DIVISION, 0); }
+		public TerminalNode SUMA() { return getToken(LogoTecParser.SUMA, 0); }
+		public TerminalNode DIFERENCIA() { return getToken(LogoTecParser.DIFERENCIA, 0); }
 		public FuncCallContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2955,6 +3325,11 @@ public class LogoTecParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitFuncCall(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitFuncCall(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2968,10 +3343,14 @@ public class LogoTecParser extends Parser {
 			case IGUALESQ:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(577); match(IGUALESQ);
-				setState(578); match(PAR_OPEN);
-				setState(579); ((FuncCallContext)_localctx).args = expressionSeries();
-				setState(580); match(PAR_CLOSE);
+				setState(577);
+				match(IGUALESQ);
+				setState(578);
+				match(PAR_OPEN);
+				setState(579);
+				((FuncCallContext)_localctx).args = expressionSeries();
+				setState(580);
+				match(PAR_CLOSE);
 				 
 				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "Iguales?", currentLine());
 				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
@@ -2983,10 +3362,14 @@ public class LogoTecParser extends Parser {
 			case YFUNC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(583); match(YFUNC);
-				setState(584); match(PAR_OPEN);
-				setState(585); ((FuncCallContext)_localctx).args = expressionSeries();
-				setState(586); match(PAR_CLOSE);
+				setState(583);
+				match(YFUNC);
+				setState(584);
+				match(PAR_OPEN);
+				setState(585);
+				((FuncCallContext)_localctx).args = expressionSeries();
+				setState(586);
+				match(PAR_CLOSE);
 				 
 				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "Y", currentLine());
 				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(false);
@@ -2998,10 +3381,14 @@ public class LogoTecParser extends Parser {
 			case OFUNC:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(589); match(OFUNC);
-				setState(590); match(PAR_OPEN);
-				setState(591); ((FuncCallContext)_localctx).args = expressionSeries();
-				setState(592); match(PAR_CLOSE);
+				setState(589);
+				match(OFUNC);
+				setState(590);
+				match(PAR_OPEN);
+				setState(591);
+				((FuncCallContext)_localctx).args = expressionSeries();
+				setState(592);
+				match(PAR_CLOSE);
 				 
 				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "O", currentLine());
 				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(false);
@@ -3013,10 +3400,14 @@ public class LogoTecParser extends Parser {
 			case MAYORQ:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(595); match(MAYORQ);
-				setState(596); match(PAR_OPEN);
-				setState(597); ((FuncCallContext)_localctx).args = expressionSeries();
-				setState(598); match(PAR_CLOSE);
+				setState(595);
+				match(MAYORQ);
+				setState(596);
+				match(PAR_OPEN);
+				setState(597);
+				((FuncCallContext)_localctx).args = expressionSeries();
+				setState(598);
+				match(PAR_CLOSE);
 				 
 				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "MayorQue?", currentLine());
 				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
@@ -3029,10 +3420,14 @@ public class LogoTecParser extends Parser {
 			case MENORQ:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(601); match(MENORQ);
-				setState(602); match(PAR_OPEN);
-				setState(603); ((FuncCallContext)_localctx).args = expressionSeries();
-				setState(604); match(PAR_CLOSE);
+				setState(601);
+				match(MENORQ);
+				setState(602);
+				match(PAR_OPEN);
+				setState(603);
+				((FuncCallContext)_localctx).args = expressionSeries();
+				setState(604);
+				match(PAR_CLOSE);
 				 
 				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "MenorQue?", currentLine());
 				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
@@ -3045,10 +3440,14 @@ public class LogoTecParser extends Parser {
 			case AZAR:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(607); match(AZAR);
-				setState(608); match(PAR_OPEN);
-				setState(609); ((FuncCallContext)_localctx).args = expressionSeries();
-				setState(610); match(PAR_CLOSE);
+				setState(607);
+				match(AZAR);
+				setState(608);
+				match(PAR_OPEN);
+				setState(609);
+				((FuncCallContext)_localctx).args = expressionSeries();
+				setState(610);
+				match(PAR_CLOSE);
 				 
 				        requireOneArgument(((FuncCallContext)_localctx).args.list.size(), "AZAR", currentLine());
 				        ExprNode e = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(1);
@@ -3060,17 +3459,22 @@ public class LogoTecParser extends Parser {
 			case PRODUCTO:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(613); match(PRODUCTO);
-				setState(614); match(PAR_OPEN);
-				setState(615); ((FuncCallContext)_localctx).e1 = expression();
+				setState(613);
+				match(PRODUCTO);
+				setState(614);
+				match(PAR_OPEN);
+				setState(615);
+				((FuncCallContext)_localctx).e1 = expression();
 				setState(620);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(616); match(COMMA);
-					setState(617); ((FuncCallContext)_localctx).expression = expression();
+					setState(616);
+					match(COMMA);
+					setState(617);
+					((FuncCallContext)_localctx).expression = expression();
 					((FuncCallContext)_localctx).rest.add(((FuncCallContext)_localctx).expression);
 					}
 					}
@@ -3078,7 +3482,8 @@ public class LogoTecParser extends Parser {
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(623); match(PAR_CLOSE);
+				setState(623);
+				match(PAR_CLOSE);
 
 				        requireNumericType(((FuncCallContext)_localctx).e1.node, "PRODUCTO");
 				        List<ExprNode> restNodes = new ArrayList<>();
@@ -3095,10 +3500,14 @@ public class LogoTecParser extends Parser {
 			case POTENCIA:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(626); match(POTENCIA);
-				setState(627); match(PAR_OPEN);
-				setState(628); ((FuncCallContext)_localctx).args = expressionSeries();
-				setState(629); match(PAR_CLOSE);
+				setState(626);
+				match(POTENCIA);
+				setState(627);
+				match(PAR_OPEN);
+				setState(628);
+				((FuncCallContext)_localctx).args = expressionSeries();
+				setState(629);
+				match(PAR_CLOSE);
 				 
 				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "POTENCIA", currentLine());
 				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
@@ -3111,10 +3520,14 @@ public class LogoTecParser extends Parser {
 			case DIVISION:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(632); match(DIVISION);
-				setState(633); match(PAR_OPEN);
-				setState(634); ((FuncCallContext)_localctx).args = expressionSeries();
-				setState(635); match(PAR_CLOSE);
+				setState(632);
+				match(DIVISION);
+				setState(633);
+				match(PAR_OPEN);
+				setState(634);
+				((FuncCallContext)_localctx).args = expressionSeries();
+				setState(635);
+				match(PAR_CLOSE);
 				 
 				        requireTwoArguments(((FuncCallContext)_localctx).args.list.size(), "DIVISION", currentLine());
 				        ExprNode e1 = ((FuncCallContext)_localctx).args.list.size() > 0 ? ((FuncCallContext)_localctx).args.list.get(0) : new ConstNode(0);
@@ -3127,17 +3540,22 @@ public class LogoTecParser extends Parser {
 			case SUMA:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(638); match(SUMA);
-				setState(639); match(PAR_OPEN);
-				setState(640); ((FuncCallContext)_localctx).e1 = expression();
+				setState(638);
+				match(SUMA);
+				setState(639);
+				match(PAR_OPEN);
+				setState(640);
+				((FuncCallContext)_localctx).e1 = expression();
 				setState(645);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(641); match(COMMA);
-					setState(642); ((FuncCallContext)_localctx).expression = expression();
+					setState(641);
+					match(COMMA);
+					setState(642);
+					((FuncCallContext)_localctx).expression = expression();
 					((FuncCallContext)_localctx).rest.add(((FuncCallContext)_localctx).expression);
 					}
 					}
@@ -3145,7 +3563,8 @@ public class LogoTecParser extends Parser {
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(648); match(PAR_CLOSE);
+				setState(648);
+				match(PAR_CLOSE);
 
 				        requireNumericType(((FuncCallContext)_localctx).e1.node, "SUMA");
 				        List<ExprNode> restNodes = new ArrayList<>();
@@ -3162,17 +3581,22 @@ public class LogoTecParser extends Parser {
 			case DIFERENCIA:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(651); match(DIFERENCIA);
-				setState(652); match(PAR_OPEN);
-				setState(653); ((FuncCallContext)_localctx).e1 = expression();
+				setState(651);
+				match(DIFERENCIA);
+				setState(652);
+				match(PAR_OPEN);
+				setState(653);
+				((FuncCallContext)_localctx).e1 = expression();
 				setState(658);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(654); match(COMMA);
-					setState(655); ((FuncCallContext)_localctx).expression = expression();
+					setState(654);
+					match(COMMA);
+					setState(655);
+					((FuncCallContext)_localctx).expression = expression();
 					((FuncCallContext)_localctx).rest.add(((FuncCallContext)_localctx).expression);
 					}
 					}
@@ -3180,7 +3604,8 @@ public class LogoTecParser extends Parser {
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(661); match(PAR_CLOSE);
+				setState(661);
+				match(PAR_CLOSE);
 
 				        requireNumericType(((FuncCallContext)_localctx).e1.node, "DIFERENCIA");
 				        List<ExprNode> restNodes = new ArrayList<>();
@@ -3219,15 +3644,15 @@ public class LogoTecParser extends Parser {
 		public Token STRING;
 		public ExpressionContext expression;
 		public TerminalNode DECIMAL() { return getToken(LogoTecParser.DECIMAL, 0); }
-		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
-		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
-		public TerminalNode STRING() { return getToken(LogoTecParser.STRING, 0); }
-		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public TerminalNode NUMBER() { return getToken(LogoTecParser.NUMBER, 0); }
 		public TerminalNode BOOLEAN() { return getToken(LogoTecParser.BOOLEAN, 0); }
+		public TerminalNode ID() { return getToken(LogoTecParser.ID, 0); }
+		public TerminalNode STRING() { return getToken(LogoTecParser.STRING, 0); }
+		public TerminalNode PAR_OPEN() { return getToken(LogoTecParser.PAR_OPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode PAR_CLOSE() { return getToken(LogoTecParser.PAR_CLOSE, 0); }
 		public PrimaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3240,6 +3665,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitPrimary(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitPrimary(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PrimaryContext primary() throws RecognitionException {
@@ -3251,7 +3681,8 @@ public class LogoTecParser extends Parser {
 			case DECIMAL:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(666); ((PrimaryContext)_localctx).DECIMAL = match(DECIMAL);
+				setState(666);
+				((PrimaryContext)_localctx).DECIMAL = match(DECIMAL);
 
 				        double v = Double.parseDouble((((PrimaryContext)_localctx).DECIMAL!=null?((PrimaryContext)_localctx).DECIMAL.getText():null).replace(',', '.'));
 				        ((PrimaryContext)_localctx).node =  new ConstNode(v);
@@ -3262,7 +3693,8 @@ public class LogoTecParser extends Parser {
 			case NUMBER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(668); ((PrimaryContext)_localctx).NUMBER = match(NUMBER);
+				setState(668);
+				((PrimaryContext)_localctx).NUMBER = match(NUMBER);
 				 
 				        int v = Integer.parseInt((((PrimaryContext)_localctx).NUMBER!=null?((PrimaryContext)_localctx).NUMBER.getText():null));
 				        ((PrimaryContext)_localctx).node =  new ConstNode(v);
@@ -3273,7 +3705,8 @@ public class LogoTecParser extends Parser {
 			case BOOLEAN:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(670); ((PrimaryContext)_localctx).BOOLEAN = match(BOOLEAN);
+				setState(670);
+				((PrimaryContext)_localctx).BOOLEAN = match(BOOLEAN);
 				 
 				        boolean b = Boolean.parseBoolean((((PrimaryContext)_localctx).BOOLEAN!=null?((PrimaryContext)_localctx).BOOLEAN.getText():null));
 				        ((PrimaryContext)_localctx).node =  new ConstNode(b);
@@ -3284,7 +3717,8 @@ public class LogoTecParser extends Parser {
 			case ID:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(672); ((PrimaryContext)_localctx).ID = match(ID);
+				setState(672);
+				((PrimaryContext)_localctx).ID = match(ID);
 				 
 				        validateIdentifierLength((((PrimaryContext)_localctx).ID!=null?((PrimaryContext)_localctx).ID.getText():null), (((PrimaryContext)_localctx).ID!=null?((PrimaryContext)_localctx).ID.getLine():0));
 				        ((PrimaryContext)_localctx).node =  new VarRefNode((((PrimaryContext)_localctx).ID!=null?((PrimaryContext)_localctx).ID.getText():null));
@@ -3295,7 +3729,8 @@ public class LogoTecParser extends Parser {
 			case STRING:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(674); ((PrimaryContext)_localctx).STRING = match(STRING);
+				setState(674);
+				((PrimaryContext)_localctx).STRING = match(STRING);
 
 				        String s = (((PrimaryContext)_localctx).STRING!=null?((PrimaryContext)_localctx).STRING.getText():null).substring(1,(((PrimaryContext)_localctx).STRING!=null?((PrimaryContext)_localctx).STRING.getText():null).length()-1);
 				        ((PrimaryContext)_localctx).node =  new ConstNode(s);
@@ -3306,9 +3741,12 @@ public class LogoTecParser extends Parser {
 			case PAR_OPEN:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(676); match(PAR_OPEN);
-				setState(677); ((PrimaryContext)_localctx).expression = expression();
-				setState(678); match(PAR_CLOSE);
+				setState(676);
+				match(PAR_OPEN);
+				setState(677);
+				((PrimaryContext)_localctx).expression = expression();
+				setState(678);
+				match(PAR_CLOSE);
 				 
 				        ((PrimaryContext)_localctx).node =  ((PrimaryContext)_localctx).expression.node; 
 				        ((PrimaryContext)_localctx).val =  ((PrimaryContext)_localctx).expression.val; 
@@ -3337,11 +3775,11 @@ public class LogoTecParser extends Parser {
 		public Token NUMBER;
 		public Token BOOLEAN;
 		public Token STRING;
-		public TerminalNode DECIMAL() { return getToken(LogoTecParser.DECIMAL, 0); }
 		public TerminalNode MINUS() { return getToken(LogoTecParser.MINUS, 0); }
-		public TerminalNode STRING() { return getToken(LogoTecParser.STRING, 0); }
+		public TerminalNode DECIMAL() { return getToken(LogoTecParser.DECIMAL, 0); }
 		public TerminalNode NUMBER() { return getToken(LogoTecParser.NUMBER, 0); }
 		public TerminalNode BOOLEAN() { return getToken(LogoTecParser.BOOLEAN, 0); }
+		public TerminalNode STRING() { return getToken(LogoTecParser.STRING, 0); }
 		public LiteralOrStringContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3354,6 +3792,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitLiteralOrString(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitLiteralOrString(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LiteralOrStringContext literalOrString() throws RecognitionException {
@@ -3365,8 +3808,10 @@ public class LogoTecParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(683); match(MINUS);
-				setState(684); ((LiteralOrStringContext)_localctx).DECIMAL = match(DECIMAL);
+				setState(683);
+				match(MINUS);
+				setState(684);
+				((LiteralOrStringContext)_localctx).DECIMAL = match(DECIMAL);
 
 				        double v = -Double.parseDouble((((LiteralOrStringContext)_localctx).DECIMAL!=null?((LiteralOrStringContext)_localctx).DECIMAL.getText():null).replace(',', '.'));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3377,7 +3822,8 @@ public class LogoTecParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(686); ((LiteralOrStringContext)_localctx).DECIMAL = match(DECIMAL);
+				setState(686);
+				((LiteralOrStringContext)_localctx).DECIMAL = match(DECIMAL);
 
 				        double v = Double.parseDouble((((LiteralOrStringContext)_localctx).DECIMAL!=null?((LiteralOrStringContext)_localctx).DECIMAL.getText():null).replace(',', '.'));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3388,8 +3834,10 @@ public class LogoTecParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(688); match(MINUS);
-				setState(689); ((LiteralOrStringContext)_localctx).NUMBER = match(NUMBER);
+				setState(688);
+				match(MINUS);
+				setState(689);
+				((LiteralOrStringContext)_localctx).NUMBER = match(NUMBER);
 
 				        int v = -Integer.parseInt((((LiteralOrStringContext)_localctx).NUMBER!=null?((LiteralOrStringContext)_localctx).NUMBER.getText():null));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3400,7 +3848,8 @@ public class LogoTecParser extends Parser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(691); ((LiteralOrStringContext)_localctx).NUMBER = match(NUMBER);
+				setState(691);
+				((LiteralOrStringContext)_localctx).NUMBER = match(NUMBER);
 
 				        int v = Integer.parseInt((((LiteralOrStringContext)_localctx).NUMBER!=null?((LiteralOrStringContext)_localctx).NUMBER.getText():null));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3411,7 +3860,8 @@ public class LogoTecParser extends Parser {
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(693); ((LiteralOrStringContext)_localctx).BOOLEAN = match(BOOLEAN);
+				setState(693);
+				((LiteralOrStringContext)_localctx).BOOLEAN = match(BOOLEAN);
 
 				        boolean v = Boolean.parseBoolean((((LiteralOrStringContext)_localctx).BOOLEAN!=null?((LiteralOrStringContext)_localctx).BOOLEAN.getText():null));
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(v);
@@ -3422,7 +3872,8 @@ public class LogoTecParser extends Parser {
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(695); ((LiteralOrStringContext)_localctx).STRING = match(STRING);
+				setState(695);
+				((LiteralOrStringContext)_localctx).STRING = match(STRING);
 
 				        String s = (((LiteralOrStringContext)_localctx).STRING!=null?((LiteralOrStringContext)_localctx).STRING.getText():null).substring(1, (((LiteralOrStringContext)_localctx).STRING!=null?((LiteralOrStringContext)_localctx).STRING.getText():null).length()-1);
 				        ((LiteralOrStringContext)_localctx).node =  new ConstNode(s);
@@ -3457,6 +3908,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitCmtFirstLine(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitCmtFirstLine(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CmtFirstLineContext cmtFirstLine() throws RecognitionException {
@@ -3465,7 +3921,8 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(699); match(FIRSTLINE_COMMENT);
+			setState(699);
+			match(FIRSTLINE_COMMENT);
 			 firstLineHasComment = true; 
 			}
 		}
@@ -3494,6 +3951,11 @@ public class LogoTecParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LogoTecListener ) ((LogoTecListener)listener).exitInvalidComment(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LogoTecVisitor ) return ((LogoTecVisitor<? extends T>)visitor).visitInvalidComment(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final InvalidCommentContext invalidComment() throws RecognitionException {
@@ -3502,10 +3964,11 @@ public class LogoTecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(702); match(INVALID_COMMENT);
+			setState(702);
+			match(INVALID_COMMENT);
 
-			        errors.add("Error en l√≠nea " + currentLine() + ": los comentarios deben empezar con //");
-			        //throw new RuntimeException("Error en l√≠nea " + currentLine() + ": los comentarios deben empezar con //");
+			        errors.add("Error en lÌnea " + currentLine() + ": los comentarios deben empezar con //");
+			        //throw new RuntimeException("Error en lÌnea " + currentLine() + ": los comentarios deben empezar con //");
 			      
 			}
 		}
@@ -3522,13 +3985,15 @@ public class LogoTecParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 6: return callProc_sempred((CallProcContext)_localctx, predIndex);
+		case 6:
+			return callProc_sempred((CallProcContext)_localctx, predIndex);
 		}
 		return true;
 	}
 	private boolean callProc_sempred(CallProcContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return  _input.LA(1) != BRACKET_OPEN && 
+		case 0:
+			return  _input.LA(1) != BRACKET_OPEN && 
 		          (_input.LA(1) == NUMBER || _input.LA(1) == ID || _input.LA(1) == PAR_OPEN) ;
 		}
 		return true;
