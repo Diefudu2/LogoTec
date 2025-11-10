@@ -29,8 +29,8 @@ int deadTime = 80;              // tiempo muerto entre movimientos
 /* ============================================================
    CONFIGURACIÓN DE WIFI
    ============================================================ */
-const char* WIFI_SSID = "Familia Moreno";        // 🔧 Cambia por tu red
-const char* WIFI_PASSWORD = "Maria123."; // 🔧 Cambia por tu contraseña
+const char* WIFI_SSID = "Honor Magic 5 LITE";        // 🔧 Cambia por tu red
+const char* WIFI_PASSWORD = "12345679"; // 🔧 Cambia por tu contraseña
 const uint16_t WIFI_PORT = 6789;
 WiFiServer wifiServer(WIFI_PORT);
 WiFiClient wifiClient;
